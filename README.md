@@ -84,6 +84,36 @@ npm test         # grading, GPA, graduation, promotion, catalog, assessment, cal
 folder: GitHub Pages, Netlify, a home server, a NAS, or a USB drive. No
 environment variables or backend are needed.
 
+### Verify offline operation
+
+`npm run build` also runs `scripts/check-offline.mjs`, which fails if the shipped
+HTML, CSS, or manifest references an external runtime asset, if a referenced
+local file is missing, or if the service worker stops precaching the built
+index assets (`src/offline.test.ts` guards the same source files in the test
+suite).
+
+To reproduce the offline check by hand:
+
+```bash
+npm run build
+npm run preview -- --host 127.0.0.1 --port 5180
+```
+
+1. Open `http://127.0.0.1:5180/`, wait for the page to finish loading, then wait a
+   moment for the service worker to activate. In DevTools → Application → Cache
+   Storage, the current `tha-*` cache should contain `index.html`, the hashed
+   files under `assets/`, the manifest, and the icon.
+2. Switch DevTools → Network to **Offline** and reload. The dashboard should render
+   normally with no failed requests.
+3. For a stronger check, stop the preview server and reload the same tab. The
+   navigation falls back to the cached `index.html` and the cached JS/CSS must
+   still boot the app. Create a student and a grade while offline, reload again,
+   and confirm the same data is present.
+
+A normal reload of the preview page is enough to exercise the cached shell: the
+service worker ignores non-GET and cross-origin requests, and this app makes no
+cross-origin runtime requests.
+
 ## How grading works
 
 - Numeric grades 0–100. A 90–100, B 80–89, C 70–79, D 60–69, F below 60.
@@ -144,6 +174,7 @@ src/
   types.ts          domain model
 docs/               sources and records/accreditation policy
 public/             manifest, icon, service worker
+scripts/            post-build offline guard
 ```
 
 ## License
