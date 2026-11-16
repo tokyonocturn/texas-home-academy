@@ -120,8 +120,12 @@ export interface Lesson {
   title: string;
   minutes: number;
   objectives: string[];
+  /** Topic tags used by the curriculum-depth check. */
+  topics?: string[];
   sections: LessonSection[];
   example?: WorkedExample;
+  /** A second worked example showing a different case of the same idea. */
+  extraExample?: WorkedExample;
   keyTerms?: { term: string; definition: string }[];
   practice: Question[];
   /** Independent work completed away from the screen; verified by a parent. */

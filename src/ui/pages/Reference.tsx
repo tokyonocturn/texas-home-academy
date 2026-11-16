@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { FEDERAL_FRAMEWORK, REQUIRED_SUBJECTS, TEXAS_HOMESCHOOL_LAW, TRANSCRIPT_POLICY } from '../../content/frameworks';
 import { SOURCES } from '../../content/sources';
-import { getCourse } from '../../content';
+import { COURSES, getCourse } from '../../content';
+import { curriculumDepthReport } from '../../content/depth/standard';
 import { GRADE_POLICY } from '../../grading/scale';
 import { useApp } from '../../state/store';
 import { Badge, Empty, Link, PageHead } from '../parts';
+
+/** Computed once from the assembled catalog; the depth test asserts the same numbers. */
+const depth = curriculumDepthReport(COURSES);
 
 export function AdultEdPage() {
   const course = getCourse('hs-adulting');
@@ -105,6 +109,36 @@ export function SourcesPage() {
         title="Sources"
         lede="Every legal, statistical, and program claim in this curriculum points to a public source. If a fact is not listed here or in a lesson’s further reading, it is not asserted."
       />
+
+      <div className="card">
+        <div className="spread">
+          <h2 style={{ marginTop: 0 }}>Curriculum depth</h2>
+          <Badge tone={depth.shortfalls.length === 0 ? 'pass' : 'info'}>
+            {depth.met} of {depth.total} lessons at standard
+          </Badge>
+        </div>
+        <p className="small muted">
+          A lesson meets the standard when it has at least two objectives, 190 words of taught prose,
+          two worked examples with steps and answers, two defined terms, two practice items, two
+          off-screen exercises, and two review questions with model answers. The automated depth test
+          enforces the same numbers and fails if a lesson drops below them.
+        </p>
+        {depth.shortfalls.length > 0 ? (
+          <details>
+            <summary className="small" style={{ cursor: 'pointer', fontWeight: 600 }}>
+              {depth.shortfalls.length} lessons still below standard
+            </summary>
+            <ul className="small" style={{ marginTop: 8 }}>
+              {depth.shortfalls.slice(0, 200).map((shortfall) => (
+                <li key={shortfall.lessonId}>
+                  <strong>{shortfall.courseId}</strong> · {shortfall.lessonId}: {shortfall.title} —{' '}
+                  {shortfall.failures[0]}
+                </li>
+              ))}
+            </ul>
+          </details>
+        ) : null}
+      </div>
 
       <div className="card">
         <div className="spread">

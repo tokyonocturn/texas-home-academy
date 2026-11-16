@@ -509,6 +509,20 @@ export function LessonPage({ courseId, lessonId }: { courseId: string; lessonId:
           </div>
         ) : null}
 
+        {lesson.extraExample ? (
+          <div className="callout">
+            <strong>Second worked example.</strong> {lesson.extraExample.prompt}
+            <ol>
+              {lesson.extraExample.steps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+            <div>
+              <strong>Answer:</strong> {lesson.extraExample.answer}
+            </div>
+          </div>
+        ) : null}
+
         {lesson.keyTerms && lesson.keyTerms.length > 0 ? (
           <div className="card">
             <h3 style={{ marginTop: 0 }}>Key terms</h3>

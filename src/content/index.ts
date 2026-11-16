@@ -1,4 +1,5 @@
-import type { CategoryId, Course, GradeLevel, SubjectId } from '../types';
+import type { CategoryId, Course, GradeLevel, Lesson, SubjectId } from '../types';
+import { DEPTH } from './depth';
 import { english1, english2 } from './courses/hsEnglishA';
 import { english3, english4 } from './courses/hsEnglishB';
 import { algebra1, geometry } from './courses/hsMath';
@@ -143,11 +144,49 @@ const RAW_COURSES: Course[] = [
  * its own authored quizzes, practice, and worked example; a course may also
  * supply a hand-written midterm instead.
  */
-export const COURSES: Course[] = RAW_COURSES.map((course) =>
-  course.midterm || course.semesters !== 2
-    ? course
-    : { ...course, midterm: buildMidterm(course) },
-);
+/**
+ * Attach the authored depth block to a lesson: an application section, a second
+ * worked example, definitions, review questions with model answers, and
+ * off-screen exercises. Lessons without a block are reported by
+ * `curriculumDepthReport` instead of being silently padded.
+ */
+function expandLesson(lesson: Lesson): Lesson {
+  const depth = DEPTH[lesson.id];
+  if (!depth) return lesson;
+  return {
+    ...lesson,
+    topics: [...(lesson.topics ?? []), ...depth.topics],
+    sections: [
+      ...lesson.sections,
+      { heading: depth.applicationTitle, paragraphs: [depth.application] },
+    ],
+    extraExample: lesson.extraExample ?? depth.example,
+    keyTerms: [
+      ...(lesson.keyTerms ?? []),
+      ...depth.terms.map(([term, definition]) => ({ term, definition })),
+    ],
+    review: [...(lesson.review ?? []), ...depth.review],
+    assignments: [...(lesson.assignments ?? []), ...depth.exercises],
+  };
+}
+
+function expandCourse(course: Course): Course {
+  return {
+    ...course,
+    units: course.units.map((unit) => ({
+      ...unit,
+      lessons: unit.lessons.map(expandLesson),
+    })),
+  };
+}
+
+export const COURSES: Course[] = RAW_COURSES.map((course) => {
+  const withMidterm =
+    course.midterm || course.semesters !== 2
+      ? course
+      : { ...course, midterm: buildMidterm(course) };
+  return expandCourse(withMidterm);
+});
 
 export const COURSE_MAP: Record<string, Course> = Object.fromEntries(
   COURSES.map((c) => [c.id, c]),

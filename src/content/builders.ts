@@ -77,6 +77,8 @@ export function lesson(input: {
   objectives: string[];
   sections: ReturnType<typeof section>[];
   example?: Lesson['example'];
+  extraExample?: Lesson['extraExample'];
+  topics?: Lesson['topics'];
   keyTerms?: Lesson['keyTerms'];
   practice: Question[];
   assignments?: Lesson['assignments'];
@@ -90,6 +92,8 @@ export function lesson(input: {
     objectives: input.objectives,
     sections: input.sections,
     example: input.example,
+    extraExample: input.extraExample,
+    topics: input.topics,
     keyTerms: input.keyTerms,
     practice: input.practice,
     assignments: input.assignments,
