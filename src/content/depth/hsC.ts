@@ -831,7 +831,7 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
       },
       {
         prompt: 'Why avoid placing everything in the center?',
-        answer: 'Off-center placement creates movement and interest.',
+        answer: 'Centered placement feels static, while off-center placement creates movement and visual interest.',
       },
     ],
     exercises: [
@@ -889,7 +889,7 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
       },
       {
         prompt: 'What does the T in FITT mean?',
-        answer: 'Time, how long the activity lasts.',
+        answer: 'The T stands for time, which is how long each exercise session lasts.',
       },
     ],
     exercises: [
@@ -1092,7 +1092,7 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
       },
       {
         prompt: 'Name three school supplies in Spanish.',
-        answer: 'El lápiz, el cuaderno, and la mochila.',
+        answer: 'Three school supplies are el lápiz, el cuaderno, and la mochila, each with its article.',
       },
     ],
     exercises: [

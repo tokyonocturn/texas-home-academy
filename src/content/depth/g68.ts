@@ -671,7 +671,7 @@ export const DEPTH_G68: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'What was the purpose of a presidio?',
-        answer: 'A military fort protecting missions and settlements.',
+        answer: 'A presidio was a military fort built to protect missions and settlements from attack.',
       },
       {
         prompt: 'Name two causes of the Texas Revolution.',
@@ -703,7 +703,7 @@ export const DEPTH_G68: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'When did Texas join the United States?',
-        answer: 'In 1845, as the 28th state.',
+        answer: 'Texas joined the United States in 1845, when it became the twenty-eighth state.',
       },
       {
         prompt: 'Name one achievement and one failure of Reconstruction in Texas.',
