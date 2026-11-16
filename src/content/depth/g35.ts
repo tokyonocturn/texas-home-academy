@@ -436,11 +436,11 @@ export const DEPTH_G35: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'What signal words suggest cause and effect?',
-        answer: 'Because, therefore, as a result, and since.',
+        answer: 'Signal words such as because, therefore, as a result, and since point to causes and effects.',
       },
       {
         prompt: 'What should a summary leave out?',
-        answer: 'Minor details and your own opinions.',
+        answer: 'A summary leaves out minor details, repetition, examples, and your own opinions.',
       },
     ],
     exercises: [
@@ -555,11 +555,11 @@ export const DEPTH_G35: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'How many degrees are in a straight angle?',
-        answer: '180 degrees, which is two right angles.',
+        answer: 'A straight angle measures exactly 180 degrees, which is the same as two right angles.',
       },
       {
         prompt: 'Which is longer, 2.5 meters or 240 centimeters?',
-        answer: '2.5 meters, because it equals 250 centimeters.',
+        answer: '2.5 meters is longer, because it equals 250 centimeters, ten more than 240.',
       },
     ],
     exercises: [
@@ -655,7 +655,7 @@ export const DEPTH_G35: Record<string, LessonDepth> = {
       },
       {
         prompt: 'Give one structural and one behavioral adaptation.',
-        answer: 'Structural: thick fur. Behavioral: hibernating through winter.',
+        answer: 'Thick fur is a structural adaptation, and hibernating through winter is a behavioral one.',
       },
     ],
     exercises: [
@@ -716,7 +716,7 @@ export const DEPTH_G35: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'When did Texas become a state, and what number was it?',
-        answer: 'In 1845, as the 28th state.',
+        answer: 'Texas became a state in 1845, when it was admitted as the twenty-eighth state.',
       },
       {
         prompt: 'What did General Order No. 3 announce?',
@@ -1057,7 +1057,7 @@ export const DEPTH_G35: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'What crop saved Jamestown?',
-        answer: 'Tobacco, which became a profitable export.',
+        answer: 'Tobacco became a profitable cash crop that allowed the Jamestown colony to survive.',
       },
       {
         prompt: 'Name two acts that angered the colonies.',
@@ -1121,7 +1121,7 @@ export const DEPTH_G35: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'What did the Thirteenth Amendment do?',
-        answer: 'It abolished slavery in the United States.',
+        answer: 'It abolished slavery throughout the United States when it was ratified in 1865.',
       },
       {
         prompt: 'Name one limit of Reconstruction.',
