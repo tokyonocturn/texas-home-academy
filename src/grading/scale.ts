@@ -63,6 +63,18 @@ export function round1(n: number): number {
   return Math.round(n * 10) / 10;
 }
 
+/**
+ * The grade as it is reported on a report card or transcript (one decimal).
+ *
+ * Letters, quality points, passing, and credit use this reported value so the
+ * record can never show 90.0 next to a B or 70.0 next to a withheld credit.
+ * Full-precision averages remain available on CourseResult for GPA arithmetic.
+ */
+export function reportedGrade(numeric: number | null): number | null {
+  if (numeric === null || !Number.isFinite(numeric)) return null;
+  return round1(clampGrade(numeric));
+}
+
 export function round2(n: number): number {
   return Math.round(n * 100) / 100;
 }
@@ -83,6 +95,8 @@ export const GRADE_POLICY = {
     'Six-week period grade = weighted average of the graded categories in that period, excluding semester exams. Semester average = 80% of the average of its three period grades + 20% of that semester’s exam (the midterm in semester 1, the cumulative final in semester 2). If one side has no graded work, the other side stands alone. A category with no graded work is excluded and its weight is renormalized within the period.',
   finalFormula:
     'Final grade = the average of the semester grades. A final grade is not issued until the cumulative final examination is recorded, so an in-progress course cannot earn credit or enter the GPA.',
+  reportingRule:
+    'Averages are computed at full precision, then reported to one decimal. Letter grades, quality points, passing, and credit are decided from that reported one-decimal grade, so a reported 90.0 is always an A and a reported 70.0 always passes.',
   missingWork:
     'A category with no graded work is excluded and the remaining weights are renormalized; the course page shows which categories are still empty.',
   retake:

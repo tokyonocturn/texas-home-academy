@@ -11,6 +11,7 @@ import type { AppState, AttendanceEntry, CategoryId, Profile, SchoolYear } from 
 import { buildSchoolYear, periodForDate, todayISO } from './schoolYear';
 import { reducer, type Action } from './reducer';
 import { loadState, parseImportedState, serializeState, STORAGE_KEY } from './persistence';
+import { downloadText } from './export';
 
 interface StoreValue {
   state: AppState;
@@ -94,13 +95,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const exportBackup = useCallback(() => {
-    const blob = new Blob([serializeState(state)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `texas-home-academy-backup-${todayISO()}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
+    downloadText(
+      `texas-home-academy-backup-${todayISO()}.json`,
+      serializeState(state),
+      'application/json',
+    );
   }, [state]);
 
   const importBackup = useCallback(async (file: File) => {

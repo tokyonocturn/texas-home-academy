@@ -1,6 +1,14 @@
 import type { CategoryId, Course, GradeRecord } from '../types';
 import { CATEGORY_LABELS } from '../types';
-import { PASSING_GRADE, clampGrade, letterGrade, qualityPoints, round1, type LetterGrade } from './scale';
+import {
+  PASSING_GRADE,
+  clampGrade,
+  letterGrade,
+  qualityPoints,
+  reportedGrade,
+  round1,
+  type LetterGrade,
+} from './scale';
 
 /**
  * Gradebook engine.
@@ -222,8 +230,11 @@ export function courseResult(
       ? semesterGrades.reduce((a, b) => a + b, 0) / semesterGrades.length
       : null;
 
-  const passing = finalGrade !== null && finalGrade >= PASSING_GRADE;
-  const points = finalGrade !== null ? qualityPoints(finalGrade, course.advanced) : 0;
+  // Decisions follow the grade the family actually sees (one decimal), so a
+  // report card can never display 90.0 with a B or 70.0 with credit withheld.
+  const reported = reportedGrade(finalGrade);
+  const passing = reported !== null && reported >= PASSING_GRADE;
+  const points = reported !== null ? qualityPoints(reported, course.advanced) : 0;
 
   return {
     courseId: course.id,
@@ -236,7 +247,7 @@ export function courseResult(
     examGrade,
     currentGrade,
     finalGrade,
-    letter: letterGrade(finalGrade),
+    letter: letterGrade(reported),
     points,
     creditsEarned: passing ? course.credits : 0,
     passing,

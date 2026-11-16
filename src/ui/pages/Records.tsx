@@ -7,6 +7,7 @@ import { courseResult, displayGrade, percent } from '../../grading/gradebook';
 import { attendanceSummary } from '../../grading/progression';
 import { GRADE_POLICY } from '../../grading/scale';
 import { useApp } from '../../state/store';
+import { downloadText, gradesCsv } from '../../state/export';
 import { formatDate, formatShortDate, todayISO } from '../../state/schoolYear';
 import { Badge, Empty, Link, PageHead } from '../parts';
 
@@ -35,9 +36,23 @@ export function GradebookPage() {
         title="Gradebook"
         lede={`Every score below came from a submitted assessment. Current grading period: ${periodId}.`}
         actions={
-          <Link to="/report-card" className="btn ghost">
-            Report card
-          </Link>
+          <>
+            <button
+              className="btn ghost"
+              onClick={() =>
+                downloadText(
+                  `texas-home-academy-grades-${todayISO()}.csv`,
+                  gradesCsv(state, COURSES),
+                  'text/csv;charset=utf-8',
+                )
+              }
+            >
+              Export grades (CSV)
+            </button>
+            <Link to="/report-card" className="btn ghost">
+              Report card
+            </Link>
+          </>
         }
       />
 
@@ -226,6 +241,7 @@ export function GradebookPage() {
           <li>Passing grade {GRADE_POLICY.passing} ({GRADE_POLICY.passingCitation}).</li>
           <li>{GRADE_POLICY.semesterFormula}</li>
           <li>{GRADE_POLICY.finalFormula}</li>
+          <li>{GRADE_POLICY.reportingRule}</li>
           <li>{GRADE_POLICY.missingWork}</li>
           <li>{GRADE_POLICY.retake}</li>
           <li>{GRADE_POLICY.lateWork}</li>
@@ -345,12 +361,14 @@ export function ReportCardPage() {
 
         <div className="transcript-foot">
           Six-week period grade = weighted average of the graded categories in that period, with
-          empty categories excluded and their weight renormalized. Semester average = average of its
-          three periods. Final grade = 80% of the graded-period average plus 20% of the cumulative
-          final examination, and it is issued only after that examination is recorded. Passing is 70
-          on a 100-point scale (19 TAC §74.26(c)). Absences and make-up work are recorded in the
-          attendance log. This is a parent-issued record; it is not issued by TEA or an accredited
-          institution.
+          empty categories excluded and their weight renormalized. Semester average = 80% of that
+          semester’s graded-period average plus 20% of its exam (the midterm in semester 1, the
+          cumulative final in semester 2). Final grade = the average of the semester grades, issued
+          only after the cumulative final examination is recorded. Averages are computed at full
+          precision and reported to one decimal; letter grades and credit follow the reported grade,
+          so a reported 90.0 is an A and a reported 70.0 passes. Passing is 70 on a 100-point scale
+          (19 TAC §74.26(c)). Absences and make-up work are recorded in the attendance log. This is a
+          parent-issued record; it is not issued by TEA or an accredited institution.
         </div>
       </div>
     </>
@@ -366,7 +384,20 @@ export function TranscriptPage() {
   const courses = COURSES.filter((c) => c.credits > 0)
     .map((course) => ({ course, result: courseResult(course, state.grades) }))
     .filter(({ result }) => result.finalGrade !== null)
-    .sort((a, b) => a.course.grade - b.course.grade);
+    .sort((a, b) =>
+      a.course.grade === b.course.grade
+        ? a.course.title.localeCompare(b.course.title)
+        : a.course.grade - b.course.grade,
+    );
+  // Enrolled credit courses that do not yet have a final exam are shown as in
+  // progress rather than silently omitted or counted as earned credit.
+  const inProgress = state.enrollments.flatMap((enrollment) => {
+    const course = getCourse(enrollment.courseId);
+    if (!course || course.credits <= 0) return [];
+    const result = courseResult(course, state.grades);
+    return result.finalGrade === null ? [{ course, result }] : [];
+  });
+  const inProgressCredits = inProgress.reduce((sum, entry) => sum + entry.course.credits, 0);
 
   return (
     <>
@@ -393,7 +424,7 @@ export function TranscriptPage() {
       <div className="transcript">
         <div className="transcript-head">
           <h1>{profile.schoolName || 'Texas Home Academy'}</h1>
-          <div className="sub">Official home-school academic transcript</div>
+          <div className="sub">Home-school academic transcript</div>
           <div className="note" style={{ marginTop: 6 }}>
             {[profile.city, profile.state].filter(Boolean).join(', ') || 'Texas'} · Issued{' '}
             {formatDate(todayISO())}
@@ -470,6 +501,32 @@ export function TranscriptPage() {
           </table>
         )}
 
+        {inProgress.length > 0 ? (
+          <div style={{ marginTop: 18 }}>
+            <h3>Courses in progress</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Course</th>
+                  <th className="num">Credit</th>
+                  <th className="num">S1</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {inProgress.map(({ course, result }) => (
+                  <tr key={course.id}>
+                    <td>{course.title}</td>
+                    <td className="num">{course.credits}</td>
+                    <td className="num">{displayGrade(result.semesters[0]?.grade ?? null)}</td>
+                    <td className="note">In progress — no final grade yet</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
+
         <div className="grid two" style={{ marginTop: 18 }}>
           <div>
             <h3 style={{ marginTop: 0 }}>Cumulative summary</h3>
@@ -482,6 +539,10 @@ export function TranscriptPage() {
                 <tr>
                   <td>Credits earned</td>
                   <td className="num">{gpa.summary.creditsEarned.toFixed(1)}</td>
+                </tr>
+                <tr>
+                  <td>Credits in progress</td>
+                  <td className="num">{inProgressCredits.toFixed(1)}</td>
                 </tr>
                 <tr>
                   <td>Unweighted GPA (4.0 scale)</td>

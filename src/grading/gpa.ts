@@ -1,6 +1,6 @@
 import type { Course, GradeRecord } from '../types';
 import { courseResult } from './gradebook';
-import { round2 } from './scale';
+import { PASSING_GRADE, baseQualityPoints, reportedGrade, round2 } from './scale';
 
 /**
  * GPA is credit-weighted and computed only from high-school courses that carry
@@ -45,12 +45,20 @@ export function computeGpa(courses: Course[], records: GradeRecord[]): GpaSummar
   }
 
   const creditsAttempted = lines.reduce((sum, l) => sum + l.credits, 0);
-  const creditsEarned = lines.reduce((sum, l) => sum + (l.grade >= 70 ? l.credits : 0), 0);
+  const creditsEarned = lines.reduce(
+    (sum, l) => sum + ((reportedGrade(l.grade) ?? 0) >= PASSING_GRADE ? l.credits : 0),
+    0,
+  );
+  // Weighted uses the advanced bonus in each line's points; unweighted must
+  // recompute base points, or an advanced course would inflate both GPAs.
   const weightedSum = lines.reduce((sum, l) => sum + l.points * l.credits, 0);
+  const baseSum = lines.reduce(
+    (sum, l) => sum + baseQualityPoints(l.grade) * l.credits,
+    0,
+  );
 
   return {
-    unweighted: creditsAttempted > 0 ? round2(weightedSum / creditsAttempted) : 0,
-    // `points` already includes the advanced bonus; unweighted uses base points.
+    unweighted: creditsAttempted > 0 ? round2(baseSum / creditsAttempted) : 0,
     weighted: creditsAttempted > 0 ? round2(weightedSum / creditsAttempted) : 0,
     creditsAttempted: round2(creditsAttempted),
     creditsEarned: round2(creditsEarned),
@@ -65,17 +73,8 @@ export function splitGpa(courses: Course[], records: GradeRecord[]): {
   summary: GpaSummary;
 } {
   const summary = computeGpa(courses, records);
-  let baseSum = 0;
-  let credits = 0;
-  for (const line of summary.courses) {
-    const base = line.advanced
-      ? Math.max(0, line.points - 0.5)
-      : line.points;
-    baseSum += base * line.credits;
-    credits += line.credits;
-  }
   return {
-    unweighted: credits > 0 ? round2(baseSum / credits) : 0,
+    unweighted: summary.unweighted,
     weighted: summary.weighted,
     summary,
   };

@@ -238,14 +238,23 @@ export interface GraduationAudit {
 
 export function auditGraduation(courses: Course[], records: GradeRecord[]): GraduationAudit {
   const completed = completedCourses(courses, records);
-  const coreIds = FHSP_REQUIREMENTS.filter((r) => r.id !== 'electives').flatMap((r) => r.courseIds);
-  const electiveCredits = round2(
-    completed.filter((c) => !coreIds.includes(c.courseId)).reduce((sum, c) => sum + c.credits, 0),
+  const totalCredits = round2(completed.reduce((sum, c) => sum + c.credits, 0));
+  const coreRequirements = FHSP_REQUIREMENTS.filter((req) => req.id !== 'electives');
+  const coreEarned = new Map(
+    coreRequirements.map((req) => [req.id, creditsIn(completed, req.courseIds)]),
   );
+  // Only the required number of credits in each core area is applied there;
+  // any excess (a fourth math credit, a fifth English credit) is an elective.
+  // Otherwise those credits would raise the total while leaving electives open.
+  const appliedCore = coreRequirements.reduce(
+    (sum, req) => sum + Math.min(coreEarned.get(req.id) ?? 0, req.credits),
+    0,
+  );
+  const electiveCredits = round2(Math.max(0, totalCredits - appliedCore));
 
   const requirements: RequirementResult[] = FHSP_REQUIREMENTS.map((req) => {
     const matching = completed.filter((c) => req.courseIds.includes(c.courseId));
-    const earned = req.id === 'electives' ? electiveCredits : creditsIn(completed, req.courseIds);
+    const earned = req.id === 'electives' ? electiveCredits : (coreEarned.get(req.id) ?? 0);
     return {
       ...req,
       earned,
@@ -253,8 +262,6 @@ export function auditGraduation(courses: Course[], records: GradeRecord[]): Grad
       satisfied: earned >= req.credits,
     };
   });
-
-  const totalCredits = round2(completed.reduce((sum, c) => sum + c.credits, 0));
   const fhspMet = requirements.every((r) => r.satisfied);
   const endorsements = evaluateEndorsements(completed);
   const hasEndorsement = endorsements.some((e) => e.met);
