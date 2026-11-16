@@ -26,10 +26,12 @@ with the Texas Education Agency. See
   Geography, World History, U.S. History, U.S. Government, Economics, Spanish I
   and II, Physical Education, Art I, Health, Speech, Computer Science I, two CTE
   courses, Personal Financial Literacy, and Adult Life Education.
-- **Lessons, not worksheets only.** Each lesson has objectives, explanatory
-  sections, a worked example, key terms, further reading, a practice set, and —
-  in the adult-life course and the courses being expanded — review questions
-  with model answers and off-screen assignments.
+- **Lessons, not worksheets only.** Every K–12 lesson has objectives, two or
+  more explanatory sections, two worked examples with step-by-step reasoning,
+  defined key terms, a real-world application, a practice set, off-screen
+  assignments, and review questions with model answers. A curriculum-depth test
+  enforces those minimums across the whole catalog, and the Sources page reports
+  the count.
 - **Real assessments.** Unit quizzes, projects scored against published analytic
   rubrics, a semester 1 midterm for every full-year course, and a cumulative
   final examination. Multiple-choice and numeric items are auto-graded; written

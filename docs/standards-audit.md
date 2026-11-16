@@ -148,9 +148,11 @@ gradebook and graduation audit both enforce the 70 floor. No lesson completion, 
 
 ## 6. Gap register
 
-1. **Lesson depth.** Every lesson has objectives, explanatory sections, a worked example, key
-   terms, and practice, but several K–2 and enrichment lessons are still shorter than the
-   high-school courses. Expanding them is the top content priority.
+1. **Lesson depth — closed.** Every K–12 lesson now meets the curriculum-depth standard enforced
+   by `src/content/depth.test.ts`: at least two objectives, two sections, 190 words of taught
+   prose, two worked examples with steps and answers, two defined terms, two practice items, two
+   off-screen exercises, and two review questions with model answers. The Sources page shows the
+   same count in the app. Remaining work is depth *within* the standard, not lessons below it.
 2. **Written-response scoring.** Written items are scored by a parent against a rubric. The app
    does not evaluate prose and does not claim to.
 3. **Practical/performance assessments.** PE activity logs, studio art production, and lab work
