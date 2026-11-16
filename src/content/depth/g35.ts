@@ -215,7 +215,7 @@ export const DEPTH_G35: Record<string, LessonDepth> = {
       },
       {
         prompt: 'What property makes it possible to separate iron from sand?',
-        answer: 'Iron is magnetic and sand is not.',
+        answer: 'Iron is magnetic and sand is not, so a magnet attracts only the iron.',
       },
     ],
     exercises: [

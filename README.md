@@ -33,12 +33,11 @@ with the Texas Education Agency. See
   practice items, four off-screen exercises, four reviewed questions with model
   answers, three discussed topics, and a named real-world application, with
   anti-boilerplate checks. `src/content/depth.test.ts` enforces it and fails by
-  naming the lesson and the missed criterion. **Status: Kindergarten and Grade 1
-  meet v2 (24 lessons); the remaining 177 are honestly listed in the shortfall
-  ledger with their measured word counts, shown on the Sources page.** Lessons
-  outside those two grades still carry objectives, two sections, two worked
-  examples, terms, application, practice, exercises, and reviewed questions from
-  the v1 standard.
+  naming the lesson and the missed criterion. **Status: Grades K–3 meet v2 (48
+  lessons); the remaining 153 are honestly listed in the shortfall ledger with
+  their measured word counts, shown on the Sources page.** Lessons in grades 4
+  and up still carry objectives, two sections, two worked examples, terms,
+  application, practice, exercises, and reviewed questions from the v1 standard.
 - **Real assessments.** Unit quizzes, projects scored against published analytic
   rubrics, a semester 1 midterm for every full-year course, and a cumulative
   final examination. Multiple-choice and numeric items are auto-graded; written
