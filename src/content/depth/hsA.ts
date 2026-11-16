@@ -858,7 +858,7 @@ export const DEPTH_HS_A: Record<string, LessonDepth> = {
       },
       {
         prompt: 'How do you find a vector’s magnitude from components?',
-        answer: 'Use the Pythagorean theorem on its components.',
+        answer: 'Square each component, add the squares, and take the square root, which is the Pythagorean theorem applied to the components.',
       },
     ],
     exercises: [

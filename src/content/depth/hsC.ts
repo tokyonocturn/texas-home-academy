@@ -504,11 +504,11 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'What is a normal adult resting heart rate?',
-        answer: 'About 60 to 100 beats per minute.',
+        answer: 'A normal adult resting heart rate is about 60 to 100 beats per minute.',
       },
       {
         prompt: 'What does the prefix hyper- mean?',
-        answer: 'High or excessive, as in hypertension.',
+        answer: 'The prefix hyper- means high or excessive, as in hypertension, while hypo- means low or deficient.',
       },
     ],
     exercises: [

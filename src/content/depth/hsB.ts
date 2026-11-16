@@ -296,7 +296,7 @@ export const DEPTH_HS_B: Record<string, LessonDepth> = {
       },
       {
         prompt: 'What net force is needed for constant velocity?',
-        answer: 'Zero, because constant velocity means no acceleration.',
+        answer: 'Zero net force, because constant velocity means no acceleration, so the forces must balance.',
       },
     ],
     exercises: [
