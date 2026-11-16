@@ -33,12 +33,12 @@ with the Texas Education Agency. See
   practice items, four off-screen exercises, four reviewed questions with model
   answers, three discussed topics, and a named real-world application, with
   anti-boilerplate checks. `src/content/depth.test.ts` enforces it and fails by
-  naming the lesson and the missed criterion. **Status: every grade 9 course and
-  all of grades K–8 meet v2 (141 lessons); the remaining 60 are honestly listed in
-  the shortfall ledger with their measured word counts, shown on the Sources
-  page.** The carry-over is grades 10–12 plus the six banded elementary elective
-  lessons, which are now measured at grade 5, the top of their band, instead of
-  grade 0. Those lessons still carry objectives, two sections, two worked
+  naming the lesson and the missed criterion. **Status: every grade 9 and grade 10
+  course and all of grades K–8 meet v2 (166 lessons); the remaining 35 are honestly
+  listed in the shortfall ledger with their measured word counts, shown on the
+  Sources page.** The carry-over is grades 11–12 plus the six banded elementary
+  elective lessons, which are measured at grade 5, the top of their band, instead
+  of grade 0. Those lessons still carry objectives, two sections, two worked
   examples, terms, application, practice, exercises, and reviewed questions from
   the v1 standard.
 - **Real assessments.** Unit quizzes, projects scored against published analytic

@@ -109,7 +109,7 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'Which pronoun replaces “el libro”?',
-        answer: 'lo, because libro is masculine singular.',
+        answer: 'Use lo, because libro is a masculine singular noun and takes the direct object pronoun lo.',
       },
       {
         prompt: 'Where does the pronoun usually go?',
@@ -142,7 +142,7 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
       },
       {
         prompt: 'What does the I in FITT stand for?',
-        answer: 'Intensity, how hard the activity is.',
+        answer: 'Intensity, which is how hard the activity is relative to your capacity.',
       },
     ],
     exercises: [
@@ -170,7 +170,7 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'What are warning signs of heat exhaustion?',
-        answer: 'Heavy sweating, weakness, dizziness, nausea, and headache.',
+        answer: 'Heavy sweating, weakness, dizziness, nausea, headache, and cool clammy skin signal heat exhaustion.',
       },
       {
         prompt: 'What should happen after a suspected concussion?',
@@ -385,7 +385,7 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'Why does range(1, 4) exclude 4?',
-        answer: 'Python ranges stop before the end value.',
+        answer: 'Because range stops before its end value, so range(1, 4) produces 1, 2, and 3.',
       },
       {
         prompt: 'What does a conditional do?',

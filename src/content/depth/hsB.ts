@@ -238,7 +238,7 @@ export const DEPTH_HS_B: Record<string, LessonDepth> = {
       },
       {
         prompt: 'Why can you not change subscripts to balance an equation?',
-        answer: 'Changing subscripts changes the substance itself.',
+        answer: 'Because subscripts define which substance it is, so changing them produces a different compound rather than a balanced equation.',
       },
     ],
     exercises: [
@@ -475,7 +475,7 @@ export const DEPTH_HS_B: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'What spread along the Silk Road besides trade goods?',
-        answer: 'Religions, technologies, and diseases such as plague.',
+        answer: 'Religions, technologies such as papermaking, and diseases such as plague travelled the Silk Road along with goods.',
       },
       {
         prompt: 'Why was the Columbian Exchange devastating for Indigenous Americans?',

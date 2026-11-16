@@ -182,11 +182,11 @@ export const DEPTH_HS_A: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'What makes an appeal to ethos credible?',
-        answer: 'Demonstrated expertise, fairness, and acknowledgment of limits.',
+        answer: 'Demonstrated expertise in the subject, fairness toward opponents, honesty about limits, and consistency between claims and actions.',
       },
       {
         prompt: 'Why can overusing pathos backfire?',
-        answer: 'Audiences suspect manipulation when emotion replaces evidence.',
+        answer: 'Audiences sense manipulation when emotion replaces evidence, and that suspicion makes them distrust the rest of the argument.',
       },
     ],
     exercises: [
@@ -677,7 +677,7 @@ export const DEPTH_HS_A: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'Which ratio uses the side opposite and the hypotenuse?',
-        answer: 'Sine, SOH: sine = opposite ÷ hypotenuse.',
+        answer: 'Sine, from SOH: sine equals the opposite leg divided by the hypotenuse.',
       },
       {
         prompt: 'Why does AA similarity guarantee proportional sides?',
@@ -771,7 +771,7 @@ export const DEPTH_HS_A: Record<string, LessonDepth> = {
       },
       {
         prompt: 'What does the remainder theorem let you compute quickly?',
-        answer: 'f(a), by evaluating or dividing synthetically.',
+        answer: 'The remainder equals f(a), so substituting a is faster than long division.',
       },
     ],
     exercises: [
