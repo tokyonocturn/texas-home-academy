@@ -153,23 +153,29 @@ gradebook and graduation audit both enforce the 70 floor. No lesson completion, 
    6–8, 600 in 9–12), three worked examples with reasoning and answers, eight defined terms, five
    practice items, four off-screen exercises, four reviewed questions with model answers, three
    discussed topics, and a real-world application section, and it rejects shared boilerplate.
-   All two hundred one K–12 lessons meet v2, measured by the same function the test calls:
+   All two hundred seventeen lessons meet v2, adult education included, measured by the same function
+   the test calls:
    Kindergarten, 12 lessons in 4 courses; Grades 1–5, 66 lessons in 23 courses, including the banded
    fine arts, health and physical education, and technology electives measured in the 400-word
    grade-5 band rather than the K–2 band; Grades 6–8, 46 lessons in 17 courses, including the
-   exploratory electives; and Grades 9–12, 77 lessons in 27 courses, from English I–IV and the
-   mathematics and science sequence through social studies, Spanish I–II, fine arts, health and PE,
-   speech, computer science, the two CTE courses, and Personal Financial Literacy. The measured gap
+   exploratory electives; and Grades 9–12, 93 lessons in 28 courses, including the 16 Adult Life
+   Education lessons, from English I–IV and the mathematics and science sequence through social
+   studies, Spanish I–II, fine arts, health and PE, speech, computer science, the two CTE courses,
+   and Personal Financial Literacy. By subject the measured lessons are English language arts 42,
+   mathematics 41, science 39, social studies 42, fine arts 6, physical education 6, technology 6,
+   health 4, languages other than English 6, CTE 4, personal finance 3, the exploratory elective 2,
+   and adult education 16. The measured gap
    is zero: `src/content/depth/shortfalls.ts` holds no entries, and it is generated from
    `curriculumDepthReport` instead of being maintained by hand, so the ledger and the Sources page
-   (201 of 201 at standard) cannot disagree with the measurement. `src/content/depth.test.ts`
+   (217 of 217 at standard) cannot disagree with the measurement. `src/content/depth.test.ts`
    enforces v2 and fails with the lesson name and the missed criterion, and its ledger check is a
    bijection: every short lesson must be listed with its measured counts and every listed lesson
    must still be short, so the ledger cannot silently drift in either direction. Nothing was padded
    to reach this point; the remaining lessons were authored, and the standard, thresholds and checks
-   were left unchanged. The report measures K–12 only — `curriculumDepthReport` skips the adult
-   education subject — so the 16 Adult Life Education lessons are outside the ledger and are not
-   claimed to meet v2. Meeting this internal depth standard is not a compliance or accreditation
+   were left unchanged. Adult education is measured by the same report rather than excluded from
+   it: because adult learners are not grade-scaled, the Adult Life Education course is held to the
+   600-word top band instead of a weaker scale of its own, and its 16 lessons appear in the total,
+   the ledger, and the Sources page like every other lesson. Meeting this internal depth standard is not a compliance or accreditation
    claim: per-course rather than lesson-by-lesson TEKS alignment, graduation-credit handling and the
    limits of homeschool records are separate matters, catalogued elsewhere in this register.
 2. **Written-response scoring.** Written items are scored by a parent against a rubric. The app

@@ -22,16 +22,17 @@ import type { Lesson } from '../types';
  * fresh measurement, so it cannot drift into a comfortable lie.
  */
 
-const K12 = COURSES.filter((course) => course.subject !== 'adult-education');
-const lessons = K12.flatMap((course) =>
+/** The whole catalogue, adult education included: nothing is exempt from measurement. */
+const lessons = COURSES.flatMap((course) =>
   course.units.flatMap((unit) =>
     unit.lessons.map((lesson) => ({ course, lesson, status: lessonDepthStatus(course.id, lesson, course.grade) })),
   ),
 );
 
 describe('curriculum depth standard', () => {
-  it('walks the entire K-12 catalog', () => {
-    expect(lessons.length).toBeGreaterThan(190);
+  it('walks the entire catalog, adult education included', () => {
+    expect(lessons.length).toBeGreaterThan(210);
+    expect(lessons.some((entry) => entry.course.subject === 'adult-education')).toBe(true);
     expect(new Set(lessons.map((entry) => entry.lesson.id)).size).toBe(lessons.length);
   });
 

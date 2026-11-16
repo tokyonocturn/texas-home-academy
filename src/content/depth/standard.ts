@@ -33,6 +33,11 @@ export const DEPTH_STANDARD = {
 /**
  * Grade-scaled prose minimum. Elementary sits at the absolute floor, middle
  * school rises, and high school must reach 600 words.
+ *
+ * Adult education is not grade-scaled: adult learners are not moving through
+ * grades, so the adult course is held to the top K-12 band (600 words) rather
+ * than to a separate, weaker scale. That is deliberately the same bar as grade
+ * 12, not a lower one, and it is why no lesson is excluded from the report.
  */
 export function proseMinimum(grade: number): number {
   if (grade <= 2) return 350;
@@ -191,7 +196,6 @@ export interface DepthReport {
 export function curriculumDepthReport(courses: Course[]): DepthReport {
   const statuses: LessonDepthStatus[] = [];
   for (const course of courses) {
-    if (course.subject === 'adult-education') continue;
     for (const unit of course.units) {
       for (const lesson of unit.lessons) {
         statuses.push(lessonDepthStatus(course.id, lesson, course.grade));
@@ -224,7 +228,6 @@ export function templateViolations(courses: Course[]): string[] {
   };
 
   for (const course of courses) {
-    if (course.subject === 'adult-education') continue;
     for (const unit of course.units) {
       for (const lesson of unit.lessons) {
         const paragraphs = lesson.sections.flatMap((section) => section.paragraphs);

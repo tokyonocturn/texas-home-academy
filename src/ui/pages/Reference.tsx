@@ -9,11 +9,6 @@ import { Badge, Empty, Link, PageHead } from '../parts';
 
 /** Computed once from the assembled catalog; the depth test asserts the same numbers. */
 const depth = curriculumDepthReport(COURSES);
-/** Counted, not written by hand: the lessons the depth report deliberately excludes. */
-const outsideDepthReport = COURSES.filter((course) => course.subject === 'adult-education').reduce(
-  (n, course) => n + course.units.reduce((m, unit) => m + unit.lessons.length, 0),
-  0,
-);
 
 export function AdultEdPage() {
   const course = getCourse('hs-adulting');
@@ -131,14 +126,15 @@ export function SourcesPage() {
           reports the lesson and the criterion that failed.
         </p>
         <p className="small muted">
-          {depth.met} of {depth.total} K–12 lessons meet it, so the shortfall ledger holds{' '}
-          {depth.shortfalls.length} {depth.shortfalls.length === 1 ? 'entry' : 'entries'}. This badge
-          and <code>src/content/depth/shortfalls.ts</code> are both computed from{' '}
+          {depth.met} of {depth.total} lessons across the whole catalogue meet it, adult education
+          included, so the shortfall ledger holds {depth.shortfalls.length}{' '}
+          {depth.shortfalls.length === 1 ? 'entry' : 'entries'}. This badge and{' '}
+          <code>src/content/depth/shortfalls.ts</code> are both computed from{' '}
           <code>curriculumDepthReport</code>, the same function the depth test calls, so no count here
-          is maintained by hand. The report measures K–12 only: the {outsideDepthReport} Adult Life
-          Education lessons sit outside it and are not claimed to meet this standard. Meeting it is an internal
-          curriculum standard, not a claim of TEKS compliance, accreditation, or institutional
-          credit.
+          is maintained by hand. Adult learners are not grade-scaled, so the Adult Life Education
+          course is held to the 600-word top band rather than a weaker scale of its own. Meeting it is
+          an internal curriculum standard, not a claim of TEKS compliance, accreditation, or
+          institutional credit.
         </p>
         {depth.shortfalls.length > 0 ? (
           <details>

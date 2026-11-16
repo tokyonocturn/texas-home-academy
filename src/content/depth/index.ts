@@ -40,6 +40,8 @@ import { DEPTH_G11D } from './deepG11d';
 import { DEPTH_G12A } from './deepG12a';
 import { DEPTH_G12B } from './deepG12b';
 import { DEPTH_ELEM } from './deepElem';
+import { DEPTH_ADULT_A } from './deepAdultA';
+import { DEPTH_ADULT_B } from './deepAdultB';
 
 /**
  * Lesson depth registry, keyed by lesson id. Entries are merged into the catalog
@@ -96,6 +98,8 @@ export const DEEP: Record<string, LessonDepth> = {
   ...DEPTH_G12A,
   ...DEPTH_G12B,
   ...DEPTH_ELEM,
+  ...DEPTH_ADULT_A,
+  ...DEPTH_ADULT_B,
 };
 
 export type { LessonDepth };

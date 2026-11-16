@@ -33,20 +33,20 @@ with the Texas Education Agency. See
   practice items, four off-screen exercises, four reviewed questions with model
   answers, three discussed topics, and a named real-world application, with
   anti-boilerplate checks. `src/content/depth.test.ts` enforces it and fails by
-  naming the lesson and the missed criterion. **Status: all 201 K–12 lessons meet v2,
-  and the shortfall ledger is empty.** Every lesson, Kindergarten through Grade 12,
-  now carries four objectives, five sections, grade-scaled prose, three worked
-  examples, eight defined terms, five practice items, four off-screen exercises, and
-  four reviewed questions with model answers. The measured spread is Kindergarten 12
-  lessons, Grades 1–5 66, Grades 6–8 46, and Grades 9–12 77, covering English I–IV,
-  the mathematics and science sequences, social studies, Spanish I–II, fine arts,
-  health and PE, speech, computer science, the two CTE courses, and Personal
-  Financial Literacy; the ledger is generated from the report, not hand-maintained.
-  The report measures K–12 only — the 16 Adult Life Education lessons are outside it
-  — and meeting this internal depth standard is not a compliance or accreditation
-  claim: the TEKS mapping is per course rather than lesson by lesson, the graduation
-  and record-keeping limits in `docs/standards-audit.md` still apply, and homeschool
-  records are not institutionally recognized credits.
+  naming the lesson and the missed criterion. **Status: all 217 lessons meet v2 —
+  Kindergarten through Grade 12 and adult education — and the shortfall ledger is
+  empty.** Every lesson carries four objectives, five sections, grade-scaled prose,
+  three worked examples, eight defined terms, five practice items, four off-screen
+  exercises, and four reviewed questions with model answers. The measured spread is
+  Kindergarten 12 lessons, Grades 1–5 66, Grades 6–8 46, and Grades 9–12 93 (which
+  includes the 16 Adult Life Education lessons), across all 72 courses. Adult learners
+  are not grade-scaled, so the adult course is held to the 600-word top band rather
+  than a weaker scale, and it is measured by the same report and ledger as everything
+  else. The ledger is generated from the report, not hand-maintained. Meeting this
+  internal depth standard is not a compliance or accreditation claim: the TEKS mapping
+  is per course rather than lesson by lesson, the graduation and record-keeping limits
+  in `docs/standards-audit.md` still apply, and homeschool records are not
+  institutionally recognized credits.
 - **Real assessments.** Unit quizzes, projects scored against published analytic
   rubrics, a semester 1 midterm for every full-year course, and a cumulative
   final examination. Multiple-choice and numeric items are auto-graded; written

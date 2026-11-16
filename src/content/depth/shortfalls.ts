@@ -4,7 +4,7 @@
  * and fails if a lesson here has changed without the ledger being regenerated,
  * if a short lesson is missing, or if a compliant lesson is still listed.
  *
- * Short: 0 of 201 K-12 lessons.
+ * Short: 0 of 217 lessons, K-12 and adult education alike.
  */
 export interface DepthShortfall {
   lessonId: string;
