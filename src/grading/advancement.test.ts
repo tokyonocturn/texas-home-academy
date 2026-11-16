@@ -98,6 +98,13 @@ describe('promotion check', () => {
     expect(check.lines.every((line) => line.met)).toBe(true);
   });
 
+  it('uses the reported one-decimal grade at the passing boundary', () => {
+    // 0.8(69.95) + 0.2(70) = 69.96, reported as 70.0 and therefore passing.
+    const check = checkAdvancement(stateFor(3, { quiz: 69.95, exam: 70 }), COURSES, 180);
+    expect(check.eligible).toBe(true);
+    expect(check.blockers).toEqual([]);
+  });
+
   it('blocks promotion when a core final grade is below 70', () => {
     // 0.8(60) + 0.2(50) = 58, below the 70 passing floor for every core course.
     const check = checkAdvancement(stateFor(3, { quiz: 60, exam: 50 }), COURSES, 180);

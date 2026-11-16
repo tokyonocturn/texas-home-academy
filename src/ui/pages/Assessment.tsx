@@ -9,6 +9,18 @@ import { QuizRunner } from '../quiz';
 
 type Kind = 'quiz' | 'project' | 'midterm' | 'final' | 'capstone';
 
+/**
+ * Project scores are submitted once per visit. Keeping this out of the JSX
+ * makes the anti-double-submit rule directly testable: re-clicking after a
+ * save used to create a capped retake and lower the recorded score.
+ */
+export function projectScoreControl(complete: boolean, saved: boolean) {
+  return {
+    disabled: !complete || saved,
+    label: saved ? 'Score recorded' : 'Record project score',
+  };
+}
+
 export function AssessmentPage({
   courseId,
   kind,
@@ -202,6 +214,7 @@ function ProjectPage({
   const total = project.rubric.reduce((sum, row, index) => sum + (picks[index] ?? 0), 0);
   const complete = project.rubric.every((_, index) => picks[index] !== undefined);
   const attempts = attemptsFor(state.grades, assessmentId);
+  const scoreControl = projectScoreControl(complete, saved !== null);
 
   return (
     <>
@@ -260,9 +273,11 @@ function ProjectPage({
           </label>
           <div className="spread">
             <strong>{total} / 100</strong>
+            {/* Record once per visit: a live button let a double click become a
+                capped retake and silently lower the project score. */}
             <button
               className="btn"
-              disabled={!complete}
+              disabled={scoreControl.disabled}
               onClick={() => {
                 recordGrade({
                   courseId,
@@ -277,7 +292,7 @@ function ProjectPage({
                 setSaved({ total, attempt: attempts + 1 });
               }}
             >
-              Record project score
+              {scoreControl.label}
             </button>
           </div>
           {saved !== null ? (

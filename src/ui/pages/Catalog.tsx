@@ -178,7 +178,18 @@ export function CoursePage({ courseId }: { courseId: string }) {
               Catalog
             </Link>
             {enrolled ? (
-              <button className="btn ghost" onClick={() => dispatch({ type: 'unenroll', courseId: course.id })}>
+              <button
+                className="btn ghost"
+                onClick={() => {
+                  if (
+                    window.confirm(
+                      `Unenroll from ${course.title}? Scores already recorded stay in the gradebook and transcript.`,
+                    )
+                  ) {
+                    dispatch({ type: 'unenroll', courseId: course.id });
+                  }
+                }}
+              >
                 Unenroll
               </button>
             ) : (
@@ -377,7 +388,7 @@ export function CoursePage({ courseId }: { courseId: string }) {
               </Link>
               {quizAttempt ? (
                 <span className="note">
-                  Best: {percent(quizAttempt.score, quizAttempt.max).toFixed(1)}%
+                  Recorded: {percent(quizAttempt.score, quizAttempt.max).toFixed(1)}%
                 </span>
               ) : (
                 <span className="note">Not yet taken</span>

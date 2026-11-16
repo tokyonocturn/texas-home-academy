@@ -1,5 +1,6 @@
 import type { AppState, Course, GradeRecord } from '../types';
 import { courseResult } from './gradebook';
+import { PASSING_GRADE, reportedGrade } from './scale';
 
 /**
  * Promotion and remediation policy for K-8, plus retake eligibility.
@@ -87,7 +88,9 @@ export function checkAdvancement(
     }
     const results = courses.map((c) => courseResult(c, state.grades));
     const complete = results.every((r) => r.finalGrade !== null);
-    const passing = results.every((r) => r.finalGrade !== null && r.finalGrade >= 70);
+    const passing = results.every(
+      (r) => (reportedGrade(r.finalGrade) ?? -1) >= PASSING_GRADE,
+    );
     const worst = Math.min(...results.map((r) => r.finalGrade ?? 0));
     lines.push({
       label,

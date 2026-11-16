@@ -468,6 +468,19 @@ export function SettingsPage() {
                 if (!file) return;
                 setError('');
                 setMessage('');
+                const hasRecords =
+                  state.grades.length > 0 ||
+                  state.enrollments.length > 0 ||
+                  state.attendance.length > 0;
+                if (
+                  hasRecords &&
+                  !window.confirm(
+                    'Replace all current records with this backup? Export the current data first if you need to keep it.',
+                  )
+                ) {
+                  event.target.value = '';
+                  return;
+                }
                 try {
                   await importBackup(file);
                   setMessage('Backup restored.');

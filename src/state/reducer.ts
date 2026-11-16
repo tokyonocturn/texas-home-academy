@@ -87,10 +87,22 @@ export function reducer(state: AppState, action: Action): AppState {
       return { ...state, attendance: state.attendance.filter((a) => a.date !== action.date) };
     case 'lesson/complete': {
       const key = `${action.courseId}/${action.lessonId}`;
+      const prior = state.lessonProgress[key];
+      // Practice is formative: a later, weaker retake must not make a completed
+      // lesson look worse than the best score the gradebook is actually using.
+      const priorRatio =
+        prior?.practiceScore !== undefined && prior.practiceMax
+          ? prior.practiceScore / prior.practiceMax
+          : -1;
+      const nextRatio =
+        action.practiceScore !== undefined && action.practiceMax
+          ? action.practiceScore / action.practiceMax
+          : -1;
+      const keepPrior = prior !== undefined && priorRatio >= nextRatio;
       const progress: LessonProgress = {
         completedAt: todayISO(),
-        practiceScore: action.practiceScore,
-        practiceMax: action.practiceMax,
+        practiceScore: keepPrior ? prior.practiceScore : action.practiceScore,
+        practiceMax: keepPrior ? prior.practiceMax : action.practiceMax,
       };
       return { ...state, lessonProgress: { ...state.lessonProgress, [key]: progress } };
     }

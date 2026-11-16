@@ -60,6 +60,14 @@ describe('graduation audit', () => {
     expect(audit.endorsements.length).toBe(5);
   });
 
+  it('counts a reported 70.0 as passing credit', () => {
+    // A raw 69.96 reports as 70.0; the gradebook awards credit, so the audit must too.
+    const audit = auditGraduation(COURSES, finalExam('hs-alg1', 69.96));
+    expect(audit.totalCredits).toBe(1);
+    expect(audit.requirements.find((r) => r.id === 'math')?.earned).toBe(1);
+    expect(audit.completed.map((c) => c.courseId)).toEqual(['hs-alg1']);
+  });
+
   it('does not count a failed course toward a requirement', () => {
     const records = coreIds.flatMap((id) => finalExam(id, id === 'hs-eng1' ? 55 : 90));
     const audit = auditGraduation(COURSES, records);

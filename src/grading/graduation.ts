@@ -1,6 +1,6 @@
 import type { Course, GradeRecord } from '../types';
 import { courseResult } from './gradebook';
-import { round2 } from './scale';
+import { PASSING_GRADE, reportedGrade, round2 } from './scale';
 
 /**
  * Graduation audit for the Texas Foundation High School Program (FHSP).
@@ -210,12 +210,12 @@ export function completedCourses(courses: Course[], records: GradeRecord[]): Com
   for (const course of courses) {
     if (course.credits <= 0) continue;
     const result = courseResult(course, records);
-    if (result.finalGrade === null) continue;
-    if (result.finalGrade < 70) continue;
+    const reported = reportedGrade(result.finalGrade);
+    if (reported === null || reported < PASSING_GRADE) continue;
     out.push({
       courseId: course.id,
       title: course.title,
-      grade: result.finalGrade,
+      grade: reported,
       credits: course.credits,
     });
   }
