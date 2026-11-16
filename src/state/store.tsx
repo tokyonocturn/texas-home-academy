@@ -7,171 +7,10 @@ import {
   useReducer,
   type ReactNode,
 } from 'react';
-import type {
-  AppState,
-  AttendanceEntry,
-  CategoryId,
-  GradeRecord,
-  LessonProgress,
-  Profile,
-  SchoolYear,
-} from '../types';
-import { buildSchoolYear, periodForDate, todayISO } from '../state/schoolYear';
-import { applyRetakeCap } from '../grading/progression';
-
-const STORAGE_KEY = 'texas-home-academy/state/v1';
-export const SCHEMA_VERSION = 1;
-
-const defaultState: AppState = {
-  schemaVersion: SCHEMA_VERSION,
-  profile: {
-    firstName: '',
-    lastName: '',
-    gradeLevel: 9,
-    schoolName: 'Texas Home Academy',
-    parentName: '',
-    city: '',
-    state: 'Texas',
-    startYear: 2026,
-  },
-  enrollments: [],
-  grades: [],
-  attendance: [],
-  lessonProgress: {},
-  settings: { showAdultEd: true, fullDayMinutes: 240 },
-};
-
-function newId(prefix: string): string {
-  const random =
-    typeof crypto !== 'undefined' && 'randomUUID' in crypto
-      ? crypto.randomUUID()
-      : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-  return `${prefix}-${random}`;
-}
-
-export type Action =
-  | { type: 'profile/update'; patch: Partial<Profile> }
-  | { type: 'settings/update'; patch: Partial<AppState['settings']> }
-  | { type: 'enroll'; courseId: string }
-  | { type: 'unenroll'; courseId: string }
-  | {
-      type: 'grade/record';
-      record: Omit<GradeRecord, 'id' | 'recordedAt' | 'attempt'> & { attempt?: number };
-    }
-  | { type: 'grade/delete'; id: string }
-  | { type: 'attendance/log'; entry: AttendanceEntry }
-  | { type: 'attendance/remove'; date: string }
-  | {
-      type: 'lesson/complete';
-      courseId: string;
-      lessonId: string;
-      practiceScore?: number;
-      practiceMax?: number;
-    }
-  | { type: 'state/replace'; state: AppState }
-  | { type: 'state/reset' };
-
-function enroll(state: AppState, courseId: string): AppState {
-  if (state.enrollments.some((e) => e.courseId === courseId)) return state;
-  return {
-    ...state,
-    enrollments: [
-      ...state.enrollments,
-      { courseId, yearId: `${state.profile.startYear}-${state.profile.startYear + 1}`, startedAt: todayISO() },
-    ],
-  };
-}
-
-export function reducer(state: AppState, action: Action): AppState {
-  switch (action.type) {
-    case 'profile/update':
-      return { ...state, profile: { ...state.profile, ...action.patch } };
-    case 'settings/update':
-      return { ...state, settings: { ...state.settings, ...action.patch } };
-    case 'enroll':
-      return enroll(state, action.courseId);
-    case 'unenroll':
-      return {
-        ...state,
-        enrollments: state.enrollments.filter((e) => e.courseId !== action.courseId),
-      };
-    case 'grade/record': {
-      const existing = state.grades.filter(
-        (g) => g.assessmentId === action.record.assessmentId,
-      );
-      const attempt = action.record.attempt ?? existing.length + 1;
-      const capped =
-        action.record.category === 'practice'
-          ? action.record.score
-          : applyRetakeCap(action.record.score, attempt);
-      const record: GradeRecord = {
-        ...action.record,
-        score: Math.min(capped, action.record.max),
-        attempt,
-        id: newId('grade'),
-        recordedAt: todayISO(),
-      };
-      return { ...state, grades: [...state.grades, record] };
-    }
-    case 'grade/delete':
-      return { ...state, grades: state.grades.filter((g) => g.id !== action.id) };
-    case 'attendance/log': {
-      const others = state.attendance.filter((a) => a.date !== action.entry.date);
-      return { ...state, attendance: [...others, action.entry] };
-    }
-    case 'attendance/remove':
-      return { ...state, attendance: state.attendance.filter((a) => a.date !== action.date) };
-    case 'lesson/complete': {
-      const key = `${action.courseId}/${action.lessonId}`;
-      const progress: LessonProgress = {
-        completedAt: todayISO(),
-        practiceScore: action.practiceScore,
-        practiceMax: action.practiceMax,
-      };
-      return { ...state, lessonProgress: { ...state.lessonProgress, [key]: progress } };
-    }
-    case 'state/replace':
-      return action.state;
-    case 'state/reset':
-      return { ...defaultState };
-    default:
-      return state;
-  }
-}
-
-function isAppState(value: unknown): value is AppState {
-  if (!value || typeof value !== 'object') return false;
-  const candidate = value as Partial<AppState>;
-  return (
-    typeof candidate.schemaVersion === 'number' &&
-    Boolean(candidate.profile) &&
-    Array.isArray(candidate.enrollments) &&
-    Array.isArray(candidate.grades) &&
-    Array.isArray(candidate.attendance)
-  );
-}
-
-export function loadState(): AppState {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return defaultState;
-    const parsed = JSON.parse(raw);
-    if (!isAppState(parsed)) return defaultState;
-    return { ...defaultState, ...parsed, settings: { ...defaultState.settings, ...parsed.settings } };
-  } catch {
-    return defaultState;
-  }
-}
-
-export function serializeState(state: AppState): string {
-  return JSON.stringify(state, null, 2);
-}
-
-export function parseImportedState(raw: string): AppState {
-  const parsed = JSON.parse(raw);
-  if (!isAppState(parsed)) throw new Error('That file is not a Texas Home Academy backup.');
-  return { ...defaultState, ...parsed, schemaVersion: SCHEMA_VERSION };
-}
+import type { AppState, AttendanceEntry, CategoryId, Profile, SchoolYear } from '../types';
+import { buildSchoolYear, periodForDate, todayISO } from './schoolYear';
+import { reducer, type Action } from './reducer';
+import { loadState, parseImportedState, serializeState, STORAGE_KEY } from './persistence';
 
 interface StoreValue {
   state: AppState;
@@ -197,6 +36,7 @@ interface StoreValue {
     practiceScore?: number,
     practiceMax?: number,
   ) => void;
+  updateProfile: (patch: Partial<Profile>) => void;
   exportBackup: () => void;
   importBackup: (file: File) => Promise<void>;
 }
@@ -238,7 +78,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const logAttendance = useCallback((date: string, minutes: number, note?: string) => {
-    dispatch({ type: 'attendance/log', entry: { date, minutes, note } });
+    const entry: AttendanceEntry = { date, minutes, note };
+    dispatch({ type: 'attendance/log', entry });
   }, []);
 
   const completeLesson = useCallback(
@@ -247,6 +88,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     },
     [],
   );
+
+  const updateProfile = useCallback((patch: Partial<Profile>) => {
+    dispatch({ type: 'profile/update', patch });
+  }, []);
 
   const exportBackup = useCallback(() => {
     const blob = new Blob([serializeState(state)], { type: 'application/json' });
@@ -273,10 +118,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
       recordGrade,
       logAttendance,
       completeLesson,
+      updateProfile,
       exportBackup,
       importBackup,
     }),
-    [state, year, periodId, recordGrade, logAttendance, completeLesson, exportBackup, importBackup],
+    [
+      state,
+      year,
+      periodId,
+      recordGrade,
+      logAttendance,
+      completeLesson,
+      updateProfile,
+      exportBackup,
+      importBackup,
+    ],
   );
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;

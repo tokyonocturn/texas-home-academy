@@ -59,6 +59,12 @@ export const algebra1: Course = {
       num('Solve 2(x − 3) = 14.', 10, 'Divide by 2: x − 3 = 7, so x = 10.'),
       mc('Solve −2x > 8.', ['x > −4', 'x < −4', 'x > 4', 'x < 4'], 1, 'Dividing by a negative reverses the inequality: x < −4.'),
       num('A taxi charges $3 plus $2 per mile. What is the cost of a 7-mile ride, in dollars?', 17, '3 + 2(7) = 17.'),
+      short(
+        'Explain why dividing both sides of an inequality by a negative number reverses the inequality sign.',
+        'Model: Multiplying or dividing by a negative number reverses the order of two numbers: if a < b, then −a > −b. Applying that operation to both sides keeps the statement true only if the direction is reversed. For example, −2x > 8 becomes x < −4 because dividing by −2 flips the inequality.',
+        ['States the reversal rule.', 'Gives a numerical example.', 'Explains why the order flips.'],
+        6,
+      ),
     ]), project({
       title: 'Two plans, one decision',
       prompt: 'Compare two real phone or streaming plans with different fixed fees and rates. Model each with a linear function, graph both, and find the break-even point. Recommend a plan for two different usage levels.',

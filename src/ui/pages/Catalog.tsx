@@ -23,9 +23,20 @@ export function CatalogPage() {
   const enrolled = new Set(state.enrollments.map((e) => e.courseId));
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const terms = query
+      .trim()
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
     return COURSES.filter((course) => {
-      if (q && !`${course.title} ${course.description}`.toLowerCase().includes(q)) return false;
+      const haystack = `${course.title} ${course.description}`.toLowerCase();
+      // A one- or two-letter term ("Algebra I") must match a whole word, so
+      // searching for Algebra I does not also return Algebra II.
+      const matchesQuery = terms.every((term) =>
+        new RegExp(term.length <= 2 ? `\\b${term}\\b` : `\\b${term}`, 'i').test(haystack),
+      );
+      if (terms.length > 0 && !matchesQuery) return false;
       if (subject !== 'all' && course.subject !== subject) return false;
       if (grade !== 'all') {
         if (grade === 'K' && course.grade !== 0) return false;

@@ -34,6 +34,10 @@ export interface CourseResult {
   categories: CategoryResult[];
   periods: { period: string; grade: number | null }[];
   semesters: SemesterResult[];
+  /** Average of the graded six-week periods (coursework only). */
+  courseworkAverage: number | null;
+  /** Cumulative final examination score, if recorded. */
+  examGrade: number | null;
   /** Running weighted average across all graded work; for display only. */
   currentGrade: number | null;
   /** Official final grade. Null until the cumulative final exam is recorded. */
@@ -143,15 +147,9 @@ export function semesterResult(
   const courseWorkAverage =
     present.length > 0 ? present.reduce((a, b) => a + b, 0) / present.length : null;
   const exam = examRecord(course, records, semester);
-  let grade: number | null = null;
-  if (courseWorkAverage !== null && exam.grade !== null) {
-    grade = courseWorkAverage * 0.8 + exam.grade * 0.2;
-  } else if (courseWorkAverage !== null) {
-    // No semester exam recorded yet: report the coursework average so the
-    // family can see progress, and the transcript stays incomplete until the
-    // exam is graded (finalGrade requires the exam for a full-year course).
-    grade = courseWorkAverage;
-  }
+  // A semester reports its coursework. The cumulative final examination is
+  // weighted once, in the course result, rather than inside a semester.
+  const grade = courseWorkAverage;
   return {
     semester,
     periodGrades: grades,
@@ -175,18 +173,25 @@ export function courseResult(
   const semesters = periodIdsBySemester
     .slice(0, course.semesters)
     .map((s) => semesterResult(course, records, s.semester, s.periods));
-  const semesterGrades = semesters
-    .map((s) => s.grade)
+  const gradedPeriods = semesters
+    .flatMap((s) => s.periodGrades)
     .filter((g): g is number => g !== null);
+  const courseworkAverage =
+    gradedPeriods.length > 0
+      ? gradedPeriods.reduce((a, b) => a + b, 0) / gradedPeriods.length
+      : null;
 
   const currentGrade = weightedAverage(categories);
   // A final grade is official only once the cumulative final exam exists; until
   // then the course is in progress and cannot earn credit or enter the GPA.
-  const hasFinalExam = latestAttempts(records).some((r) => r.assessmentId === `${course.id}:final`);
+  const finalExamRecord = latestAttempts(records).find(
+    (r) => r.assessmentId === `${course.id}:final`,
+  );
+  const examGrade = finalExamRecord ? percent(finalExamRecord.score, finalExamRecord.max) : null;
   const finalGrade =
-    !hasFinalExam || semesterGrades.length === 0
-      ? null
-      : semesterGrades.reduce((a, b) => a + b, 0) / semesterGrades.length;
+    courseworkAverage !== null && examGrade !== null
+      ? courseworkAverage * 0.8 + examGrade * 0.2
+      : null;
 
   const passing = finalGrade !== null && finalGrade >= PASSING_GRADE;
   const points = finalGrade !== null ? qualityPoints(finalGrade, course.advanced) : 0;
@@ -198,6 +203,8 @@ export function courseResult(
       ...periodIdsBySemester.slice(0, course.semesters).flatMap((s) => s.periods),
     ].map((period) => ({ period, grade: periodGrade(course, records, period) })),
     semesters,
+    courseworkAverage,
+    examGrade,
     currentGrade,
     finalGrade,
     letter: letterGrade(finalGrade),

@@ -99,7 +99,7 @@ function AssessmentRunner({
       <PageHead
         eyebrow={courseTitle}
         title={title}
-        lede={`${assessment.questions.length} questions · ${max} points · attempt ${attempts + 1}`}
+        lede={`${assessment.questions.length} questions · ${max} points · attempt ${recorded ? Math.max(1, attempts) : attempts + 1}`}
         actions={
           <Link to={returnTo} className="btn ghost">
             Back to course
@@ -266,7 +266,7 @@ function ProjectPage({
           </div>
           {saved !== null ? (
             <div className="callout" style={{ marginBottom: 0 }}>
-              Recorded {saved} of 100 for {project.title}. Attempt {attempts + 1}.{' '}
+              Recorded {saved} of 100 for {project.title}. Attempt {Math.max(1, attempts)}.{' '}
               <Link to="/gradebook">Gradebook</Link>
             </div>
           ) : null}

@@ -69,10 +69,11 @@ environment variables or backend are needed.
 - Category weights are set per course and total 100. A category with no graded
   work is excluded and the remaining weights are renormalized, so an early
   progress check is not distorted by empty categories.
-- Semester grade = 80% of the three six-week periods + 20% of the semester exam.
-- Final grade = average of the semester grades, and it is issued only after the
-  cumulative final exam is recorded. Until then the course shows a current
-  standing and cannot earn credit.
+- A six-week period grade is the weighted average of the graded categories in
+  that period; the semester average is the average of its three periods.
+- Final grade = 80% of the average of the graded six-week periods + 20% of the
+  cumulative final examination. It is issued only after that exam is recorded.
+  Until then the course shows a current standing and cannot earn credit.
 - One retake per quiz or exam after documented remediation; the retake replaces
   the first attempt but is capped at 80.
 

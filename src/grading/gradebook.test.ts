@@ -76,7 +76,7 @@ describe('category weighting', () => {
 });
 
 describe('semester grade', () => {
-  it('is 80% of the three periods plus 20% of the semester exam', () => {
+  it('reports the average of the three periods, excluding the semester exam', () => {
     const records = [
       rec({ category: 'quiz', period: 'Q4', score: 80 }),
       rec({ category: 'quiz', period: 'Q5', score: 90 }),
@@ -86,7 +86,7 @@ describe('semester grade', () => {
     const result = semesterResult(course, records, 2, ['Q4', 'Q5', 'Q6']);
     expect(result.courseWorkAverage).toBeCloseTo(80, 5);
     expect(result.examGrade).toBe(100);
-    expect(result.grade).toBeCloseTo(84, 5);
+    expect(result.grade).toBeCloseTo(80, 5);
   });
 });
 
@@ -99,7 +99,7 @@ describe('course result', () => {
     expect(result.creditsEarned).toBe(0);
   });
 
-  it('averages the two semester grades once the final exam exists', () => {
+  it('weights coursework 80% and the cumulative final exam 20%', () => {
     const records = [
       rec({ category: 'quiz', period: 'Q1', score: 80 }),
       rec({ category: 'quiz', period: 'Q2', score: 90 }),
@@ -110,11 +110,12 @@ describe('course result', () => {
       rec({ category: 'exam', period: 'Q6', assessmentId: 'test:final', score: 100 }),
     ];
     const result = courseResult(course, records);
-    // Semester 1 has no midterm, so it reports coursework (80).
-    // Semester 2 = 0.8 * 80 + 0.2 * 100 = 84.
+    // Coursework averages 80; the final exam is 100: 0.8(80) + 0.2(100) = 84.
+    expect(result.courseworkAverage).toBeCloseTo(80, 5);
+    expect(result.examGrade).toBe(100);
     expect(result.semesters[0].grade).toBeCloseTo(80, 5);
-    expect(result.semesters[1].grade).toBeCloseTo(84, 5);
-    expect(result.finalGrade).toBeCloseTo(82, 5);
+    expect(result.semesters[1].grade).toBeCloseTo(80, 5);
+    expect(result.finalGrade).toBeCloseTo(84, 5);
     expect(result.passing).toBe(true);
     expect(result.creditsEarned).toBe(1);
     expect(result.letter).toBe('B');

@@ -14,7 +14,13 @@ export function GradebookPage() {
   const { state, dispatch, periodId } = useApp();
   const [courseId, setCourseId] = useState('');
 
-  const gradedCourses = COURSES.filter((c) => state.grades.some((g) => g.courseId === c.id));
+  // Only courses the student is enrolled in or has work for; a 72-item list is
+  // not useful in a gradebook dropdown.
+  const selectable = COURSES.filter(
+    (c) =>
+      state.enrollments.some((e) => e.courseId === c.id) ||
+      state.grades.some((g) => g.courseId === c.id),
+  );
   const selected = courseId ? getCourse(courseId) : undefined;
 
   const records = state.grades
@@ -40,7 +46,7 @@ export function GradebookPage() {
           <span>Course</span>
           <select value={courseId} onChange={(event) => setCourseId(event.target.value)}>
             <option value="">All graded courses</option>
-            {COURSES.map((course) => (
+            {selectable.map((course) => (
               <option key={course.id} value={course.id}>
                 {course.title}
               </option>
@@ -97,14 +103,22 @@ export function GradebookPage() {
                   {courseResult(selected, state.grades).semesters.map((semester) => (
                     <tr key={semester.semester}>
                       <td>
-                        Semester {semester.semester} (coursework {displayGrade(semester.courseWorkAverage)} · exam{' '}
-                        {displayGrade(semester.examGrade)})
+                        Semester {semester.semester} average ({semester.periodGrades.filter((g) => g !== null).length}{' '}
+                        of 3 periods graded)
                       </td>
                       <td className="num">
                         <strong>{displayGrade(semester.grade)}</strong>
                       </td>
                     </tr>
                   ))}
+                  <tr>
+                    <td>Coursework average (graded periods)</td>
+                    <td className="num">{displayGrade(courseResult(selected, state.grades).courseworkAverage)}</td>
+                  </tr>
+                  <tr>
+                    <td>Cumulative final examination</td>
+                    <td className="num">{displayGrade(courseResult(selected, state.grades).examGrade)}</td>
+                  </tr>
                   <tr>
                     <td>
                       <strong>Current standing</strong>
@@ -268,8 +282,9 @@ export function ReportCardPage() {
                 <th className="num">Q4</th>
                 <th className="num">Q5</th>
                 <th className="num">Q6</th>
-                <th className="num">S1 exam</th>
-                <th className="num">S2 exam</th>
+                <th className="num">S1</th>
+                <th className="num">S2</th>
+                <th className="num">Exam</th>
                 <th className="num">Final</th>
                 <th className="num">Letter</th>
               </tr>
@@ -294,8 +309,9 @@ export function ReportCardPage() {
                         {displayGrade(byPeriod.get(period) ?? null)}
                       </td>
                     ))}
-                    <td className="num">{displayGrade(s1?.examGrade ?? null)}</td>
-                    <td className="num">{displayGrade(s2?.examGrade ?? null)}</td>
+                    <td className="num">{displayGrade(s1?.grade ?? null)}</td>
+                    <td className="num">{displayGrade(s2?.grade ?? null)}</td>
+                    <td className="num">{displayGrade(result.examGrade)}</td>
                     <td className="num">
                       <strong>{displayGrade(result.finalGrade)}</strong>
                     </td>
@@ -308,11 +324,13 @@ export function ReportCardPage() {
         )}
 
         <div className="transcript-foot">
-          Semester grade = 80% of the three six-week periods plus 20% of the semester examination.
-          Full-year final grade = average of the two semester grades. A category with no graded work
-          is excluded and remaining weights are renormalized. Passing is 70 on a 100-point scale (19
-          TAC §74.26(c)). Absences and make-up work are recorded in the attendance log. This is a
-          parent-issued record; it is not issued by TEA or an accredited institution.
+          Six-week period grade = weighted average of the graded categories in that period, with
+          empty categories excluded and their weight renormalized. Semester average = average of its
+          three periods. Final grade = 80% of the graded-period average plus 20% of the cumulative
+          final examination, and it is issued only after that examination is recorded. Passing is 70
+          on a 100-point scale (19 TAC §74.26(c)). Absences and make-up work are recorded in the
+          attendance log. This is a parent-issued record; it is not issued by TEA or an accredited
+          institution.
         </div>
       </div>
     </>
@@ -391,6 +409,7 @@ export function TranscriptPage() {
                 <th className="num">Credit</th>
                 <th className="num">S1</th>
                 <th className="num">S2</th>
+                <th className="num">Exam</th>
                 <th className="num">Final</th>
                 <th>Letter</th>
                 <th className="num">Quality pts</th>
@@ -398,7 +417,7 @@ export function TranscriptPage() {
             </thead>
             <tbody>
               <tr className="year-row">
-                <td colSpan={7}>
+                <td colSpan={8}>
                   {year.label} · Grade {profile.gradeLevel} · {profile.schoolName || 'Texas Home Academy'}
                 </td>
               </tr>
@@ -415,6 +434,7 @@ export function TranscriptPage() {
                   <td className="num">{course.credits}</td>
                   <td className="num">{displayGrade(result.semesters[0]?.grade ?? null)}</td>
                   <td className="num">{displayGrade(result.semesters[1]?.grade ?? null)}</td>
+                  <td className="num">{displayGrade(result.examGrade)}</td>
                   <td className="num">
                     <strong>{displayGrade(result.finalGrade)}</strong>
                   </td>

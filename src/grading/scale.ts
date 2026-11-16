@@ -78,11 +78,11 @@ export const GRADE_POLICY = {
   passingCitation: '19 TAC §74.26(c)',
   letterBands: LETTER_BANDS,
   gpaScale: '4.0 unweighted; 4.5 maximum weighted (advanced courses +0.5)',
-  /** How a semester grade is assembled. */
+  /** How period, semester, and final grades are assembled. */
   semesterFormula:
-    'Semester grade = 80% (average of the three six-week grading periods) + 20% (semester examination). This program schedules one cumulative final examination per course. For a full-year course it serves as the second-semester examination; the first semester is graded on its three periods unless the family records a midterm.',
+    'Six-week period grade = weighted average of the graded categories in that period. Semester average = average of its three period grades. A category with no graded work is excluded and its weight is renormalized within the period.',
   finalFormula:
-    'Final grade = average of the semester grades. A final grade is not issued until the cumulative final examination is recorded, so an in-progress course cannot earn credit or enter the GPA.',
+    'Final grade = 80% of the average of the graded six-week periods + 20% of the cumulative final examination. A final grade is not issued until the final examination is recorded, so an in-progress course cannot earn credit or enter the GPA.',
   missingWork:
     'A category with no graded work is excluded and the remaining weights are renormalized; the course page shows which categories are still empty.',
   retake:
