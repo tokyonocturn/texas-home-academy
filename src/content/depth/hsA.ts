@@ -533,7 +533,7 @@ export const DEPTH_HS_A: Record<string, LessonDepth> = {
       },
       {
         prompt: 'How do you check a system’s solution?',
-        answer: 'Substitute the pair into both original equations.',
+        answer: 'Substitute the ordered pair into both original equations and confirm that each one becomes a true statement.',
       },
     ],
     exercises: [
@@ -591,7 +591,7 @@ export const DEPTH_HS_A: Record<string, LessonDepth> = {
       },
       {
         prompt: 'What does a growth factor below 1 mean?',
-        answer: 'The quantity is decaying, as with depreciation.',
+        answer: 'The quantity is decaying by a constant percentage each period, as with depreciation or a cooling drink.',
       },
     ],
     exercises: [

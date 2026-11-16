@@ -4,7 +4,7 @@
  * and fails if a lesson here has changed without the ledger being regenerated,
  * if a short lesson is missing, or if a compliant lesson is still listed.
  *
- * Short: 79 of 201 K-12 lessons.
+ * Short: 69 of 201 K-12 lessons.
  */
 export interface DepthShortfall {
   lessonId: string;
@@ -17,42 +17,6 @@ export interface DepthShortfall {
 }
 
 export const KNOWN_DEPTH_SHORTFALLS: DepthShortfall[] = [
-  {
-    lessonId: "alg1-u1-l1",
-    courseId: "hs-alg1",
-    grade: 9,
-    prose: 212,
-    requiredProse: 600,
-    teaching: 307,
-    failures: ["2 objectives (need 4)", "212 prose words (need 600 at grade 9)", "2 worked examples (need 3)", "4 defined terms (need 8)", "2 practice items (need 5)", "2 exercises (need 4)", "2 review questions (need 4)", "2 topics recorded (need 3)"],
-  },
-  {
-    lessonId: "alg1-u2-l1",
-    courseId: "hs-alg1",
-    grade: 9,
-    prose: 178,
-    requiredProse: 600,
-    teaching: 257,
-    failures: ["2 objectives (need 4)", "178 prose words (need 600 at grade 9)", "2 worked examples (need 3)", "2 defined terms (need 8)", "2 practice items (need 5)", "2 exercises (need 4)", "2 review questions (need 4)", "review \"How do you check a system’s so…\" needs a model answer", "2 topics recorded (need 3)"],
-  },
-  {
-    lessonId: "alg1-u3-l1",
-    courseId: "hs-alg1",
-    grade: 9,
-    prose: 221,
-    requiredProse: 600,
-    teaching: 319,
-    failures: ["2 objectives (need 4)", "221 prose words (need 600 at grade 9)", "2 worked examples (need 3)", "2 defined terms (need 8)", "2 practice items (need 5)", "2 exercises (need 4)", "2 review questions (need 4)", "2 topics recorded (need 3)"],
-  },
-  {
-    lessonId: "alg1-u4-l1",
-    courseId: "hs-alg1",
-    grade: 9,
-    prose: 175,
-    requiredProse: 600,
-    teaching: 252,
-    failures: ["2 objectives (need 4)", "175 prose words (need 600 at grade 9)", "2 worked examples (need 3)", "2 defined terms (need 8)", "2 practice items (need 5)", "2 exercises (need 4)", "2 review questions (need 4)", "review \"What does a growth factor belo…\" needs a model answer", "2 topics recorded (need 3)"],
-  },
   {
     lessonId: "alg2-u1-l1",
     courseId: "hs-alg2",
@@ -97,33 +61,6 @@ export const KNOWN_DEPTH_SHORTFALLS: DepthShortfall[] = [
     requiredProse: 600,
     teaching: 231,
     failures: ["2 objectives (need 4)", "150 prose words (need 600 at grade 9)", "2 worked examples (need 3)", "2 defined terms (need 8)", "2 practice items (need 5)", "2 exercises (need 4)", "2 review questions (need 4)", "2 topics recorded (need 3)"],
-  },
-  {
-    lessonId: "bio-u1-l1",
-    courseId: "hs-bio",
-    grade: 9,
-    prose: 206,
-    requiredProse: 600,
-    teaching: 291,
-    failures: ["2 objectives (need 4)", "206 prose words (need 600 at grade 9)", "2 worked examples (need 3)", "4 defined terms (need 8)", "2 practice items (need 5)", "2 exercises (need 4)", "2 review questions (need 4)", "2 topics recorded (need 3)"],
-  },
-  {
-    lessonId: "bio-u2-l1",
-    courseId: "hs-bio",
-    grade: 9,
-    prose: 195,
-    requiredProse: 600,
-    teaching: 271,
-    failures: ["2 objectives (need 4)", "195 prose words (need 600 at grade 9)", "2 worked examples (need 3)", "2 defined terms (need 8)", "2 practice items (need 5)", "2 exercises (need 4)", "2 review questions (need 4)", "2 topics recorded (need 3)"],
-  },
-  {
-    lessonId: "bio-u3-l1",
-    courseId: "hs-bio",
-    grade: 9,
-    prose: 199,
-    requiredProse: 600,
-    teaching: 286,
-    failures: ["2 objectives (need 4)", "199 prose words (need 600 at grade 9)", "2 worked examples (need 3)", "2 defined terms (need 8)", "2 practice items (need 5)", "2 exercises (need 4)", "2 review questions (need 4)", "review \"What three conditions must hol…\" needs a model answer", "2 topics recorded (need 3)"],
   },
   {
     lessonId: "chem-u1-l1",
@@ -493,33 +430,6 @@ export const KNOWN_DEPTH_SHORTFALLS: DepthShortfall[] = [
     requiredProse: 600,
     teaching: 304,
     failures: ["2 objectives (need 4)", "191 prose words (need 600 at grade 9)", "2 worked examples (need 3)", "2 defined terms (need 8)", "2 practice items (need 5)", "2 exercises (need 4)", "2 review questions (need 4)", "review \"How much sleep do most teenage…\" needs a model answer", "2 topics recorded (need 3)"],
-  },
-  {
-    lessonId: "ipc-u1-l1",
-    courseId: "hs-ipc",
-    grade: 9,
-    prose: 186,
-    requiredProse: 600,
-    teaching: 266,
-    failures: ["2 objectives (need 4)", "186 prose words (need 600 at grade 9)", "2 worked examples (need 3)", "2 defined terms (need 8)", "2 practice items (need 5)", "2 exercises (need 4)", "2 review questions (need 4)", "2 topics recorded (need 3)"],
-  },
-  {
-    lessonId: "ipc-u2-l1",
-    courseId: "hs-ipc",
-    grade: 9,
-    prose: 195,
-    requiredProse: 600,
-    teaching: 262,
-    failures: ["2 objectives (need 4)", "195 prose words (need 600 at grade 9)", "2 worked examples (need 3)", "2 defined terms (need 8)", "2 practice items (need 5)", "2 exercises (need 4)", "2 review questions (need 4)", "review \"How do you compute current wit…\" needs a model answer", "2 topics recorded (need 3)"],
-  },
-  {
-    lessonId: "ipc-u3-l1",
-    courseId: "hs-ipc",
-    grade: 9,
-    prose: 171,
-    requiredProse: 600,
-    teaching: 264,
-    failures: ["2 objectives (need 4)", "171 prose words (need 600 at grade 9)", "2 worked examples (need 3)", "2 defined terms (need 8)", "2 practice items (need 5)", "2 exercises (need 4)", "2 review questions (need 4)", "2 topics recorded (need 3)"],
   },
   {
     lessonId: "pe-u1-l1",

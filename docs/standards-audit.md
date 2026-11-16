@@ -153,8 +153,8 @@ gradebook and graduation audit both enforce the 70 floor. No lesson completion, 
    6–8, 600 in 9–12), three worked examples with reasoning and answers, eight defined terms, five
    practice items, four off-screen exercises, four reviewed questions with model answers, three
    discussed topics, and a real-world application section, and it rejects shared boilerplate.
-   One hundred twenty-two lessons (Kindergarten through Grade 8, the middle-school electives, and
-   English I) meet v2. The other 79 meet v1 (two objectives,
+   One hundred thirty-two lessons (Kindergarten through Grade 8, the middle-school electives,
+   English I, Algebra I, Biology, and IPC) meet v2. The other 69 meet v1 (two objectives,
    two sections, 190 taught words, two examples, two terms, two practice items, two exercises, two
    reviewed questions) and are listed with their measured prose counts in
    `src/content/depth/shortfalls.ts` and on the Sources page. `src/content/depth.test.ts` enforces

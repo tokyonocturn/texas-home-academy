@@ -83,7 +83,7 @@ export const DEPTH_HS_B: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'What three conditions must hold for natural selection?',
-        answer: 'Variation, heritability, and differential reproductive success.',
+        answer: 'Individuals must vary, the variation must be heritable, and some variants must reproduce more successfully than others.',
       },
       {
         prompt: 'Why are food chains short?',
@@ -145,7 +145,7 @@ export const DEPTH_HS_B: Record<string, LessonDepth> = {
       },
       {
         prompt: 'How do you compute current with Ohm’s law?',
-        answer: 'I = V/R, voltage divided by resistance.',
+        answer: 'Divide voltage by resistance, I = V/R, so 12 volts across 4 ohms carries 3 amperes.',
       },
     ],
     exercises: [
