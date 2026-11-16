@@ -205,7 +205,7 @@ export const worldHistory: Course = {
     ], quiz('Unit 1 quiz: exchange', [
       mc('Papermaking and gunpowder spread from', ['Europe to China', 'China westward', 'Africa to Asia', 'the Americas'], 1, 'Both technologies originated in China and spread west.'),
       mc('A major demographic effect of the Columbian Exchange was', ['population growth in the Americas from disease', 'devastating epidemics among Indigenous peoples', 'the end of agriculture', 'the elimination of trade'], 1, 'Disease caused catastrophic mortality.'),
-      mc('Empires often', ['reduce trade within their borders', 'eliminate all exchange', 'have no effect on trade', 'only tax religion'], 0, 'Common rule and currency can lower transaction costs.'),
+      mc('Empires often', ['lower transaction costs within their borders', 'eliminate all exchange', 'have no effect on trade', 'only tax religion'], 0, 'Common rule and currency can lower transaction costs, even as conquest imposes violence at the frontier.'),
     ]), project({
       title: 'Commodity biography',
       prompt: 'Trace one commodity (sugar, silver, cotton, or coffee) from production to consumption across at least three regions, and analyze who bore the costs.',

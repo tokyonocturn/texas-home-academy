@@ -110,7 +110,7 @@ export const DEPTH_G12A: Record<string, LessonDepth> = {
       ['realism', 'depicting ordinary life with social and material detail'],
     ],
     practice: [
-      mc('Lyrical Ballads appeared in', ['1798', '1800', '1818', '1850'], 1, 'The preface is dated 1800.'),
+      mc('Wordsworth’s preface to Lyrical Ballads appeared in', ['1798', '1800', '1818', '1850'], 1, 'The preface is dated 1800; the poems first appeared in 1798.'),
       num('How many lines does a sonnet have?', 14, 'Fourteen.'),
       mc('In Memoriam was published in', ['1832', '1842', '1850', '1854'], 2, '1850.'),
     ],
@@ -238,7 +238,7 @@ export const DEPTH_G12A: Record<string, LessonDepth> = {
     practice: [
       mc('A primary source for a Shakespeare paper is', ['a study guide', 'the play’s text', 'an encyclopedia', 'a film review'], 1, 'The text itself.'),
       mc('Every paraphrased idea requires', ['no citation', 'a citation', 'a footnote only', 'a bibliography entry only'], 1, 'Paraphrase still needs credit.'),
-      num('How many elements does an MLA works-cited entry need at minimum here?', 5, 'Author, title, container, publisher, date, location.'),
+      num('How many elements does an MLA works-cited entry need at minimum here?', 6, 'Author, title, container, publisher, date, and location: six.'),
     ],
     review: [
       {

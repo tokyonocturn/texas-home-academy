@@ -163,9 +163,9 @@ export const DEPTH_ADULT_B: Record<string, LessonDepth> = {
       ['small claims', 'the justice court process for disputes within a monetary limit'],
     ],
     practice: [
-      mc('A contract generally requires', ['a notary', 'offer, acceptance, and consideration', 'a lawyer', 'two witnesses'], 1, 'Those are the core elements.'),
+      mc('A contract generally does NOT require', ['an offer', 'acceptance', 'consideration', 'a notary'], 3, 'A notary is required only for specific documents, not for contracts generally.'),
       mc('An arbitration clause generally', ['guarantees a court trial', 'sends disputes to a private decision-maker', 'voids the contract', 'sets the price'], 1, 'It removes court by default.'),
-      mc('The IRS generally', ['demands gift-card payment by phone', 'contacts taxpayers by mail', 'asks for passwords', 'calls only at night'], 1, 'Card demands signal fraud.'),
+      mc('A caller demanding gift cards for unpaid taxes is', ['following IRS procedure', 'likely a scammer', 'an official collection agent', 'required by law'], 1, 'The IRS contacts taxpayers by mail and never demands gift-card payment.'),
     ],
     exercises: [
       'Find a real contract you or your family has signed and mark the arbitration, renewal, termination, and warranty clauses.',
@@ -258,9 +258,9 @@ export const DEPTH_ADULT_B: Record<string, LessonDepth> = {
       ['trustee', 'an elected member of a school board'],
     ],
     practice: [
-      mc('School district policy is set by', ['the governor', 'the elected school board', 'the Texas Supreme Court', 'the city council'], 1, 'Trustees set district policy.'),
-      mc('A property tax protest is filed with', ['the county appraisal district', 'the IRS', 'the school board', 'TxDOT'], 1, 'Appraisal districts handle valuations.'),
-      mc('2-1-1 in Texas connects residents to', ['traffic reports', 'health and human services', 'college applications', 'weather alerts'], 1, 'It is a services referral line.'),
+      mc('A school bond election is called by', ['the city council', 'the local school board', 'the governor', 'the Texas Supreme Court'], 1, 'The district’s board calls bond elections; voters decide them.'),
+      mc('A property tax protest is filed with', ['the county appraisal district', 'the IRS', 'the school board', 'TxDOT'], 0, 'Appraisal districts handle valuations, with appeals to the appraisal review board.'),
+      mc('Calling 911 is for', ['health and human services referrals', 'emergencies', 'traffic reports', 'college applications'], 1, '911 is the emergency line; 2-1-1 handles services referrals.'),
     ],
     exercises: [
       'Pick a real local problem and write the request you would send, naming the office, location, and requested action.',
@@ -352,7 +352,7 @@ export const DEPTH_ADULT_B: Record<string, LessonDepth> = {
     ],
     practice: [
       mc('When a project is going badly, the best question is', ['how much we have already spent', 'what future cost and benefit remain', 'who is to blame', 'how to hide the loss'], 1, 'Only future costs and benefits should guide the decision.'),
-      mc('A useful conflict statement includes', ['a character judgment', 'facts, impact, and a specific request', 'an ultimatum', 'silence'], 1, 'Facts plus a request is actionable.'),
+      mc('A written dispute notice should include', ['a threat', 'facts, a specific remedy, and a deadline', 'a character judgment', 'silence'], 1, 'Specifics and a deadline make a notice usable.'),
       mc('Signing a one-year lease is', ['reversible at no cost', 'largely irreversible', 'not a decision', 'always refundable'], 1, 'Leaving early has real costs.'),
     ],
     exercises: [
@@ -609,7 +609,7 @@ export const DEPTH_ADULT_B: Record<string, LessonDepth> = {
       ['small claims court', 'the justice court process for disputes under a monetary limit'],
     ],
     practice: [
-      mc('A BATNA is', ['your opening offer', 'your best alternative if no deal is reached', 'a written contract', 'your final price'], 1, 'It is the walk-away alternative.'),
+      mc('Your reservation point is', ['your first offer', 'the least favorable outcome you will accept', 'your best alternative to a deal', 'a legal filing'], 1, 'The reservation point is your walk-away threshold.'),
       mc('A written demand should include', ['only a complaint', 'facts, a specific remedy, and a deadline', 'a threat', 'a verbal summary'], 1, 'Specifics and a deadline make it usable.'),
     ],
     exercises: [

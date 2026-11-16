@@ -281,7 +281,7 @@ export const DEPTH_KINDER: Record<string, LessonDepth> = {
       ['position word', 'a word that tells where something is, such as beside'],
     ],
     practice: [
-      num('How many sides does a triangle have?', 3, 'Tri means three: three sides and three corners.'),
+      num('A square has how many equal sides?', 4, 'A square has four equal sides and four corners.'),
       mc('Which shape has no corners?', ['square', 'triangle', 'circle', 'rectangle'], 2, 'A circle has no straight sides or corners.'),
       mc('“The book is between the lamp and the cup” tells us', ['the color', 'the location', 'the size', 'the shape'], 1, 'Between is a position word.'),
     ],
@@ -509,7 +509,7 @@ export const DEPTH_KINDER: Record<string, LessonDepth> = {
       ['respond', 'to react to something in the surroundings'],
     ],
     practice: [
-      mc('Which is living?', ['a rock', 'a puppy', 'a chair', 'a cup'], 1, 'A puppy grows, eats, and responds.'),
+      mc('Which is nonliving?', ['a puppy', 'a rock', 'a tree', 'a bird'], 1, 'A rock does not grow, eat, or respond.'),
       mc('Which is a need of all animals?', ['toys', 'water', 'music', 'shoes'], 1, 'Water is needed by all animals.'),
       num('How many needs are named in this lesson: food, water, air, shelter?', 4, 'Four basic needs.'),
     ],

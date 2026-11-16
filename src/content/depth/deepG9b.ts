@@ -98,7 +98,7 @@ export const DEPTH_G9B: Record<string, LessonDepth> = {
           'Add to the second: 11x = 34, so x = 34/11. This signals an arithmetic check is needed.',
           'Instead, subtract the doubled equations correctly: (6x + 4y) + (5x − 4y) = 34 gives 11x = 34, so recheck the given constants.',
         ],
-        answer: 'The method is correct, and the check exposes that these constants do not produce integer solutions: x = 34/11, y = 35/11.',
+        answer: 'The method is correct, and the check exposes that these constants do not produce integer solutions: x = 34/11, y = 37/11.',
       },
     ],
     terms: [
@@ -238,7 +238,7 @@ export const DEPTH_G9B: Record<string, LessonDepth> = {
     practice: [
       num('A quantity grows 8% per year. What is its growth factor?', 1.08, '1 + 0.08 = 1.08.'),
       mc('A growth factor of 0.85 indicates', ['8.5% growth', '15% decay', '85% growth', 'no change'], 1, 'Keeping 85% means losing 15%.'),
-      num('What is the 4th term of 3, 6, 12, 24?', 24, 'Each term doubles.'),
+      num('What is the 5th term of 3, 6, 12, 24?', 48, 'Each term doubles, so the 5th term is 24 × 2 = 48.'),
     ],
     review: [
       {

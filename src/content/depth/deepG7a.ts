@@ -174,7 +174,7 @@ export const DEPTH_G7A: Record<string, LessonDepth> = {
     practice: [
       mc('How do you know a research question is too broad?', ['it has a place and date', 'a few sources cannot answer it', 'it uses technical terms', 'it is a full sentence'], 1, 'A workable question can be answered with available sources.'),
       mc('What should you check first when revising?', ['spelling', 'the thesis and structure', 'font size', 'word count'], 1, 'Ideas and organization come before editing.'),
-      num('How many subquestions does this lesson suggest writing?', 3, 'Two or three subquestions turn a question into a plan.'),
+      num('At most how many subquestions does this lesson suggest writing?', 3, 'Two or three subquestions turn a question into a plan; three is the maximum it names.'),
     ],
     review: [
       {
@@ -361,7 +361,7 @@ export const DEPTH_G7A: Record<string, LessonDepth> = {
     practice: [
       num('What is the area of a circle with radius 5, using 3.14 for π?', 78.5, '3.14 × 25 = 78.5.'),
       mc('What is the probability of rolling a 4 on a fair die?', ['1/2', '1/3', '1/6', '4/6'], 2, 'One favorable outcome out of six.'),
-      num('A coin is flipped twice. What is the probability of two heads, as a fraction of 4?', 1, '1/4 of the four outcomes.'),
+      num('A coin is flipped twice. How many of the four equally likely outcomes are two heads?', 1, 'Only heads-heads: one of the four outcomes, so P = 1/4.'),
     ],
     review: [
       {

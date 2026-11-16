@@ -285,7 +285,7 @@ export const DEPTH_G5A: Record<string, LessonDepth> = {
       ['expression', 'a combination of numbers and operations without an equals sign'],
     ],
     practice: [
-      num('What is 2/3 × 3/4 in simplest form?', 1, 'The product is 6/12, which simplifies to 1/2; enter the simplified numerator over 2.'),
+      num('What is 2/3 × 3/4? Enter the answer as a decimal.', 0.5, 'The product is 6/12, which simplifies to 1/2, or 0.5.'),
       mc('Evaluate 8 + 2 × 5.', ['50', '18', '40', '13'], 1, 'Multiply before adding.'),
       num('What is 1/2 of 12?', 6, 'Half of twelve is six.'),
     ],
@@ -296,7 +296,7 @@ export const DEPTH_G5A: Record<string, LessonDepth> = {
       },
       {
         prompt: 'Why does multiplying by a fraction smaller than 1 make a number smaller?',
-        answer: 'You are taking only part of the number, as when half of twelve is six. Speakers who explain why a source is trustworthy inspire more confidence than speakers who simply assert facts.',
+        answer: 'You are taking only part of the number, as when half of twelve is six.',
       },
     ],
     exercises: [

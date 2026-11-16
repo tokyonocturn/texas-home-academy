@@ -41,8 +41,8 @@ export const DEPTH_G1: Record<string, LessonDepth> = {
       ['decode', 'to work out a word by matching sounds to letters'],
     ],
     practice: [
-      mc('Which word begins with a digraph?', ['stop', 'ship', 'grass', 'blue'], 1, 'Sh makes one sound.'),
-      mc('Which word begins with a blend?', ['chin', 'thin', 'stop', 'when'], 2, 'You hear both /s/ and /t/ in stop.'),
+      mc('Which word begins with the digraph “ch”?', ['chin', 'ship', 'grass', 'plan'], 0, 'Ch is two letters that make one sound.'),
+      mc('Which word begins with the blend “gr”?', ['grab', 'ship', 'plan', 'when'], 0, 'You hear both /g/ and /r/ in grab.'),
       num('How many letters are in the digraph “sh”?', 2, 'Two letters make one sound.'),
     ],
     review: [
@@ -98,7 +98,7 @@ export const DEPTH_G1: Record<string, LessonDepth> = {
       ['statement', 'a sentence that tells something and ends with a period'],
     ],
     practice: [
-      mc('Which is a complete sentence?', ['The red ball.', 'Ran down the hill.', 'The cat slept.', 'Because it was late.'], 2, 'It has a naming part, a telling part, and a complete idea.'),
+      mc('Which group of words is NOT a complete sentence?', ['The cat slept.', 'Ran down the hill.', 'The boy ran fast.', 'We ate lunch.'], 1, 'It has no naming part, so it is not a complete sentence.'),
       mc('Which end mark fits “Can you help me”', ['period', 'question mark', 'exclamation point', 'comma'], 1, 'It asks a question.'),
       num('How many capital letters belong in “my friend ana lives in austin”?', 3, 'My, Ana, and Austin each need a capital.'),
     ],

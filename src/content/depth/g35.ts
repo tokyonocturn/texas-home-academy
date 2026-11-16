@@ -179,7 +179,7 @@ export const DEPTH_G35: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'Where does 5/4 sit on a number line?',
-        answer: 'One whole jump past 1, halfway to 2 if the line is marked in fourths.',
+        answer: 'One whole jump past 1, then one more fourth: the point is at 1¼, a quarter of the way from 1 to 2.',
       },
       {
         prompt: 'How can two rectangles have the same area but different perimeters?',

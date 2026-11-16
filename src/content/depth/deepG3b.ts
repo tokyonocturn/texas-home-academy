@@ -255,7 +255,7 @@ export const DEPTH_G3B: Record<string, LessonDepth> = {
       {
         heading: 'Land shapes life',
         paragraphs: [
-          'Texas has four natural regions. The Gulf Coastal Plain is low and wet, with rich soil and coastline. The Central Plains have rolling hills, farmland, and rivers. The Great Plains are high, windy, and grassy, good for grazing. The Mountains and Basins region is dry, with mountains, desert plants, and few rivers.',
+          'Texas has four natural regions. The Gulf Coastal Plain is low and wet, with rich soil and coastline. The North Central Plains have rolling hills, farmland, and rivers. The Great Plains are high, windy, and grassy, good for grazing. The Mountains and Basins region is dry, with mountains, desert plants, and few rivers.',
           'Rainfall, landforms, and resources decide what people can eat, build with, and trade. Coastal peoples could fish and gather shellfish, Plains peoples could hunt grazing animals, and farming peoples needed reliable water and good soil. Environment did not determine everything, but it shaped the choices available. Regions are not sealed off from one another: rivers, roads, and trade connect them, and people have always moved between them.',
         ],
       },
@@ -288,12 +288,12 @@ export const DEPTH_G3B: Record<string, LessonDepth> = {
     practice: [
       mc('Which group farmed corn, beans, and squash in East Texas?', ['Comanche', 'Caddo', 'Karankawa', 'Jumano'], 1, 'The Caddo were farming villagers.'),
       mc('Which animal was central to Plains life?', ['salmon', 'bison', 'llama', 'reindeer'], 1, 'Bison supplied food, hides, and tools.'),
-      num('How many natural regions does Texas have in this lesson?', 4, 'Coastal Plain, Central Plains, Great Plains, Mountains and Basins.'),
+      num('How many natural regions does Texas have in this lesson?', 4, 'Coastal Plain, North Central Plains, Great Plains, Mountains and Basins.'),
     ],
     review: [
       {
         prompt: 'Name the four Texas regions.',
-        answer: 'The Gulf Coastal Plain, Central Plains, Great Plains, and Mountains and Basins.',
+        answer: 'The Gulf Coastal Plain, North Central Plains, Great Plains, and Mountains and Basins.',
       },
       {
         prompt: 'How did the horse change Plains life?',

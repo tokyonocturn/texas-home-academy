@@ -107,7 +107,7 @@ export const DEPTH_G6B: Record<string, LessonDepth> = {
     ],
     practice: [
       num('What is the net force when 9 N right and 4 N left act on an object?', 5, '9 − 4 = 5 N to the right.'),
-      mc('Balanced forces produce', ['acceleration', 'no change in motion', 'a change of direction', 'a larger mass'], 1, 'Balanced forces add to zero.'),
+      mc('Unbalanced forces produce', ['no change in motion', 'acceleration', 'constant velocity', 'zero net force'], 1, 'A net force changes the object’s motion.'),
       num('How many newtons are in the net force of two 6 N forces in opposite directions?', 0, 'Equal opposite forces cancel.'),
     ],
     review: [

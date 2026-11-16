@@ -47,9 +47,9 @@ export const DEPTH_ELEM: Record<string, LessonDepth> = {
       ['dynamics', 'how loud or soft music is'],
     ],
     practice: [
-      mc('Tempo describes', ['how loud the music is', 'how fast or slow it moves', 'the instrument family', 'the beat pattern'], 1, 'Tempo is speed.'),
+      mc('Dynamics describe', ['how fast or slow music moves', 'how loud or soft music is', 'the instrument family', 'the beat pattern'], 1, 'Dynamics are volume.'),
       mc('Negative space is', ['the shape you draw', 'the empty area around it', 'dark paint', 'the background color'], 1, 'Space around the subject.'),
-      num('How many instrument families are named here?', 4, 'Strings, woodwinds, brass, percussion, plus keyboards.'),
+      num('How many instrument families are named here?', 5, 'Strings, woodwinds, brass, percussion, and keyboards: five.'),
     ],
     review: [
       {
@@ -173,7 +173,7 @@ export const DEPTH_ELEM: Record<string, LessonDepth> = {
       ['sportsmanship', 'fair and respectful behavior in games'],
     ],
     practice: [
-      mc('Skipping is a', ['non-locomotor movement', 'locomotor movement', 'manipulative skill', 'warm-up'], 1, 'It travels.'),
+      mc('Hopping on one foot is a', ['non-locomotor movement', 'locomotor movement', 'stretching exercise', 'rest position'], 1, 'Hopping travels through space, so it is locomotor.'),
       mc('Catching is easier with', ['stiff hands', 'soft hands', 'one finger', 'eyes closed'], 1, 'Soft hands absorb the ball.'),
       num('How many manipulative skills are named here?', 6, 'Throw, catch, kick, strike, dribble, bounce.'),
     ],
@@ -203,7 +203,7 @@ export const DEPTH_ELEM: Record<string, LessonDepth> = {
         heading: 'Everyday health habits',
         paragraphs: [
           'Bodies need fuel, rest, water, and cleanliness. A healthy plate has fruits and vegetables, whole grains, protein, and dairy or a fortified alternative, and water is the best everyday drink. Breakfast helps concentration, and snacks with protein last longer than sugary ones.',
-          'Children need about nine to eleven hours of sleep. A regular bedtime, a dark quiet room, and no screens for the last half hour help the body settle. Sleep is when the body grows and the brain stores what was learned that day, so it is part of schoolwork, not a break from it.',
+          'Children need about nine to twelve hours of sleep. A regular bedtime, a dark quiet room, and no screens for the last half hour help the body settle. Sleep is when the body grows and the brain stores what was learned that day, so it is part of schoolwork, not a break from it.',
           'Hygiene prevents illness. Wash hands with soap for at least twenty seconds before eating and after using the bathroom, brush teeth twice a day, bathe regularly, and cover coughs with an elbow. These habits protect you and the people around you.',
         ],
       },
@@ -220,7 +220,7 @@ export const DEPTH_ELEM: Record<string, LessonDepth> = {
       {
         prompt: 'A student feels tired every morning and cannot concentrate. Diagnose and prescribe two changes.',
         steps: [
-          'Check bedtime and total hours: aim for nine to eleven.',
+          'Check bedtime and total hours: aim for nine to twelve.',
           'Remove screens for thirty minutes before bed.',
           'Add water and a protein snack during the day.',
         ],
@@ -237,7 +237,7 @@ export const DEPTH_ELEM: Record<string, LessonDepth> = {
     ],
     practice: [
       num('How many seconds should you wash your hands?', 20, 'At least twenty.'),
-      mc('Children need about how much sleep?', ['five to six hours', 'seven to eight hours', 'nine to eleven hours', 'twelve to fourteen hours'], 2, 'Nine to eleven.'),
+      mc('Children need about how much sleep?', ['five to six hours', 'seven to eight hours', 'nine to twelve hours', 'thirteen to fifteen hours'], 2, 'Nine to twelve is the usual range for this age band.'),
       num('What number do you call in an emergency in the United States?', 911, '911.'),
     ],
     review: [

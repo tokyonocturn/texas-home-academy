@@ -237,7 +237,7 @@ export const DEPTH_G10B: Record<string, LessonDepth> = {
     practice: [
       num('An inscribed angle intercepts a 130° arc. What is the angle?', 65, 'Half of 130.'),
       mc('A tangent line is perpendicular to', ['a chord', 'the radius at the point of tangency', 'the diameter', 'an arc'], 1, 'Radius and tangent are perpendicular.'),
-      num('What is the midpoint of (2, 3) and (8, 11)?', 5, 'x = 5; y = 7.'),
+      num('What is the x-coordinate of the midpoint of (2, 3) and (8, 11)?', 5, 'Average the x-values: (2 + 8) / 2 = 5. The midpoint is (5, 7).'),
     ],
     review: [
       {

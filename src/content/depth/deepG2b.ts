@@ -313,7 +313,7 @@ export const DEPTH_G2B: Record<string, LessonDepth> = {
       {
         heading: 'Regions have different land and resources',
         paragraphs: [
-          'Texas is large enough to contain several natural regions. The Gulf Coastal Plain has rich soil, oil, and ports. The Central Plains have farmland and limestone. The Great Plains have ranchland and wind, and the Mountains and Basins region is dry with few people. Each region’s land and climate shape what can be grown, built, and sold.',
+          'Texas is large enough to contain several natural regions. The Gulf Coastal Plain has rich soil, oil, and ports. The North Central Plains have farmland and limestone. The Great Plains have ranchland and wind, and the Mountains and Basins region is dry with few people. Each region’s land and climate shape what can be grown, built, and sold.',
           'A natural resource is something found in nature that people use. Oil, natural gas, fertile soil, water, timber, and wind are all Texas resources. Some are renewable, meaning they can be replaced in a human lifetime, such as wind and sunlight. Others, like oil, are nonrenewable because they formed over millions of years.',
         ],
       },
@@ -345,8 +345,8 @@ export const DEPTH_G2B: Record<string, LessonDepth> = {
     ],
     practice: [
       mc('Which is a renewable resource?', ['oil', 'wind', 'natural gas', 'coal'], 1, 'Wind is replaced continuously.'),
-      mc('Which region is described as dry with few people?', ['Gulf Coastal Plain', 'Central Plains', 'Mountains and Basins', 'Great Plains'], 2, 'The Mountains and Basins region is dry and sparsely populated.'),
-      num('How many natural regions of Texas are named here?', 4, 'Coastal Plain, Central Plains, Great Plains, Mountains and Basins.'),
+      mc('Which region is described as dry with few people?', ['Gulf Coastal Plain', 'North Central Plains', 'Mountains and Basins', 'Great Plains'], 2, 'The Mountains and Basins region is dry and sparsely populated.'),
+      num('How many natural regions of Texas are named here?', 4, 'Coastal Plain, North Central Plains, Great Plains, Mountains and Basins.'),
     ],
     review: [
       {

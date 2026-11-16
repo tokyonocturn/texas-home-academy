@@ -112,7 +112,7 @@ export const DEPTH_G11D: Record<string, LessonDepth> = {
     practice: [
       num('What is the top of the standard credit score range?', 850, '850.'),
       mc('Which factor weighs most in a credit score?', ['credit mix', 'payment history', 'new credit', 'length of history'], 1, 'Payment history dominates.'),
-      num('What is the avalanche method’s target?', 1, 'The highest-rate balance first.'),
+      mc('Under the avalanche method, which balance gets the extra payment?', ['the $800 balance at 24% APR', 'the $800 balance at 9% APR', 'whichever is larger', 'whichever has the lower minimum'], 0, 'Avalanche sends extra money to the highest interest rate first.'),
     ],
     review: [
       {
@@ -175,7 +175,7 @@ export const DEPTH_G11D: Record<string, LessonDepth> = {
     practice: [
       num('What does $5,000 grow to at 7% for 30 years, to the nearest dollar?', 38061, '≈ $38,061.'),
       mc('A 1099 reports income', ['with withholding', 'without withholding', 'only for students', 'only for tips'], 1, 'No tax is withheld.'),
-      mc('A deductible is', ['the monthly premium', 'the amount paid before coverage', 'the coverage limit', 'a tax credit'], 1, 'Paid out of pocket first.'),
+      mc('An insurance premium is', ['the amount paid for coverage', 'the amount paid before coverage begins', 'the coverage limit', 'a tax credit'], 0, 'The premium is what you pay, usually monthly, to keep the policy in force.'),
     ],
     review: [
       {

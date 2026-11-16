@@ -335,7 +335,7 @@ export const DEPTH_ADULT_A: Record<string, LessonDepth> = {
     practice: [
       mc('Overtime under the FLSA is based on', ['hours per pay period', 'hours over 40 in a workweek', 'hours over 8 in a day', 'the monthly total'], 1, 'It is a weekly test.'),
       num('At $16 per hour with 44 hours, what is gross pay? Round to the nearest dollar.', 736, '40 × 16 = 640; 4 × 24 = 96; total 736.'),
-      mc('Texas unemployment benefits are funded by', ['employee payroll deductions', 'employer contributions', 'the federal income tax', 'sales tax'], 1, 'Employers fund the program.'),
+      mc('Texas unemployment benefits are administered by', ['the Texas Workforce Commission', 'the IRS', 'the city', 'the school board'], 0, 'The Texas Workforce Commission runs the unemployment program, funded by employer contributions.'),
     ],
     exercises: [
       'Take a real or sample pay stub and verify gross pay from hours, rate, and any overtime premium.',
@@ -429,7 +429,7 @@ export const DEPTH_ADULT_A: Record<string, LessonDepth> = {
     practice: [
       num('A household budgets $75 a month for a $900 annual insurance premium. How many months does it take to fund the premium?', 12, '900 ÷ 75 = 12.'),
       mc('An emergency fund is meant for', ['planned annual costs', 'unplanned essential expenses', 'investments', 'discretionary spending'], 1, 'It covers the unplanned.'),
-      mc('Opting out of overdraft coverage generally means', ['charges are declined instead of paid with a fee', 'no fees ever', 'the bank covers the shortfall', 'higher interest'], 1, 'The transaction is declined.'),
+      mc('Opting out of overdraft coverage generally means', ['charges are declined instead of paid with a fee', 'no fees ever', 'the bank covers the shortfall', 'higher interest'], 0, 'The transaction is declined rather than paid with an overdraft fee.'),
     ],
     exercises: [
       'Write a zero-based budget from your actual net income for one month, including a sinking fund line.',
@@ -696,7 +696,7 @@ export const DEPTH_ADULT_A: Record<string, LessonDepth> = {
     ],
     practice: [
       num('What is 6.25% of $9,600? Round to the nearest dollar.', 600, '9,600 × 0.0625 = 600.'),
-      mc('A standard renters policy generally excludes', ['theft', 'flood damage', 'personal liability', 'personal property'], 1, 'Flood needs separate coverage.'),
+      mc('A standard renters policy generally covers', ['the building structure', 'the tenant’s personal property and liability', 'flood damage', 'the landlord’s mortgage'], 1, 'Renters insurance covers the tenant’s belongings and liability, not the building or flood.'),
       mc('Raising a deductible usually', ['raises the premium', 'lowers the premium and raises your share of a claim', 'removes liability coverage', 'has no effect'], 1, 'You pay less up front.'),
     ],
     exercises: [

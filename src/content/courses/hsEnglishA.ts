@@ -26,7 +26,6 @@ export const english1: Course = {
   ],
   teks: [
     teks('19 TAC ch. 110, English I', 'Reading and responding to fiction, poetry, drama, and informational text; composition; research; listening and speaking.'),
-    teks('19 TAC ch. 110, English I (composition)', 'Multi-paragraph essays with a clear thesis, organized evidence, and revision.'),
   ],
   weights: HIGH_WEIGHTS,
   units: [
@@ -558,7 +557,6 @@ export const english2: Course = {
   ],
   teks: [
     teks('19 TAC ch. 110, English II', 'World literature; argument and persuasive technique; informational text; composition and research.'),
-    teks('19 TAC ch. 110, English II (composition)', 'Persuasive essays that anticipate counterarguments and cite sources.'),
   ],
   weights: HIGH_WEIGHTS,
   units: [

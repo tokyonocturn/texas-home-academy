@@ -175,7 +175,7 @@ export const DEPTH_G11A: Record<string, LessonDepth> = {
     practice: [
       mc('A reverse outline reveals', ['spelling errors', 'structural redundancy', 'citation format', 'page length'], 1, 'It exposes repeated or empty paragraphs.'),
       mc('A quotation should be followed by', ['another quotation', 'commentary explaining it', 'a page number only', 'a conclusion'], 1, 'Analysis completes the evidence.'),
-      num('How many elements does an MLA works-cited entry need at minimum here?', 5, 'Author, title, container, publisher, date, location.'),
+      num('How many elements does an MLA works-cited entry need at minimum here?', 6, 'Author, title, container, publisher, date, and location: six.'),
     ],
     review: [
       {

@@ -235,7 +235,7 @@ export const DEPTH_G8B: Record<string, LessonDepth> = {
     ],
     practice: [
       mc('What did the Great Compromise create?', ['one house of Congress', 'a two-house Congress', 'the presidency', 'the Supreme Court'], 1, 'It created the House and Senate.'),
-      mc('Anti-Federalists demanded', ['a stronger army', 'a bill of rights', 'an end to states', 'a king'], 1, 'They feared unprotected rights.'),
+      mc('Federalists argued that the Constitution', ['needed a bill of rights before ratification', 'created a stronger national government', 'should be rejected outright', 'should keep the Articles of Confederation'], 1, 'Federalists defended a stronger national government and promised a bill of rights.'),
       num('How many amendments were ratified in the Bill of Rights?', 10, 'Ten amendments in 1791.'),
     ],
     review: [
