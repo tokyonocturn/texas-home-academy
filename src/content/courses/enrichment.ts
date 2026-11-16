@@ -20,7 +20,8 @@ export const elementaryFineArts: Course = {
   id: 'elem-fine-arts',
   title: 'Elementary Fine Arts (K–5)',
   subject: 'fine-arts',
-  grade: 0,
+  // Banded K–5 course: measured at grade 5 so the depth band is the top of its range.
+  grade: 5,
   credits: 0,
   semesters: 2,
   description:
@@ -106,7 +107,8 @@ export const elementaryHealthPe: Course = {
   id: 'elem-health-pe',
   title: 'Elementary Health and Physical Education (K–5)',
   subject: 'pe',
-  grade: 0,
+  // Banded K–5 course: measured at grade 5 so the depth band is the top of its range.
+  grade: 5,
   credits: 0,
   semesters: 2,
   description:
@@ -193,7 +195,8 @@ export const elementaryTechnology: Course = {
   id: 'elem-tech',
   title: 'Elementary Technology Applications (K–5)',
   subject: 'technology',
-  grade: 0,
+  // Banded K–5 course: measured at grade 5 so the depth band is the top of its range.
+  grade: 5,
   credits: 0,
   semesters: 2,
   description:

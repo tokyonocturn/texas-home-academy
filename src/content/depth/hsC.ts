@@ -48,7 +48,7 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'How do you say “It is one o’clock”?',
-        answer: '“Es la una,” using the singular form.',
+        answer: 'Say “Es la una,” using the singular es la because only one o’clock takes a singular verb.',
       },
       {
         prompt: 'What endings do regular -ar verbs take?',
@@ -295,7 +295,7 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'How much sleep do most teenagers need?',
-        answer: 'About eight to ten hours per night.',
+        answer: 'Most teenagers need about eight to ten hours of sleep per night for mood, learning, and physical health.',
       },
       {
         prompt: 'When should you seek help for stress?',
