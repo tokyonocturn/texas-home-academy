@@ -147,9 +147,17 @@ export function semesterResult(
   const courseWorkAverage =
     present.length > 0 ? present.reduce((a, b) => a + b, 0) / present.length : null;
   const exam = examRecord(course, records, semester);
-  // A semester reports its coursework. The cumulative final examination is
-  // weighted once, in the course result, rather than inside a semester.
-  const grade = courseWorkAverage;
+  // Semester = 80% coursework + 20% its exam (the semester 1 midterm or the
+  // cumulative final). If only one side exists, that side stands alone so a
+  // student who has finished the exam is not penalized for a missing period.
+  let grade: number | null = null;
+  if (courseWorkAverage !== null && exam.grade !== null) {
+    grade = courseWorkAverage * 0.8 + exam.grade * 0.2;
+  } else if (courseWorkAverage !== null) {
+    grade = courseWorkAverage;
+  } else if (exam.grade !== null) {
+    grade = exam.grade;
+  }
   return {
     semester,
     periodGrades: grades,
@@ -188,9 +196,14 @@ export function courseResult(
     (r) => r.assessmentId === `${course.id}:final`,
   );
   const examGrade = finalExamRecord ? percent(finalExamRecord.score, finalExamRecord.max) : null;
+  const semesterGrades = semesters
+    .map((s) => s.grade)
+    .filter((g): g is number => g !== null);
+  // The final grade is the average of the semester grades, and it does not
+  // exist until the cumulative final examination has been recorded.
   const finalGrade =
-    courseworkAverage !== null && examGrade !== null
-      ? courseworkAverage * 0.8 + examGrade * 0.2
+    finalExamRecord && semesterGrades.length > 0
+      ? semesterGrades.reduce((a, b) => a + b, 0) / semesterGrades.length
       : null;
 
   const passing = finalGrade !== null && finalGrade >= PASSING_GRADE;

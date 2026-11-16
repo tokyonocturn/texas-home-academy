@@ -27,11 +27,14 @@ with the Texas Education Agency. See
   and II, Physical Education, Art I, Health, Speech, Computer Science I, two CTE
   courses, Personal Financial Literacy, and Adult Life Education.
 - **Lessons, not worksheets only.** Each lesson has objectives, explanatory
-  sections, a worked example, key terms, further reading, and a practice set.
+  sections, a worked example, key terms, further reading, a practice set, and —
+  in the adult-life course and the courses being expanded — review questions
+  with model answers and off-screen assignments.
 - **Real assessments.** Unit quizzes, projects scored against published analytic
-  rubrics, and cumulative final examinations. Multiple-choice and numeric items
-  are auto-graded; written answers are scored by a parent or teacher against the
-  model answer and rubric shown in the app.
+  rubrics, a semester 1 midterm for every full-year course, and a cumulative
+  final examination. Multiple-choice and numeric items are auto-graded; written
+  answers are scored by a parent or teacher against the model answer and rubric
+  shown in the app.
 - **No credit for clicking.** A grade exists only when an assessment produces a
   score. Practice is recorded as the best attempt; a lesson is marked complete
   only after its practice set is submitted.
@@ -42,10 +45,12 @@ with the Texas Education Agency. See
   GPA (4.0 unweighted / 4.5 weighted), credit tracking, and a Foundation High
   School Program graduation audit with endorsement and Distinguished Level of
   Achievement checks.
-- **Adult life education.** Taxes, paychecks, budgeting, credit, loans,
-  investing, renting, insurance, vehicles, starting a business, contracts,
-  employment rights, government services, and civic duties, cited to current
-  IRS, Texas Workforce Commission, Comptroller, TDI, and statutory sources.
+- **Adult life education.** Eight units: taxes and filing; paychecks and
+  workplace rights; banking and budgeting; credit, loans, and debt; renting,
+  insurance, and vehicles; business and contracts; borrowing, investing, and
+  retirement; negotiation and decisions under uncertainty. Cited to current IRS,
+  Texas Workforce Commission, Comptroller, TDI, and statutory sources, with
+  graded real-world assignments and projects.
 
 ## Run it
 
@@ -55,7 +60,7 @@ Requires Node.js 20 or newer.
 npm install
 npm run dev      # local development server
 npm run build    # typecheck and build to dist/
-npm test         # grading, GPA, graduation, catalog, and calendar tests
+npm test         # grading, GPA, graduation, catalog, calendar, and workflow tests
 ```
 
 `dist/` is a static site with relative asset paths, so it can be hosted from any
@@ -70,10 +75,13 @@ environment variables or backend are needed.
   work is excluded and the remaining weights are renormalized, so an early
   progress check is not distorted by empty categories.
 - A six-week period grade is the weighted average of the graded categories in
-  that period; the semester average is the average of its three periods.
-- Final grade = 80% of the average of the graded six-week periods + 20% of the
-  cumulative final examination. It is issued only after that exam is recorded.
-  Until then the course shows a current standing and cannot earn credit.
+  that period, excluding semester exams. The semester grade is 80% of the
+  average of its three periods plus 20% of that semester's exam: the midterm in
+  semester 1 and the cumulative final in semester 2. If one side has no graded
+  work, the other side stands alone.
+- Final grade = the average of the two semester grades. It is issued only after
+  the cumulative final examination is recorded. Until then the course shows a
+  current standing and cannot earn credit.
 - One retake per quiz or exam after documented remediation; the retake replaces
   the first attempt but is capped at 80.
 
@@ -101,7 +109,10 @@ legal, statistical, and program claim in the curriculum points to an entry there
 or to a lesson's further reading.
 
 See [`docs/sources.md`](docs/sources.md) for how citations are handled and which
-sources underpin the legal and adult-education content.
+sources underpin the legal and adult-education content, and
+[`docs/standards-audit.md`](docs/standards-audit.md) for the course-by-course
+TEKS mapping, the graduation-credit audit, the source table with access dates,
+and the register of known curriculum gaps.
 
 ## Project layout
 

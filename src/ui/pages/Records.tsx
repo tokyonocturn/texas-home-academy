@@ -112,6 +112,12 @@ export function GradebookPage() {
                     </tr>
                   ))}
                   <tr>
+                    <td>Semester 1 midterm</td>
+                    <td className="num">
+                      {displayGrade(courseResult(selected, state.grades).semesters[0]?.examGrade ?? null)}
+                    </td>
+                  </tr>
+                  <tr>
                     <td>Coursework average (graded periods)</td>
                     <td className="num">{displayGrade(courseResult(selected, state.grades).courseworkAverage)}</td>
                   </tr>
@@ -284,6 +290,7 @@ export function ReportCardPage() {
                 <th className="num">Q6</th>
                 <th className="num">S1</th>
                 <th className="num">S2</th>
+                <th className="num">Midterm</th>
                 <th className="num">Exam</th>
                 <th className="num">Final</th>
                 <th className="num">Letter</th>
@@ -311,6 +318,7 @@ export function ReportCardPage() {
                     ))}
                     <td className="num">{displayGrade(s1?.grade ?? null)}</td>
                     <td className="num">{displayGrade(s2?.grade ?? null)}</td>
+                    <td className="num">{displayGrade(s1?.examGrade ?? null)}</td>
                     <td className="num">{displayGrade(result.examGrade)}</td>
                     <td className="num">
                       <strong>{displayGrade(result.finalGrade)}</strong>
@@ -409,6 +417,7 @@ export function TranscriptPage() {
                 <th className="num">Credit</th>
                 <th className="num">S1</th>
                 <th className="num">S2</th>
+                <th className="num">Midterm</th>
                 <th className="num">Exam</th>
                 <th className="num">Final</th>
                 <th>Letter</th>
@@ -417,7 +426,7 @@ export function TranscriptPage() {
             </thead>
             <tbody>
               <tr className="year-row">
-                <td colSpan={8}>
+                <td colSpan={9}>
                   {year.label} · Grade {profile.gradeLevel} · {profile.schoolName || 'Texas Home Academy'}
                 </td>
               </tr>
@@ -434,6 +443,7 @@ export function TranscriptPage() {
                   <td className="num">{course.credits}</td>
                   <td className="num">{displayGrade(result.semesters[0]?.grade ?? null)}</td>
                   <td className="num">{displayGrade(result.semesters[1]?.grade ?? null)}</td>
+                  <td className="num">{displayGrade(result.semesters[0]?.examGrade ?? null)}</td>
                   <td className="num">{displayGrade(result.examGrade)}</td>
                   <td className="num">
                     <strong>{displayGrade(result.finalGrade)}</strong>

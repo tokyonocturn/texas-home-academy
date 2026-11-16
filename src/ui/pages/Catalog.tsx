@@ -163,6 +163,8 @@ export function CoursePage({ courseId }: { courseId: string }) {
 
   const lessons = course.units.flatMap((u) => u.lessons);
   const done = lessons.filter((l) => state.lessonProgress[`${course.id}/${l.id}`]).length;
+  const projectCount = course.units.filter((u) => u.project).length + (course.project ? 1 : 0);
+  const rubric = course.project?.rubric ?? course.units.find((u) => u.project)?.project?.rubric;
 
   return (
     <>
@@ -260,6 +262,82 @@ export function CoursePage({ courseId }: { courseId: string }) {
         </div>
       </div>
 
+      <div className="card">
+        <h2 style={{ marginTop: 0 }}>Assessment plan and rubrics</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Assessment</th>
+              <th className="num">Count</th>
+              <th>Category</th>
+              <th>Scoring</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Practice sets</td>
+              <td className="num">{lessons.length}</td>
+              <td>Practice and daily work</td>
+              <td>Auto-graded; best attempt counts</td>
+            </tr>
+            <tr>
+              <td>Unit quizzes</td>
+              <td className="num">{course.units.length}</td>
+              <td>Unit quizzes</td>
+              <td>Auto-graded; written items scored by rubric</td>
+            </tr>
+            <tr>
+              <td>Projects</td>
+              <td className="num">{projectCount}</td>
+              <td>Projects and writing</td>
+              <td>Parent-scored against a 100-point rubric</td>
+            </tr>
+            {course.midterm ? (
+              <tr>
+                <td>Semester 1 midterm</td>
+                <td className="num">1</td>
+                <td>Exams</td>
+                <td>Auto-graded plus a written response</td>
+              </tr>
+            ) : null}
+            <tr>
+              <td>Cumulative final examination</td>
+              <td className="num">1</td>
+              <td>Exams</td>
+              <td>Auto-graded plus a written response</td>
+            </tr>
+          </tbody>
+        </table>
+        {rubric ? (
+          <>
+            <h3>Project rubric</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Criterion</th>
+                  <th className="num">Points</th>
+                  <th>Levels</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rubric.map((row) => (
+                  <tr key={row.criterion}>
+                    <td>{row.criterion}</td>
+                    <td className="num">{row.points}</td>
+                    <td className="tiny">{row.levels.map((level) => level.label).join(' / ')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        ) : null}
+        <p className="note">
+          No grade is awarded for opening a lesson. Practice is formative and recorded as the best
+          attempt; quizzes, projects, the midterm, and the final are summative. A final grade is
+          issued only after the cumulative final examination is recorded.
+        </p>
+      </div>
+
       <h2>Units</h2>
       {course.units.map((unit) => {
         const quizAttempt = attempts.find((a) => a.assessmentId === quizId(course.id, unit.id));
@@ -315,6 +393,18 @@ export function CoursePage({ courseId }: { courseId: string }) {
       })}
 
       <div className="grid two">
+        {course.midterm ? (
+          <div className="card">
+            <h2 style={{ marginTop: 0 }}>Semester 1 midterm</h2>
+            <p className="small">
+              {course.midterm.title} · {course.midterm.questions.length} questions ·{' '}
+              {course.midterm.questions.reduce((s, q) => s + q.points, 0)} points
+            </p>
+            <Link to={`/assessment/${course.id}/midterm`} className="btn gold">
+              Open midterm
+            </Link>
+          </div>
+        ) : null}
         <div className="card">
           <h2 style={{ marginTop: 0 }}>Final examination</h2>
           <p className="small">
@@ -432,6 +522,41 @@ export function LessonPage({ courseId, lessonId }: { courseId: string; lessonId:
                 </div>
               ))}
             </dl>
+          </div>
+        ) : null}
+
+        {lesson.review && lesson.review.length > 0 ? (
+          <div className="card">
+            <h3 style={{ marginTop: 0 }}>Review questions</h3>
+            <p className="small muted">
+              Answer in your own words, then compare with the model answer. These are for
+              self-checking; they do not create a grade.
+            </p>
+            {lesson.review.map((item) => (
+              <details key={item.prompt} style={{ marginBottom: 10 }}>
+                <summary className="small" style={{ cursor: 'pointer', fontWeight: 600 }}>
+                  {item.prompt}
+                </summary>
+                <p className="small" style={{ marginTop: 6 }}>
+                  {item.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+        ) : null}
+
+        {lesson.assignments && lesson.assignments.length > 0 ? (
+          <div className="card">
+            <h3 style={{ marginTop: 0 }}>Assignments</h3>
+            <ul className="small">
+              {lesson.assignments.map((assignment) => (
+                <li key={assignment}>{assignment}</li>
+              ))}
+            </ul>
+            <div className="note">
+              Assignments are completed away from the screen and checked by a parent. They are
+              recorded through the related project rubric, not by clicking a box.
+            </div>
           </div>
         ) : null}
 

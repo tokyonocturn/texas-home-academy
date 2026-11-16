@@ -124,6 +124,10 @@ export interface Lesson {
   example?: WorkedExample;
   keyTerms?: { term: string; definition: string }[];
   practice: Question[];
+  /** Independent work completed away from the screen; verified by a parent. */
+  assignments?: string[];
+  /** Short-answer review with model answers, for self-checking before a quiz. */
+  review?: { prompt: string; answer: string }[];
   /** Real, publicly available reading for depth. Must be a stable URL. */
   furtherReading?: { label: string; url: string }[];
 }

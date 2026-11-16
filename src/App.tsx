@@ -58,7 +58,10 @@ export function App() {
       return <LessonPage courseId={second} lessonId={third} />;
     }
     if (first === 'assessment' && second && third) {
-      const kind = third === 'quiz' || third === 'project' || third === 'final' || third === 'capstone' ? third : 'final';
+      const kind =
+        third === 'quiz' || third === 'project' || third === 'midterm' || third === 'final' || third === 'capstone'
+          ? third
+          : 'final';
       return <AssessmentPage courseId={second} kind={kind} unitId={fourth} />;
     }
     if (first === 'gradebook') return <GradebookPage />;

@@ -46,12 +46,13 @@ import {
   middleSpanish,
   middleTechnology,
 } from './courses/enrichment';
+import { buildMidterm } from './midterm';
 
 /**
  * The full catalog. Order matters for display: grade order, then subject order.
  */
 
-export const COURSES: Course[] = [
+const RAW_COURSES: Course[] = [
   // Kindergarten
   kindergartenEla,
   kindergartenMath,
@@ -136,6 +137,17 @@ export const COURSES: Course[] = [
   personalFinance,
   adultLife,
 ];
+
+/**
+ * Catalog assembly. Every full-year course gets a semester 1 midterm built from
+ * its own authored quizzes, practice, and worked example; a course may also
+ * supply a hand-written midterm instead.
+ */
+export const COURSES: Course[] = RAW_COURSES.map((course) =>
+  course.midterm || course.semesters !== 2
+    ? course
+    : { ...course, midterm: buildMidterm(course) },
+);
 
 export const COURSE_MAP: Record<string, Course> = Object.fromEntries(
   COURSES.map((c) => [c.id, c]),
@@ -265,6 +277,15 @@ export function validateCatalog(courses: Course[]): string[] {
     }
     if (course.units.length === 0) problems.push(`${course.id}: no units`);
     if (course.finalExam.questions.length === 0) problems.push(`${course.id}: empty final`);
+    if (course.semesters === 2 && (!course.midterm || course.midterm.questions.length === 0)) {
+      problems.push(`${course.id}: full-year course has no semester 1 midterm`);
+    }
+    if (course.semesters === 1 && course.midterm) {
+      problems.push(`${course.id}: one-semester course should not have a midterm`);
+    }
+    if (course.midterm) {
+      for (const q of course.midterm.questions) checkQuestion(problems, `${course.id} midterm`, q);
+    }
     for (const unit of course.units) {
       if (unit.lessons.length === 0) problems.push(`${course.id}/${unit.id}: no lessons`);
       if (unit.quiz.questions.length === 0) problems.push(`${course.id}/${unit.id}: empty quiz`);

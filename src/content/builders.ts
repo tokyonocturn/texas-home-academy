@@ -79,6 +79,8 @@ export function lesson(input: {
   example?: Lesson['example'];
   keyTerms?: Lesson['keyTerms'];
   practice: Question[];
+  assignments?: Lesson['assignments'];
+  review?: Lesson['review'];
   furtherReading?: Lesson['furtherReading'];
 }): Lesson {
   return {
@@ -90,6 +92,8 @@ export function lesson(input: {
     example: input.example,
     keyTerms: input.keyTerms,
     practice: input.practice,
+    assignments: input.assignments,
+    review: input.review,
     furtherReading: input.furtherReading,
   };
 }

@@ -488,6 +488,208 @@ export const adultLife: Course = {
         mc('When documenting a dispute, you should', ['rely on memory', 'keep dates and copies in writing', 'delete messages', 'wait a year'], 1, 'Written records matter.'),
       ]),
     ),
+    unit(
+      'u7',
+      'Borrowing, investing, and retirement',
+      'Money grows or shrinks by a rate; know which rate you are paying or earning.',
+      [
+        lesson({
+          id: 'adult-u7-l1',
+          title: 'Loans, interest, and the real cost of debt',
+          minutes: 55,
+          objectives: [
+            'Distinguish the interest rate from the APR.',
+            'Explain why a minimum payment can leave a balance almost unchanged.',
+            'Compare two payoff strategies using total interest.',
+          ],
+          sections: [
+            section('The rate is not the whole price', [
+              'The interest rate prices the borrowed principal. The annual percentage rate (APR) is meant to capture the yearly cost of credit including many fees, which is why a loan advertised at 5% can carry a 6.2% APR. When comparing offers, compare APRs and total repayment, not the monthly payment alone.',
+              'A longer term lowers the monthly payment and raises total interest. A $20,000 car loan at 8% for 4 years costs less in total interest than the same loan for 6 years, even though the 6-year payment is smaller. The lower payment is not a discount; it is more time paying interest.',
+            ]),
+            section('Minimum payments and amortization', [
+              'Installment loans amortize: early payments are mostly interest, later payments are mostly principal. On a $1,200 balance at a 24% APR, the monthly rate is about 2%, so the first month’s interest is about $24. A minimum payment of 2% ($24) would cover only the interest, leaving the balance unchanged.',
+              'Two common payoff plans are the avalanche (highest APR first, least total interest) and the snowball (smallest balance first, fastest wins). Either works if the payment is fixed and the plan is followed; the avalanche is cheaper in interest, the snowball is often easier to sustain. Payday and auto-title loans carry extremely high effective costs and should be treated as emergencies, not budgeting tools.',
+            ]),
+          ],
+          example: {
+            prompt: 'You owe $1,200 at a 24% APR. The minimum payment is 2% of the balance. What happens in month one?',
+            steps: ['Monthly rate = 24% / 12 = 2%.', 'Interest = 0.02 × 1,200 = $24.', 'Minimum payment = 0.02 × 1,200 = $24.', 'Principal reduced = $24 − $24 = $0.'],
+            answer: 'The balance does not fall. Paying more than the minimum is the only way to make progress.',
+          },
+          practice: [
+            num('What is the monthly interest on a $2,000 balance at an 18% APR?', 30, '18% / 12 = 1.5%; 2,000 × 0.015 = 30.'),
+            mc('A longer loan term usually', ['lowers total interest', 'raises total interest', 'has no effect on interest', 'removes the APR'], 1, 'More months of interest means a higher total.'),
+            mc('The avalanche method pays off', ['the smallest balance first', 'the highest APR first', 'the newest debt first', 'all debts equally'], 1, 'Highest rate first minimizes interest.'),
+          ],
+          assignments: [
+            'Find one real loan offer (auto, personal, or student) and write down the amount financed, term, APR, monthly payment, and total of payments. Compute total interest and compare it with a shorter term.',
+            'Using a balance you or a family member actually carries, calculate one month of interest at the stated APR and compare it with the minimum payment.',
+          ],
+          review: [
+            { prompt: 'Why can two loans with the same interest rate have different APRs?', answer: 'The APR includes fees and other finance charges, so origination or processing fees raise the APR above the nominal rate.' },
+            { prompt: 'When is the snowball method the better choice?', answer: 'When motivation and follow-through are the binding constraint: clearing a small balance quickly builds momentum, even though it may cost more interest than the avalanche.' },
+          ],
+        }),
+        lesson({
+          id: 'adult-u7-l2',
+          title: 'Investing, compounding, and retirement accounts',
+          minutes: 55,
+          objectives: [
+            'Apply the Rule of 72 and compound growth.',
+            'Distinguish insured deposits from investments that can lose value.',
+            'Explain the difference between a traditional 401(k) or IRA and a Roth account.',
+          ],
+          sections: [
+            section('Compounding and the Rule of 72', [
+              'Compound growth means returns earn returns. The Rule of 72 estimates doubling time: 72 divided by the annual percentage return. At 6%, money doubles in about 12 years; at 9%, about 8 years. The rule is an approximation, and it assumes a constant return, which markets do not provide.',
+              'Time in the market matters more than the size of any single contribution. Saving $100 a month for 30 years at an average 6% annual return grows to roughly $100,000, of which $36,000 is contributions. The rest is growth, and it is concentrated in the later years.',
+            ]),
+            section('Accounts, risk, and fees', [
+              'A traditional 401(k) or IRA generally uses pre-tax money: contributions may reduce taxable income now, withdrawals are taxed as ordinary income later, and early withdrawals can trigger taxes and a penalty. A Roth account generally uses after-tax money: no deduction now, qualified withdrawals later are tax-free. An employer match is part of compensation; not contributing enough to earn it leaves money on the table.',
+              'Bank deposits at insured institutions are protected by FDIC insurance (NCUSIF for credit unions) up to the published limit per depositor, per institution, per ownership category. Investments such as stock and bond funds are not insured and can lose value. Diversification reduces company-specific risk but not market risk. Fees compound against you: a 1% annual fee can consume a large share of long-run growth.',
+            ]),
+          ],
+          example: {
+            prompt: 'At an average 6% annual return, how long does money take to double, and what does $100 a month for 30 years become?',
+            steps: ['Rule of 72: 72 / 6 = 12 years to double.', 'Monthly rate = 0.06 / 12 = 0.005; 360 months.', 'Future value factor ≈ 1,004.5.', '100 × 1,004.5 ≈ $100,450.'],
+            answer: 'About 12 years to double; about $100,000 after 30 years, on $36,000 of contributions.',
+          },
+          practice: [
+            num('Using the Rule of 72, how many years to double at 8%?', 9, '72 / 8 = 9.'),
+            mc('FDIC insurance covers', ['stock funds', 'bank deposits up to the insured limit', 'all investments', 'cryptocurrency'], 1, 'It covers deposits, not investments.'),
+            mc('An employer 401(k) match is', ['a gift with no strings', 'part of your compensation for contributing', 'a loan', 'a tax'], 1, 'It is compensation contingent on contributing.'),
+          ],
+          assignments: [
+            'Build a two-column comparison of a traditional and a Roth retirement account for your expected situation: tax treatment now, tax treatment later, and one reason to choose each.',
+            'Pick one broad index fund and find its expense ratio. Compute what a 1% versus 0.05% fee difference could cost on a $50,000 balance over 30 years at 6%.',
+          ],
+          review: [
+            { prompt: 'Why is a guaranteed 20% annual return a red flag?', answer: 'Legitimate investments carry risk and can lose value; only insured deposits carry federal insurance. A guarantee of high returns is a classic fraud signal.' },
+            { prompt: 'What does diversification actually reduce?', answer: 'It reduces exposure to any single company or sector. It does not remove market-wide risk, and it does not guarantee a gain.' },
+          ],
+        }),
+      ],
+      quiz('Unit 7 quiz: borrowing and investing', [
+        num('What is the monthly interest on a $1,500 balance at a 12% APR?', 15, '12% / 12 = 1%; 1,500 × 0.01 = 15.'),
+        num('Using the Rule of 72, how many years to double at 9%?', 8, '72 / 9 = 8.'),
+        mc('The APR differs from the interest rate because it', ['is always lower', 'includes many fees', 'ignores the term', 'is set by the borrower'], 1, 'It captures the yearly cost of credit including fees.'),
+        mc('A Roth account is generally funded with', ['pre-tax dollars', 'after-tax dollars', 'employer dollars only', 'borrowed money'], 1, 'Contributions are made after tax.'),
+      ]),
+      project({
+        title: 'Debt payoff and retirement plan',
+        prompt: 'Take two real or realistic debts and one retirement account. Compare avalanche and snowball payoff, show total interest for each, then compute one retirement contribution scenario using the Rule of 72 or a compound-growth calculator. Write a one-page plan.',
+        deliverable: 'A table of both payoff orders, the total interest for each, one compound-growth calculation, and a signed one-page plan with dates.',
+        guidance: ['Use APRs from the statements, not estimates.', 'Show the calculation, not just the result.', 'State one behavior change that makes the plan survivable.'],
+        rubric: [
+          rubricRow('Accurate debt analysis', 30, [['Excellent', 'Balances, APRs, and payments accurate; totals correct.', 30], ['Proficient', 'Minor arithmetic slip.', 24], ['Developing', 'Missing one debt or APR.', 16], ['Beginning', 'No usable figures.', 6]]),
+          rubricRow('Payoff comparison', 25, [['Excellent', 'Both strategies computed and compared on total interest.', 25], ['Proficient', 'Both computed, comparison thin.', 20], ['Developing', 'One strategy only.', 13], ['Beginning', 'None.', 5]]),
+          rubricRow('Retirement calculation', 25, [['Excellent', 'Assumptions stated; growth computed correctly.', 25], ['Proficient', 'Correct with unclear assumptions.', 20], ['Developing', 'Arithmetic error.', 13], ['Beginning', 'Absent.', 5]]),
+          rubricRow('Plan quality', 20, [['Excellent', 'Specific dates, amounts, and a fallback.', 20], ['Proficient', 'Clear but general.', 16], ['Developing', 'Vague intentions.', 10], ['Beginning', 'None.', 4]]),
+        ],
+      }),
+    ),
+    unit(
+      'u8',
+      'Communication, negotiation, and decisions',
+      'Most adult problems are conversations with consequences; prepare for both.',
+      [
+        lesson({
+          id: 'adult-u8-l1',
+          title: 'Negotiating pay, rent, and conflicts',
+          minutes: 50,
+          objectives: [
+            'Define a BATNA and explain why it sets your leverage.',
+            'Prepare a written negotiation script with evidence.',
+            'Handle a dispute in writing instead of in the moment.',
+          ],
+          sections: [
+            section('Know your alternative before you talk', [
+              'Your BATNA is your best alternative to a negotiated agreement: the other job, the other apartment, the small claims filing, the decision to walk away. A strong BATNA lets you ask without desperation; a weak one tells you to build an alternative first. Decide your reservation point — the least you will accept — before the conversation, and write it down so it does not drift.',
+              'Anchor with evidence, not opinion. For pay, use market data such as the Bureau of Labor Statistics Occupational Employment and Wage Statistics for your area and occupation, plus your own documented results. For rent, use comparable listings and the condition of the unit. For a repair dispute, use the lease, photographs, dates, and written notices.',
+            ]),
+            section('Disputes belong in writing', [
+              'Say what happened, what you want, and by when, in plain language, and keep a copy. Written notice is often a legal prerequisite: Texas Property Code §92.056, for example, requires written notice of a condition that materially affects health or safety before certain repair remedies, and security-deposit disputes turn on whether an itemized list and forwarding address were provided in writing.',
+              'Stay on the decision, not the person. A useful sequence is: describe the facts, state the impact, propose a specific fix, set a reasonable deadline, and name the next step if it is not resolved. Escalation paths include a supervisor, the property owner, a consumer complaint to the Texas Attorney General, or justice court for small claims within its jurisdictional limit.',
+            ]),
+          ],
+          example: {
+            prompt: 'You are offered $48,000 for a job whose posted range is $50,000–$56,000, and you have a second interview elsewhere. What do you say?',
+            steps: ['BATNA: the second interview, so you can decline without panic.', 'Evidence: posted range plus your documented results.', 'Ask: “Based on the posted range and my experience with X, can we get to $52,000?”', 'If base is fixed, ask for a written review date, signing bonus, or start date.'],
+            answer: 'A specific, evidence-based request with a fallback, in writing after the call.',
+          },
+          practice: [
+            mc('A BATNA is', ['your first offer', 'your best alternative if no deal is reached', 'a legal filing', 'your reservation price'], 1, 'It is the walk-away alternative.'),
+            mc('A reservation point is', ['the opening ask', 'the least you will accept', 'the market rate', 'the final offer'], 1, 'It is your minimum acceptable outcome.'),
+            mc('Written notice matters because', ['it is polite', 'it is often a legal prerequisite and creates a record', 'it replaces a lease', 'it avoids court'], 1, 'It creates evidence and is sometimes required.'),
+          ],
+          assignments: [
+            'Write a one-page negotiation script for a real situation (pay, rent, a refund, or a grade appeal): BATNA, evidence, opening ask, reservation point, and the next step if refused.',
+            'Draft a written dispute notice for a hypothetical repair or deposit problem that cites the lease terms and a deadline.',
+          ],
+          review: [
+            { prompt: 'Why should you never name a number before knowing the market range?', answer: 'Without a reference point you may anchor far below the range, and the first number strongly shapes the discussion.' },
+            { prompt: 'What belongs in a written dispute notice?', answer: 'Dates, facts, the specific remedy requested, a reasonable deadline, and a copy kept for your records.' },
+          ],
+        }),
+        lesson({
+          id: 'adult-u8-l2',
+          title: 'Decisions under uncertainty',
+          minutes: 50,
+          objectives: [
+            'Compute an expected value for a simple decision.',
+            'Separate sunk costs from future costs.',
+            'Explain why insurance is bought for protection, not for expected profit.',
+          ],
+          sections: [
+            section('Expected value and opportunity cost', [
+              'Expected value multiplies each outcome by its probability and adds the results. A 5% chance of a $10,000 loss has an expected cost of $500. Expected value is a tool, not a verdict: a small chance of ruin is not equivalent to a certain small cost, which is why people buy insurance even when the expected payout is below the premium.',
+              'Opportunity cost is the value of the best alternative you gave up. A “free” evening has a cost if it displaces sleep before an exam. A cheap car with high maintenance can cost more than a reliable one. Compare total cost of ownership, not sticker price.',
+            ]),
+            section('Sunk costs, insurance, and decision journals', [
+              'Sunk costs are already spent and cannot be recovered. Staying in a bad course, lease, or project because of money already spent is the sunk-cost fallacy; the only question is what the next dollar buys. Insurance trades a certain premium for protection against a loss you could not absorb: compare premiums, deductibles, coverage limits, and exclusions, and remember that a very high deductible can leave you unable to repair or replace what you lost.',
+              'Keep a decision journal: the decision, the information you had, the alternatives, what you expected to happen, and a review date. It exposes hindsight bias and improves the next decision. For recurring decisions, set a rule in advance (for example, “no financing over 10% APR” or “no purchase over $200 without a night’s sleep”) so the decision is made before pressure arrives.',
+            ]),
+          ],
+          example: {
+            prompt: 'Insurance costs $600 a year with a $1,000 deductible. There is a 5% chance of a $10,000 loss. Compare expected out-of-pocket cost with and without insurance.',
+            steps: ['Without insurance: 0.05 × 10,000 = $500 expected loss.', 'With insurance: $600 premium + 0.05 × $1,000 deductible = $650.', 'Insurance costs $150 more in expected value but caps the loss at $1,600.'],
+            answer: 'Insurance is not the cheaper expected value here; it buys protection against a loss you could not easily absorb.',
+          },
+          practice: [
+            num('What is the expected cost of a 10% chance of a $5,000 loss?', 500, '0.10 × 5,000 = 500.'),
+            mc('A sunk cost is', ['a future cost', 'money already spent that cannot be recovered', 'an insurance premium', 'a tax'], 1, 'It is unrecoverable.'),
+            mc('A high deductible usually', ['raises the premium', 'lowers the premium and raises your share of a claim', 'removes coverage', 'has no effect'], 1, 'You pay less up front and more when you claim.'),
+          ],
+          assignments: [
+            'Take one real decision you face and write a decision journal entry: options, information, expected outcomes, review date.',
+            'Compare two insurance quotes for renters or auto coverage on premium, deductible, coverage limits, and one exclusion. Recommend one and explain the trade-off.',
+          ],
+          review: [
+            { prompt: 'Why is expected value not the only test for insurance?', answer: 'A low-probability catastrophic loss can be unaffordable even when its expected cost is small; insurance buys protection against that outcome.' },
+            { prompt: 'How does a decision journal reduce hindsight bias?', answer: 'It records what you knew and expected before the outcome, so you can judge the decision on the information available rather than on the result.' },
+          ],
+        }),
+      ],
+      quiz('Unit 8 quiz: negotiation and decisions', [
+        mc('Your BATNA is', ['your opening offer', 'your best alternative if no deal is reached', 'your final price', 'a written contract'], 1, 'It is the walk-away alternative.'),
+        num('What is the expected cost of a 20% chance of a $2,500 loss?', 500, '0.20 × 2,500 = 500.'),
+        mc('Money already spent that cannot be recovered is', ['opportunity cost', 'a sunk cost', 'a premium', 'a deductible'], 1, 'It is sunk.'),
+        mc('A written dispute notice should include', ['only a complaint', 'facts, a specific remedy, and a deadline', 'a threat', 'a verbal summary'], 1, 'Specifics and a deadline make it usable.'),
+      ]),
+      project({
+        title: 'Negotiation and decision memo',
+        prompt: 'Choose one real negotiation and one real decision. Write a memo with your BATNA, evidence, reservation point, and script for the negotiation, then a decision-journal entry for the decision with expected values and a review date.',
+        deliverable: 'A two-page memo, dated and signed, with the evidence attached.',
+        guidance: ['Use at least one authoritative source for market or legal facts.', 'State your reservation point in numbers.', 'Name the next step if the other side refuses.'],
+        rubric: [
+          rubricRow('Negotiation preparation', 30, [['Excellent', 'BATNA, evidence, reservation point, and script are specific.', 30], ['Proficient', 'Most elements present.', 24], ['Developing', 'General intentions.', 16], ['Beginning', 'Missing.', 6]]),
+          rubricRow('Decision analysis', 30, [['Excellent', 'Alternatives, expected values, and opportunity costs computed.', 30], ['Proficient', 'Analysis present, one gap.', 24], ['Developing', 'Asserted without numbers.', 16], ['Beginning', 'Missing.', 6]]),
+          rubricRow('Use of sources', 20, [['Excellent', 'Authoritative source cited and applied.', 20], ['Proficient', 'Source cited, application thin.', 16], ['Developing', 'Unreliable source.', 10], ['Beginning', 'None.', 4]]),
+          rubricRow('Clarity and follow-through', 20, [['Excellent', 'Clear, dated, with a review and fallback.', 20], ['Proficient', 'Clear.', 16], ['Developing', 'Disorganized.', 10], ['Beginning', 'Unusable.', 4]]),
+        ],
+      }),
+    ),
   ],
   finalExam: exam('Adult Life Education final examination', [
     mc('Form W-4 tells an employer', ['how much to withhold', 'your credit score', 'your rent', 'your grades'], 0, 'It sets federal withholding.'),
@@ -499,5 +701,10 @@ export const adultLife: Course = {
     mc('The Texas LLC certificate of formation fee is', ['$25', '$300', '$1,000', 'free'], 1, 'Form 205 costs $300.'),
     short('Explain what a lease obligates you to do and what protections Texas law gives you at move-out.', 'Model: A lease obligates you to pay rent, follow rules, and return the unit in similar condition except normal wear. Texas law requires the landlord to return the deposit within 30 days after surrender, provide an itemized list of deductions, and not charge for normal wear; the landlord may wait for a written forwarding address. I would photograph the unit and keep the lease.', ['Names tenant obligations.', 'Cites deposit timing and itemization.', 'Mentions normal wear and documentation.'], 10),
     short('A friend offers you a “guaranteed” investment returning 20% per year. Describe three questions you would ask and one red flag.', 'Model: Ask what the underlying asset is, who regulates or insures it, and how returns have been verified. Ask for the prospectus or disclosure documents in writing. A guarantee of high returns with no risk is a red flag, because legitimate investments can lose value and only insured deposits carry federal insurance.', ['Asks about the underlying asset.', 'Asks about regulation and insurance.', 'Identifies a guarantee as a red flag.'], 10),
+    num('Using the Rule of 72, how many years does money take to double at 6%?', 12, '72 / 6 = 12.'),
+    mc('The APR differs from the interest rate because it', ['is always lower', 'includes many fees and finance charges', 'ignores the term', 'is set by the borrower'], 1, 'It captures the yearly cost of credit.'),
+    num('What is the expected cost of a 5% chance of a $10,000 loss?', 500, '0.05 × 10,000 = 500.'),
+    mc('A BATNA is', ['your opening offer', 'your best alternative if no deal is reached', 'a written contract', 'a deductible'], 1, 'It is the walk-away alternative.'),
+    mc('Money already spent and unrecoverable is', ['opportunity cost', 'a sunk cost', 'a premium', 'equity'], 1, 'It is sunk.'),
   ]),
 };

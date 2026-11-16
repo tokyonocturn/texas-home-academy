@@ -80,9 +80,9 @@ export const GRADE_POLICY = {
   gpaScale: '4.0 unweighted; 4.5 maximum weighted (advanced courses +0.5)',
   /** How period, semester, and final grades are assembled. */
   semesterFormula:
-    'Six-week period grade = weighted average of the graded categories in that period. Semester average = average of its three period grades. A category with no graded work is excluded and its weight is renormalized within the period.',
+    'Six-week period grade = weighted average of the graded categories in that period, excluding semester exams. Semester average = 80% of the average of its three period grades + 20% of that semester’s exam (the midterm in semester 1, the cumulative final in semester 2). If one side has no graded work, the other side stands alone. A category with no graded work is excluded and its weight is renormalized within the period.',
   finalFormula:
-    'Final grade = 80% of the average of the graded six-week periods + 20% of the cumulative final examination. A final grade is not issued until the final examination is recorded, so an in-progress course cannot earn credit or enter the GPA.',
+    'Final grade = the average of the semester grades. A final grade is not issued until the cumulative final examination is recorded, so an in-progress course cannot earn credit or enter the GPA.',
   missingWork:
     'A category with no graded work is excluded and the remaining weights are renormalized; the course page shows which categories are still empty.',
   retake:

@@ -7,7 +7,7 @@ import { useApp } from '../../state/store';
 import { Badge, Empty, Link, PageHead } from '../parts';
 import { QuizRunner } from '../quiz';
 
-type Kind = 'quiz' | 'project' | 'final' | 'capstone';
+type Kind = 'quiz' | 'project' | 'midterm' | 'final' | 'capstone';
 
 export function AssessmentPage({
   courseId,
@@ -21,7 +21,11 @@ export function AssessmentPage({
   const course = getCourse(courseId);
   const unit = unitId ? course?.units.find((u) => u.id === unitId) : undefined;
 
-  if (!course || (kind !== 'final' && kind !== 'capstone' && !unit)) {
+  if (
+    !course ||
+    (kind !== 'final' && kind !== 'capstone' && kind !== 'midterm' && !unit) ||
+    (kind === 'midterm' && !course.midterm)
+  ) {
     return (
       <>
         <PageHead title="Assessment not found" />
@@ -53,9 +57,21 @@ export function AssessmentPage({
     );
   }
 
-  const assessment: AssessmentSet = kind === 'final' ? course.finalExam : unit!.quiz;
-  const assessmentId = kind === 'final' ? finalId(course.id) : quizId(course.id, unit!.id);
-  const category = kind === 'final' ? 'exam' : 'quiz';
+  const assessment: AssessmentSet =
+    kind === 'final' ? course.finalExam : kind === 'midterm' ? course.midterm! : unit!.quiz;
+  const assessmentId =
+    kind === 'final'
+      ? finalId(course.id)
+      : kind === 'midterm'
+        ? `${course.id}:midterm`
+        : quizId(course.id, unit!.id);
+  const category = kind === 'final' || kind === 'midterm' ? 'exam' : 'quiz';
+  const title =
+    kind === 'final'
+      ? course.finalExam.title
+      : kind === 'midterm'
+        ? course.midterm!.title
+        : `${unit!.title} quiz`;
 
   return (
     <AssessmentRunner
@@ -64,7 +80,7 @@ export function AssessmentPage({
       assessment={assessment}
       assessmentId={assessmentId}
       category={category}
-      title={kind === 'final' ? course.finalExam.title : `${unit!.title} quiz`}
+      title={title}
       returnTo={`/course/${course.id}`}
     />
   );

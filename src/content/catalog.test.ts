@@ -50,6 +50,18 @@ describe('grade coverage', () => {
     expect(COURSES.filter((c) => c.subject === 'lote' && c.credits > 0).length).toBeGreaterThanOrEqual(2);
   });
 
+  it('gives every full-year course a midterm and every one-semester course none', () => {
+    for (const course of COURSES) {
+      if (course.semesters === 2) {
+        expect(course.midterm, course.id).toBeTruthy();
+        expect(course.midterm?.questions.length, course.id).toBeGreaterThan(2);
+        expect(course.midterm?.title).toContain('midterm');
+      } else {
+        expect(course.midterm, course.id).toBeUndefined();
+      }
+    }
+  });
+
   it('offers at least 25 credit-bearing high-school courses', () => {
     expect(COURSES.filter((c) => c.credits > 0).length).toBeGreaterThanOrEqual(25);
   });
