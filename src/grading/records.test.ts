@@ -362,20 +362,19 @@ describe('edge cases', () => {
 });
 
 function fixtureState(): AppState {
-  return {
-    ...structuredClone(defaultState),
-    profile: {
-      ...defaultState.profile,
-      firstName: 'Avery',
-      lastName: 'Chen',
-      gradeLevel: 9,
-      schoolName: 'Chen Home Academy',
-    },
-    enrollments: [
-      { courseId: 'hs-alg1', yearId: '2026-2027', startedAt: '2026-08-24' },
-      { courseId: 'hs-eng1', yearId: '2026-2027', startedAt: '2026-08-24' },
-    ],
-    grades: [
+  const base = structuredClone(defaultState);
+  const profile = {
+    ...base.profile,
+    firstName: 'Avery',
+    lastName: 'Chen',
+    gradeLevel: 9,
+    schoolName: 'Chen Home Academy',
+  };
+  const enrollments = [
+    { courseId: 'hs-alg1', yearId: '2026-2027', startedAt: '2026-08-24' },
+    { courseId: 'hs-eng1', yearId: '2026-2027', startedAt: '2026-08-24' },
+  ];
+  const grades = [
       rec({
         courseId: 'hs-alg1',
         assessmentId: 'hs-alg1:q1',
@@ -393,7 +392,13 @@ function fixtureState(): AppState {
         score: 89.95,
         max: 100,
       }),
-    ],
+  ];
+  return {
+    ...base,
+    profile,
+    enrollments,
+    grades,
+    students: [{ ...base.students[0], profile, enrollments, grades }],
   };
 }
 

@@ -244,8 +244,23 @@ export interface Settings {
   fullDayMinutes: number;
 }
 
+/** One student's complete record set. */
+export interface StudentRecord {
+  id: string;
+  profile: Profile;
+  enrollments: Enrollment[];
+  grades: GradeRecord[];
+  attendance: AttendanceEntry[];
+  lessonProgress: Record<string, LessonProgress>;
+}
+
 export interface AppState {
   schemaVersion: number;
+  /** The student whose records are mirrored in the fields below. */
+  activeStudentId: string;
+  /** Every student in this browser. Never empty. */
+  students: StudentRecord[];
+  /** Active-student mirrors kept in sync with students[activeStudentId]. */
   profile: Profile;
   enrollments: Enrollment[];
   grades: GradeRecord[];

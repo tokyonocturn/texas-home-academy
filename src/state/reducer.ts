@@ -1,11 +1,25 @@
-import type { AppState, AttendanceEntry, GradeRecord, LessonProgress, Profile } from '../types';
+import type { AppState, AttendanceEntry, GradeRecord, GradeLevel, LessonProgress, Profile } from '../types';
 import { todayISO } from './schoolYear';
 import { defaultState } from './persistence';
 import { applyRetakeCap } from '../grading/progression';
+import {
+  emptyStudent,
+  hydrateAppState,
+  replaceStudentData,
+  studentData,
+} from './students';
 
 export type Action =
   | { type: 'profile/update'; patch: Partial<Profile> }
   | { type: 'settings/update'; patch: Partial<AppState['settings']> }
+  | { type: 'student/switch'; id: string }
+  | {
+      type: 'student/create';
+      firstName: string;
+      lastName: string;
+      gradeLevel?: GradeLevel;
+    }
+  | { type: 'student/delete'; id: string }
   | { type: 'enroll'; courseId: string }
   | { type: 'unenroll'; courseId: string }
   | {
@@ -35,8 +49,7 @@ function newId(prefix: string): string {
 
 function enroll(state: AppState, courseId: string): AppState {
   if (state.enrollments.some((e) => e.courseId === courseId)) return state;
-  return {
-    ...state,
+  return replaceStudentData(state, {
     enrollments: [
       ...state.enrollments,
       {
@@ -45,22 +58,58 @@ function enroll(state: AppState, courseId: string): AppState {
         startedAt: todayISO(),
       },
     ],
-  };
+  });
+}
+
+/** Save the active mirror before hydrating another student. */
+function syncedStudents(state: AppState) {
+  return state.students.map((student) =>
+    student.id === state.activeStudentId ? { ...student, ...studentData(state) } : student,
+  );
 }
 
 export function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case 'profile/update':
-      return { ...state, profile: { ...state.profile, ...action.patch } };
+      return replaceStudentData(state, {
+        profile: { ...state.profile, ...action.patch },
+      });
     case 'settings/update':
       return { ...state, settings: { ...state.settings, ...action.patch } };
+    case 'student/switch': {
+      if (action.id === state.activeStudentId) return state;
+      const target = state.students.find((student) => student.id === action.id);
+      if (!target) return state;
+      return hydrateAppState(state.schemaVersion, state.settings, syncedStudents(state), target.id);
+    }
+    case 'student/create': {
+      const student = emptyStudent(newId('student'), {
+        ...state.profile,
+        firstName: action.firstName.trim(),
+        lastName: action.lastName.trim(),
+        gradeLevel: action.gradeLevel ?? 9,
+      });
+      return hydrateAppState(
+        state.schemaVersion,
+        state.settings,
+        [...syncedStudents(state), student],
+        student.id,
+      );
+    }
+    case 'student/delete': {
+      if (state.students.length <= 1) return state;
+      if (!state.students.some((student) => student.id === action.id)) return state;
+      const remaining = syncedStudents(state).filter((student) => student.id !== action.id);
+      const activeStudentId =
+        state.activeStudentId === action.id ? remaining[0].id : state.activeStudentId;
+      return hydrateAppState(state.schemaVersion, state.settings, remaining, activeStudentId);
+    }
     case 'enroll':
       return enroll(state, action.courseId);
     case 'unenroll':
-      return {
-        ...state,
+      return replaceStudentData(state, {
         enrollments: state.enrollments.filter((e) => e.courseId !== action.courseId),
-      };
+      });
     case 'grade/record': {
       const existing = state.grades.filter((g) => g.assessmentId === action.record.assessmentId);
       const attempt = action.record.attempt ?? existing.length + 1;
@@ -75,16 +124,20 @@ export function reducer(state: AppState, action: Action): AppState {
         id: newId('grade'),
         recordedAt: todayISO(),
       };
-      return { ...state, grades: [...state.grades, record] };
+      return replaceStudentData(state, { grades: [...state.grades, record] });
     }
     case 'grade/delete':
-      return { ...state, grades: state.grades.filter((g) => g.id !== action.id) };
+      return replaceStudentData(state, {
+        grades: state.grades.filter((g) => g.id !== action.id),
+      });
     case 'attendance/log': {
       const others = state.attendance.filter((a) => a.date !== action.entry.date);
-      return { ...state, attendance: [...others, action.entry] };
+      return replaceStudentData(state, { attendance: [...others, action.entry] });
     }
     case 'attendance/remove':
-      return { ...state, attendance: state.attendance.filter((a) => a.date !== action.date) };
+      return replaceStudentData(state, {
+        attendance: state.attendance.filter((a) => a.date !== action.date),
+      });
     case 'lesson/complete': {
       const key = `${action.courseId}/${action.lessonId}`;
       const prior = state.lessonProgress[key];
@@ -104,7 +157,9 @@ export function reducer(state: AppState, action: Action): AppState {
         practiceScore: keepPrior ? prior.practiceScore : action.practiceScore,
         practiceMax: keepPrior ? prior.practiceMax : action.practiceMax,
       };
-      return { ...state, lessonProgress: { ...state.lessonProgress, [key]: progress } };
+      return replaceStudentData(state, {
+        lessonProgress: { ...state.lessonProgress, [key]: progress },
+      });
     }
     case 'state/replace':
       return action.state;

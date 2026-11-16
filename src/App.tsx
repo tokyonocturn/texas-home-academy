@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useApp } from './state/store';
+import { studentName } from './state/students';
 import { currentPath, navigate, useRoute } from './ui/router';
 import { Link } from './ui/parts';
 import { DashboardPage } from './ui/pages/Dashboard';
@@ -44,9 +45,11 @@ const NAV = [
 ];
 
 export function App() {
-  const { path, segments } = useRoute();
-  const { state } = useApp();
+  const { segments } = useRoute();
+  const { state, dispatch } = useApp();
   const [menuOpen, setMenuOpen] = useState(false);
+  const gradeLabel = (gradeLevel: number) =>
+    gradeLevel === 0 ? 'Kindergarten' : `Grade ${gradeLevel}`;
 
   function render() {
     const [first, second, third, fourth] = segments;
@@ -136,16 +139,37 @@ export function App() {
 
           <div className="nav-group">
             <div className="nav-group-title">Student</div>
-            <div className="nav-link" style={{ cursor: 'default', color: '#93a9c0' }}>
-              {state.profile.firstName || 'Not set'}
-              {state.profile.gradeLevel === 0
-                ? ' · Kindergarten'
-                : ` · Grade ${state.profile.gradeLevel}`}
-            </div>
+            {state.students.length > 1 ? (
+              <>
+                <select
+                  className="student-select"
+                  aria-label="Active student"
+                  value={state.activeStudentId}
+                  onChange={(event) => {
+                    dispatch({ type: 'student/switch', id: event.target.value });
+                    setMenuOpen(false);
+                  }}
+                >
+                  {state.students.map((student) => (
+                    <option key={student.id} value={student.id}>
+                      {studentName(student.profile)}
+                    </option>
+                  ))}
+                </select>
+                <div className="student-meta">{gradeLabel(state.profile.gradeLevel)}</div>
+              </>
+            ) : (
+              <div className="nav-link" style={{ cursor: 'default', color: '#93a9c0' }}>
+                {state.profile.firstName || 'Not set'}
+                {` · ${gradeLabel(state.profile.gradeLevel)}`}
+              </div>
+            )}
           </div>
         </aside>
 
-        <main className="main">{render()}</main>
+        <main className="main" key={state.activeStudentId}>
+          {render()}
+        </main>
       </div>
     </>
   );

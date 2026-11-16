@@ -5,6 +5,7 @@ import { COURSES, getCourse } from '../../content';
 import { curriculumDepthReport } from '../../content/depth/standard';
 import { GRADE_POLICY } from '../../grading/scale';
 import { useApp } from '../../state/store';
+import { studentName } from '../../state/students';
 import { Badge, Empty, Link, PageHead } from '../parts';
 
 /** Computed once from the assembled catalog; the depth test asserts the same numbers. */
@@ -331,18 +332,126 @@ export function SettingsPage() {
   const { state, dispatch, exportBackup, importBackup } = useApp();
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const [newFirst, setNewFirst] = useState('');
+  const [newLast, setNewLast] = useState('');
+  const [newGrade, setNewGrade] = useState(state.profile.gradeLevel);
   const profile = state.profile;
+  const canAdd = Boolean(newFirst.trim() || newLast.trim());
 
   return (
     <>
       <PageHead
         eyebrow="Reference"
         title="Settings"
-        lede="Profile, calendar, attendance rules, and backups. All records live in this browser unless you export them."
+        lede="Students, profile, calendar, attendance rules, and backups. All records live in this browser unless you export them."
       />
 
       <div className="card">
-        <h2 style={{ marginTop: 0 }}>Student and school</h2>
+        <h2 style={{ marginTop: 0 }}>Students</h2>
+        <p className="small">
+          Each student has separate enrollments, lesson progress, grades, attendance, and records.
+          Switching students changes every dashboard and report to the selected student.
+        </p>
+        {state.students.map((student) => {
+          const active = student.id === state.activeStudentId;
+          return (
+            <div
+              className="spread"
+              key={student.id}
+              style={{ padding: '10px 0', borderTop: '1px solid var(--line)' }}
+            >
+              <div>
+                <strong>{studentName(student.profile)}</strong>{' '}
+                {active ? <Badge tone="info">Active</Badge> : null}
+                <div className="note">
+                  {student.profile.gradeLevel === 0
+                    ? 'Kindergarten'
+                    : `Grade ${student.profile.gradeLevel}`}{' '}
+                  · {student.enrollments.length} enrollments · {student.grades.length} grade records
+                </div>
+              </div>
+              <div className="btn-row">
+                {!active ? (
+                  <button
+                    className="btn ghost small"
+                    onClick={() => dispatch({ type: 'student/switch', id: student.id })}
+                  >
+                    Switch
+                  </button>
+                ) : null}
+                {state.students.length > 1 ? (
+                  <button
+                    className="btn danger small"
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          `Delete ${studentName(student.profile)} and all of their enrollments, grades, attendance, and lesson progress? This cannot be undone.`,
+                        )
+                      ) {
+                        dispatch({ type: 'student/delete', id: student.id });
+                      }
+                    }}
+                  >
+                    Delete
+                  </button>
+                ) : (
+                  <span className="note">Required</span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+        <div className="inline-fields" style={{ marginTop: 14 }}>
+          <label className="field">
+            <span>New student first name</span>
+            <input type="text" value={newFirst} onChange={(e) => setNewFirst(e.target.value)} />
+          </label>
+          <label className="field">
+            <span>New student last name</span>
+            <input type="text" value={newLast} onChange={(e) => setNewLast(e.target.value)} />
+          </label>
+          <label className="field">
+            <span>Grade level</span>
+            <select value={newGrade} onChange={(e) => setNewGrade(Number(e.target.value))}>
+              <option value={0}>Kindergarten</option>
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((g) => (
+                <option key={g} value={g}>
+                  Grade {g}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className="field">
+            <span aria-hidden="true">&nbsp;</span>
+            <button
+              className="btn"
+              disabled={!canAdd}
+              onClick={() => {
+                dispatch({
+                  type: 'student/create',
+                  firstName: newFirst,
+                  lastName: newLast,
+                  gradeLevel: newGrade,
+                });
+                setNewFirst('');
+                setNewLast('');
+              }}
+            >
+              Add student
+            </button>
+          </div>
+        </div>
+        <div className="note">
+          A new student starts with no enrollments or grades. School details are copied from the
+          active student and can be edited below.
+        </div>
+      </div>
+
+      <div className="card">
+        <h2 style={{ marginTop: 0 }}>Active student and school</h2>
+        <div className="note" style={{ marginTop: -6, marginBottom: 12 }}>
+          These details save to {studentName(profile)}.
+        </div>
         <div className="inline-fields">
           <label className="field">
             <span>First name</span>
@@ -468,10 +577,12 @@ export function SettingsPage() {
                 if (!file) return;
                 setError('');
                 setMessage('');
-                const hasRecords =
-                  state.grades.length > 0 ||
-                  state.enrollments.length > 0 ||
-                  state.attendance.length > 0;
+                const hasRecords = state.students.some(
+                  (student) =>
+                    student.grades.length > 0 ||
+                    student.enrollments.length > 0 ||
+                    student.attendance.length > 0,
+                );
                 if (
                   hasRecords &&
                   !window.confirm(
@@ -494,7 +605,11 @@ export function SettingsPage() {
           <button
             className="btn danger"
             onClick={() => {
-              if (window.confirm('Erase all enrollment, grades, attendance, and profile data on this device?')) {
+              if (
+                window.confirm(
+                  'Erase every student profile, enrollment, grade, attendance entry, and lesson record on this device?',
+                )
+              ) {
                 dispatch({ type: 'state/reset' });
                 setMessage('All records erased.');
               }
@@ -506,6 +621,7 @@ export function SettingsPage() {
         {error ? <div className="callout">{error}</div> : null}
         {message ? <div className="note">{message}</div> : null}
         <div className="note">
+          {state.students.length} student{state.students.length === 1 ? '' : 's'} · active:{' '}
           {state.grades.length} grade records · {state.attendance.length} attendance entries ·{' '}
           {state.enrollments.length} enrollments
         </div>

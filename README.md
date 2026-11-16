@@ -58,6 +58,10 @@ with the Texas Education Agency. See
 - **Traditional school year.** 180 instructional days anchored on the fourth
   Monday in August, six six-week grading periods, two semesters, and a 90%
   attendance standard.
+- **Multiple students in one browser.** Each profile has its own enrollments,
+  lesson progress, grades, attendance, report card, transcript, and graduation
+  audit. Switch the active student from the sidebar or Settings; existing
+  single-student data is migrated automatically on first load.
 - **Records.** Gradebook, report card, cumulative transcript, attendance log,
   GPA (4.0 unweighted / 4.5 weighted), credit tracking, a K–8 promotion check,
   and a Foundation High School Program graduation audit with endorsement and
