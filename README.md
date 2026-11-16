@@ -33,12 +33,13 @@ with the Texas Education Agency. See
   practice items, four off-screen exercises, four reviewed questions with model
   answers, three discussed topics, and a named real-world application, with
   anti-boilerplate checks. `src/content/depth.test.ts` enforces it and fails by
-  naming the lesson and the missed criterion. **Status: Grades K–7 and the
-  middle-school electives meet v2 (106 lessons); the remaining 95 are honestly
-  listed in the shortfall ledger with their measured word counts, shown on the
-  Sources page.** Lessons in grade 8 and high school still carry objectives, two
-  sections, two worked examples, terms, application, practice, exercises, and
-  reviewed questions from the v1 standard.
+  naming the lesson and the missed criterion. **Status: Grades K–8 and English I
+  meet v2 (122 lessons); the remaining 79 are honestly listed in the shortfall
+  ledger with their measured word counts, shown on the Sources page.** Algebra I,
+  Biology, Integrated Physics and Chemistry, World Geography, Spanish I, Art I,
+  Health, and grades 10–12 still carry objectives, two sections, two worked
+  examples, terms, application, practice, exercises, and reviewed questions from
+  the v1 standard.
 - **Real assessments.** Unit quizzes, projects scored against published analytic
   rubrics, a semester 1 midterm for every full-year course, and a cumulative
   final examination. Multiple-choice and numeric items are auto-graded; written

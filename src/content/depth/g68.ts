@@ -890,7 +890,7 @@ export const DEPTH_G68: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'What does the solution of a system represent on a graph?',
-        answer: 'The point where the two lines intersect.',
+        answer: 'The point where the two lines intersect, the ordered pair that satisfies both equations at once.',
       },
       {
         prompt: 'Which transformation changes size but not shape?',
@@ -948,7 +948,7 @@ export const DEPTH_G68: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'What determines an element’s identity?',
-        answer: 'Its atomic number, the number of protons.',
+        answer: 'Its atomic number, the number of protons in its nucleus.',
       },
       {
         prompt: 'Why do elements in the same group react similarly?',
@@ -977,7 +977,7 @@ export const DEPTH_G68: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'Why does a heavier object accelerate less under the same force?',
-        answer: 'Because acceleration equals force divided by mass.',
+        answer: 'Because acceleration equals force divided by mass, so a greater mass gives less acceleration for the same net force.',
       },
       {
         prompt: 'How can an object accelerate without changing speed?',
