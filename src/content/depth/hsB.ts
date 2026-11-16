@@ -760,7 +760,7 @@ export const DEPTH_HS_B: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'What causes movement along a demand curve?',
-        answer: 'A change in the good’s own price.',
+        answer: 'A change in the good’s own price moves quantity demanded along the curve rather than shifting the curve itself.',
       },
       {
         prompt: 'What happens when price is above equilibrium?',

@@ -71,10 +71,13 @@ describe('curriculum depth standard', () => {
 
   it('records every lesson below the bar in the ledger, with measured counts', () => {
     const actual = lessons.filter((entry) => !entry.status.ok);
-    expect(actual.length).toBeGreaterThan(0);
 
     const ledger = new Map(KNOWN_DEPTH_SHORTFALLS.map((entry) => [entry.lessonId, entry]));
     expect(ledger.size).toBe(KNOWN_DEPTH_SHORTFALLS.length);
+    // The ledger is a bijection with the measured shortfalls: every short lesson is
+    // listed with its counts, and every listed lesson is still short. When the whole
+    // curriculum meets the bar this is 0 = 0, which is the intended end state.
+    expect(ledger.size).toBe(actual.length);
 
     for (const { status } of actual) {
       const entry = ledger.get(status.lessonId);

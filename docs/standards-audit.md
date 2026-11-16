@@ -148,18 +148,20 @@ gradebook and graduation audit both enforce the 70 floor. No lesson completion, 
 
 ## 6. Gap register
 
-1. **Lesson depth — partially met, measured honestly.** The self-teaching standard (v2) asks for
+1. **Lesson depth — met, measured honestly.** The self-teaching standard (v2) asks for
    four objectives, three sections, grade-scaled taught prose (350 words K–2, 400 in 3–5, 500 in
    6–8, 600 in 9–12), three worked examples with reasoning and answers, eight defined terms, five
    practice items, four off-screen exercises, four reviewed questions with model answers, three
    discussed topics, and a real-world application section, and it rejects shared boilerplate.
-   One hundred eighty-five lessons (every grade 9, 10, and 11 course and all of Kindergarten through
-   Grade 8, plus the middle-school electives) meet v2. The other 16 meet v1 (two objectives,
-   two sections, 190 taught words, two examples, two terms, two practice items, two exercises, two
-   reviewed questions) and are listed with their measured prose counts in
-   `src/content/depth/shortfalls.ts` and on the Sources page. `src/content/depth.test.ts` enforces
-   v2 and fails with the lesson name and the missed criterion, so the ledger cannot silently drift.
-   Nothing has been padded to close the gap; the remaining work is authoring real instruction.
+   All two hundred one K–12 lessons meet v2, so `src/content/depth/shortfalls.ts` is empty and the
+   Sources page reports 201 of 201 at standard. `src/content/depth.test.ts` enforces v2 and fails
+   with the lesson name and the missed criterion, and its ledger check is a bijection: every short
+   lesson must be listed with its measured counts and every listed lesson must still be short, so
+   the ledger cannot silently drift in either direction. Nothing was padded to reach this point; the
+   remaining lessons were authored, and the standard, thresholds and checks were left unchanged.
+   Meeting this internal depth standard is not a compliance or accreditation claim: TEKS alignment,
+   graduation-credit handling and the limits of homeschool records are separate matters, catalogued
+   elsewhere in this register.
 2. **Written-response scoring.** Written items are scored by a parent against a rubric. The app
    does not evaluate prose and does not claim to.
 3. **Practical/performance assessments.** PE activity logs, studio art production, and lab work

@@ -657,7 +657,7 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
       },
       {
         prompt: 'What does tempo describe?',
-        answer: 'How fast or slow the music moves.',
+        answer: 'Tempo describes how fast or slow the music moves, usually given in beats per minute or by terms such as allegro and adagio.',
       },
     ],
     exercises: [
@@ -798,7 +798,7 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
     review: [
       {
         prompt: 'Name two things you should not share online.',
-        answer: 'Your home address and your passwords.',
+        answer: 'Never share your home address, your passwords, or financial account numbers with strangers online.',
       },
       {
         prompt: 'Why does the order of steps matter?',
