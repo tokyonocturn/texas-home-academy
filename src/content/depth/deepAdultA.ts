@@ -610,7 +610,7 @@ export const DEPTH_ADULT_A: Record<string, LessonDepth> = {
       ['justice court', 'the Texas court that hears eviction cases'],
     ],
     practice: [
-      num('A deposit must generally be returned within how many days after surrender?', 30, 'Property Code §92.103 sets 30 days.'),
+      mc('A tenant who disagrees with the deposit deductions may', ['withhold rent', 'sue in justice court', 'change the locks', 'ignore the itemized notice'], 1, 'The remedy is a court claim, not self-help.'),
       mc('A landlord may deduct for', ['normal wear and tear', 'damage beyond normal wear', 'routine repainting between tenants', 'the tenant’s groceries'], 1, 'Only damage, not wear.'),
       mc('A landlord may remove a tenant’s property without a court order', ['after three days', 'never', 'if rent is late', 'with a text message'], 1, 'A court order is required.'),
     ],

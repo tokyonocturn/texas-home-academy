@@ -47,7 +47,11 @@ export function checkAdvancement(
   const grade = state.profile.gradeLevel;
   const lines: CheckLine[] = [];
   const blockers: string[] = [];
-  const core = coreCoursesForGrade(courses, grade);
+  // Only courses the family actually enrolled in count. Without this filter the
+  // check would report on every catalog course for the grade, including ones the
+  // student never started, and could never be satisfied honestly.
+  const enrolled = new Set(state.enrollments.map((entry) => entry.courseId));
+  const core = coreCoursesForGrade(courses, grade).filter((course) => enrolled.has(course.id));
 
   if (grade >= 12) {
     lines.push({
@@ -65,9 +69,8 @@ export function checkAdvancement(
       detail: 'No core courses are enrolled for this grade yet.',
     });
     blockers.push('Enroll in English, math, science, and social studies for this grade.');
-  }
-
-  for (const subject of CORE_SUBJECTS) {
+  } else {
+    for (const subject of CORE_SUBJECTS) {
     const courses = core.filter((c) => c.subject === subject);
     const label =
       subject === 'ela'
@@ -94,8 +97,9 @@ export function checkAdvancement(
           ? `${courses[0].title}: ${complete ? `${worst.toFixed(1)} final` : 'in progress'}`
           : `${results.length} courses; lowest final ${complete ? worst.toFixed(1) : 'in progress'}`,
     });
-    if (!complete) blockers.push(`${label}: finish the final assessment.`);
-    else if (!passing) blockers.push(`${label}: final grade below 70; remediation required.`);
+      if (!complete) blockers.push(`${label}: finish the final assessment.`);
+      else if (!passing) blockers.push(`${label}: final grade below 70; remediation required.`);
+    }
   }
 
   const attendance = attendanceSummary(state, totalInstructionalDays);
@@ -141,6 +145,15 @@ export function canRetake(records: GradeRecord[], assessmentId: string, category
   return { allowed: true, reason: 'One retake is available after documented remediation.' };
 }
 
-export function applyRetakeCap(raw: number, attempt: number): number {
-  return attempt > 1 ? Math.min(raw, RETAKE_CAP) : raw;
+/**
+ * Cap a retake at 80 percent of the assessment's maximum, in points.
+ *
+ * The cap is a percentage, not a point value: an 18-point quiz retake tops out
+ * at 14.4 points and a 100-point exam at 80 points. Comparing raw points to 80
+ * silently exempted every assessment worth less than 80 points.
+ */
+export function applyRetakeCap(rawScore: number, max: number, attempt: number): number {
+  if (attempt <= 1) return rawScore;
+  if (!Number.isFinite(max) || max <= 0) return rawScore;
+  return Math.min(rawScore, (RETAKE_CAP / 100) * max);
 }

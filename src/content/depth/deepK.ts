@@ -452,7 +452,7 @@ export const DEPTH_KINDER: Record<string, LessonDepth> = {
       ['season', 'a long period of the year with a typical weather pattern'],
     ],
     practice: [
-      mc('Which tool measures temperature?', ['ruler', 'thermometer', 'scale', 'clock'], 1, 'A thermometer measures how hot or cold it is.'),
+      mc('Which tool measures how much rain fell?', ['ruler', 'rain gauge', 'scale', 'clock'], 1, 'A rain gauge collects and measures rainfall.'),
       mc('When you hear thunder, you should', ['go outside', 'go indoors or into a car', 'stand under a tree', 'keep swimming'], 1, 'Thunder means lightning is close.'),
       num('How many degrees warmer is 80°F than 65°F?', 15, '80 − 65 = 15 degrees.'),
     ],

@@ -1,7 +1,7 @@
 import { auditGraduation } from '../../grading/graduation';
 import { splitGpa } from '../../grading/gpa';
 import { courseResult, displayGrade } from '../../grading/gradebook';
-import { attendanceSummary } from '../../grading/progression';
+import { attendanceSummary, checkAdvancement } from '../../grading/progression';
 import { COURSES, courseGradeLabel, getCourse, gradeLabel, recommendedForGrade } from '../../content';
 import { useApp } from '../../state/store';
 import { formatDate, todayISO } from '../../state/schoolYear';
@@ -20,6 +20,9 @@ export function DashboardPage() {
   const gpa = splitGpa(COURSES, state.grades);
   const audit = auditGraduation(COURSES, state.grades);
   const attendance = attendanceSummary(state, year.instructionalDays);
+  // K-8 families get an annual promotion recommendation; high school uses the
+  // graduation audit instead.
+  const advancement = grade <= 8 ? checkAdvancement(state, COURSES, year.instructionalDays) : null;
 
   const totalLessons = enrolled.reduce(
     (sum, c) => sum + c.units.reduce((s, u) => s + u.lessons.length, 0),
@@ -164,6 +167,46 @@ export function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {advancement ? (
+        <div className="card">
+          <div className="spread">
+            <h2 style={{ marginTop: 0 }}>Promotion check for this grade</h2>
+            <Badge tone={advancement.eligible ? 'pass' : 'info'}>
+              {advancement.eligible ? 'Ready to advance' : 'Open items'}
+            </Badge>
+          </div>
+          <table>
+            <tbody>
+              {advancement.lines.map((line) => (
+                <tr key={line.label}>
+                  <td>
+                    <span className={line.met ? 'check' : 'x'}>{line.met ? '✓' : '✗'}</span>{' '}
+                    {line.label}
+                  </td>
+                  <td className="small">{line.detail}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {advancement.blockers.length > 0 ? (
+            <ul className="small" style={{ marginTop: 10 }}>
+              {advancement.blockers.map((blocker) => (
+                <li key={blocker}>{blocker}</li>
+              ))}
+            </ul>
+          ) : (
+            <div className="note" style={{ marginTop: 8 }}>
+              The four core subjects are complete and passing and attendance meets the 90% standard
+              this program adopts.
+            </div>
+          )}
+          <div className="note" style={{ marginTop: 8 }}>
+            Promotion in a Texas home school is a family decision; this is a recommendation, not a
+            state determination. See the <Link to="/policies">records policy</Link>.
+          </div>
+        </div>
+      ) : null}
 
       <h2>Your courses</h2>
       {enrolled.length === 0 ? (

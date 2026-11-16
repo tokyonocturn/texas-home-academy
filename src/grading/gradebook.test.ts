@@ -66,6 +66,54 @@ describe('latestAttempts', () => {
   });
 });
 
+describe('formative practice attempts', () => {
+  it('keeps the best practice score when a later retake is worse', () => {
+    const records = [
+      rec({ assessmentId: 'practice-1', category: 'practice', attempt: 1, score: 20, max: 20 }),
+      rec({ assessmentId: 'practice-1', category: 'practice', attempt: 2, score: 0, max: 20 }),
+    ];
+    const kept = latestAttempts(records);
+    expect(kept).toHaveLength(1);
+    expect(kept[0].score).toBe(20);
+    const practice = categoryResults(course, records).find((c) => c.id === 'practice');
+    expect(practice?.average).toBe(100);
+  });
+
+  it('still keeps the latest attempt for summative assessments', () => {
+    const records = [
+      rec({ assessmentId: 'quiz-9', category: 'quiz', attempt: 1, score: 90 }),
+      rec({ assessmentId: 'quiz-9', category: 'quiz', attempt: 2, score: 40 }),
+    ];
+    expect(latestAttempts(records)[0].score).toBe(40);
+  });
+
+  it('lets a better practice retake replace the earlier score', () => {
+    const records = [
+      rec({ assessmentId: 'practice-2', category: 'practice', attempt: 1, score: 8, max: 20 }),
+      rec({ assessmentId: 'practice-2', category: 'practice', attempt: 2, score: 18, max: 20 }),
+    ];
+    expect(latestAttempts(records)[0].score).toBe(18);
+  });
+});
+
+describe('single-semester courses', () => {
+  const oneSemester: Course = { ...course, semesters: 1 };
+
+  it('uses the cumulative final examination as the only exam', () => {
+    const records = [
+      rec({ category: 'quiz', period: 'Q1', score: 80 }),
+      rec({ category: 'quiz', period: 'Q2', score: 90 }),
+      rec({ category: 'quiz', period: 'Q3', score: 70 }),
+      rec({ category: 'exam', period: 'Q3', assessmentId: 'test:final', score: 100 }),
+    ];
+    const result = courseResult(oneSemester, records);
+    expect(result.semesters).toHaveLength(1);
+    expect(result.semesters[0].examGrade).toBe(100);
+    expect(result.examGrade).toBe(100);
+    expect(result.finalGrade).toBeCloseTo(80 * 0.8 + 100 * 0.2, 5);
+  });
+});
+
 describe('category weighting', () => {
   it('renormalizes weights when a category has no graded work', () => {
     const records = [rec({ category: 'quiz', score: 80 }), rec({ category: 'exam', score: 90 })];

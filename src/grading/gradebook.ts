@@ -60,15 +60,31 @@ export function recordsForCourse(records: GradeRecord[], courseId: string): Grad
 }
 
 /**
- * Best attempt per assessment id. A retake replaces the earlier attempt in the
- * gradebook, and the retake cap is applied when the record is created.
+ * The attempt that counts for each assessment.
+ *
+ * Summative assessments (quizzes, projects, exams) keep the latest attempt,
+ * which is already capped when the record is written. Practice is formative:
+ * the best percentage counts, so a lower retake can never pull a course grade
+ * down. The UI promises exactly this on the lesson page.
  */
 export function latestAttempts(records: GradeRecord[]): GradeRecord[] {
   const best = new Map<string, GradeRecord>();
+  const ratio = (record: GradeRecord) => (record.max > 0 ? record.score / record.max : 0);
   for (const record of records) {
     const key = record.assessmentId;
     const existing = best.get(key);
-    if (!existing || record.attempt >= existing.attempt) best.set(key, record);
+    if (!existing) {
+      best.set(key, record);
+      continue;
+    }
+    const formative = existing.category === 'practice' || record.category === 'practice';
+    if (formative) {
+      const better = ratio(record) > ratio(existing);
+      const tiedAndLater = ratio(record) === ratio(existing) && record.attempt >= existing.attempt;
+      if (better || tiedAndLater) best.set(key, record);
+      continue;
+    }
+    if (record.attempt >= existing.attempt) best.set(key, record);
   }
   return [...best.values()];
 }

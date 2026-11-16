@@ -361,7 +361,7 @@ export const DEPTH_G8A: Record<string, LessonDepth> = {
       ['sphere', 'a perfectly round solid whose points are equidistant from its center'],
     ],
     practice: [
-      num('A right triangle has legs 6 and 8. What is the hypotenuse?', 10, '36 + 64 = 100.'),
+      num('A right triangle has legs 5 and 12. What is the hypotenuse?', 13, '25 + 144 = 169.'),
       mc('The volume of a cone is what fraction of a cylinder with the same base and height?', ['one half', 'one third', 'two thirds', 'the same'], 1, 'A cone holds one third as much.'),
       num('What is the distance between (1, 2) and (4, 6)?', 5, 'Legs 3 and 4 give hypotenuse 5.'),
     ],

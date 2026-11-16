@@ -67,7 +67,7 @@ export function reducer(state: AppState, action: Action): AppState {
       const capped =
         action.record.category === 'practice'
           ? action.record.score
-          : applyRetakeCap(action.record.score, attempt);
+          : applyRetakeCap(action.record.score, action.record.max, attempt);
       const record: GradeRecord = {
         ...action.record,
         score: Math.min(capped, action.record.max),

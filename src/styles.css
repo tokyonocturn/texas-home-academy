@@ -843,6 +843,14 @@ label.field span {
   }
   .main {
     padding: 20px 18px 70px;
+    /* Grid and flex children default to min-width:auto, so a wide table would
+       stretch the page instead of scrolling inside its card. */
+    min-width: 0;
+  }
+  .main .card,
+  .main .transcript {
+    max-width: 100%;
+    overflow-x: auto;
   }
   .mobile-nav {
     display: flex;

@@ -59,9 +59,9 @@ with the Texas Education Agency. See
   Monday in August, six six-week grading periods, two semesters, and a 90%
   attendance standard.
 - **Records.** Gradebook, report card, cumulative transcript, attendance log,
-  GPA (4.0 unweighted / 4.5 weighted), credit tracking, and a Foundation High
-  School Program graduation audit with endorsement and Distinguished Level of
-  Achievement checks.
+  GPA (4.0 unweighted / 4.5 weighted), credit tracking, a K–8 promotion check,
+  and a Foundation High School Program graduation audit with endorsement and
+  Distinguished Level of Achievement checks.
 - **Adult life education.** Eight units: taxes and filing; paychecks and
   workplace rights; banking and budgeting; credit, loans, and debt; renting,
   insurance, and vehicles; business and contracts; borrowing, investing, and
@@ -77,7 +77,7 @@ Requires Node.js 20 or newer.
 npm install
 npm run dev      # local development server
 npm run build    # typecheck and build to dist/
-npm test         # grading, GPA, graduation, catalog, calendar, and workflow tests
+npm test         # grading, GPA, graduation, promotion, catalog, assessment, calendar, and workflow tests
 ```
 
 `dist/` is a static site with relative asset paths, so it can be hosted from any
@@ -100,7 +100,9 @@ environment variables or backend are needed.
   the cumulative final examination is recorded. Until then the course shows a
   current standing and cannot earn credit.
 - One retake per quiz or exam after documented remediation; the retake replaces
-  the first attempt but is capped at 80.
+  the first attempt but is capped at 80% of the assessment's points (an 18-point
+  quiz can earn at most 14.4 on a retake). Practice keeps the best attempt, so a
+  struggling retry never lowers a recorded grade.
 
 ## Records and honesty
 

@@ -351,7 +351,7 @@ export const DEPTH_ADULT_B: Record<string, LessonDepth> = {
       ['reservation point', 'the least favorable outcome you will accept'],
     ],
     practice: [
-      mc('A sunk cost should', ['drive the decision', 'be ignored in the current decision', 'always be recovered', 'be doubled'], 1, 'Past spending is not recoverable.'),
+      mc('When a project is going badly, the best question is', ['how much we have already spent', 'what future cost and benefit remain', 'who is to blame', 'how to hide the loss'], 1, 'Only future costs and benefits should guide the decision.'),
       mc('A useful conflict statement includes', ['a character judgment', 'facts, impact, and a specific request', 'an ultimatum', 'silence'], 1, 'Facts plus a request is actionable.'),
       mc('Signing a one-year lease is', ['reversible at no cost', 'largely irreversible', 'not a decision', 'always refundable'], 1, 'Leaving early has real costs.'),
     ],
@@ -444,7 +444,7 @@ export const DEPTH_ADULT_B: Record<string, LessonDepth> = {
     ],
     practice: [
       num('What is one month of interest on $3,600 at 15% APR?', 45, '15% ÷ 12 = 1.25%; 3,600 × 0.0125 = 45.'),
-      mc('A longer loan term usually', ['lowers total interest', 'raises total interest', 'has no effect on interest', 'removes the APR'], 1, 'More months of interest means a higher total.'),
+      num('What is one month of interest on $12,000 at 6% APR?', 60, '6% ÷ 12 = 0.5%; 12,000 × 0.005 = 60.'),
     ],
     exercises: [
       'Obtain one real loan offer and compute the total of payments and total interest.',

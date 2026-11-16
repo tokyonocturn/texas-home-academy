@@ -52,7 +52,11 @@ export function loadState(): AppState {
     return {
       ...defaultState,
       ...parsed,
-      settings: { ...defaultState.settings, ...parsed.settings },
+      // Merge nested objects so a record written by an older build (or a partial
+      // import) cannot leave the calendar without a start year.
+      profile: { ...defaultState.profile, ...(parsed.profile ?? {}) },
+      settings: { ...defaultState.settings, ...(parsed.settings ?? {}) },
+      lessonProgress: { ...(parsed.lessonProgress ?? {}) },
     };
   } catch {
     return defaultState;
@@ -66,5 +70,12 @@ export function serializeState(state: AppState): string {
 export function parseImportedState(raw: string): AppState {
   const parsed = JSON.parse(raw);
   if (!isAppState(parsed)) throw new Error('That file is not a Texas Home Academy backup.');
-  return { ...defaultState, ...parsed, schemaVersion: SCHEMA_VERSION };
+  return {
+    ...defaultState,
+    ...parsed,
+    schemaVersion: SCHEMA_VERSION,
+    profile: { ...defaultState.profile, ...(parsed.profile ?? {}) },
+    settings: { ...defaultState.settings, ...(parsed.settings ?? {}) },
+    lessonProgress: { ...(parsed.lessonProgress ?? {}) },
+  };
 }

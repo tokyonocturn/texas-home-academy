@@ -297,7 +297,7 @@ export const DEPTH_G7A: Record<string, LessonDepth> = {
       ['isolate', 'to get a variable alone on one side of an equation'],
     ],
     practice: [
-      num('Solve 3x − 7 = 14.', 7, 'Add 7, then divide by 3.'),
+      num('Solve 5x + 4 = 29.', 5, 'Subtract 4, then divide by 5.'),
       num('Solve −2/3 x = 8.', -12, 'Multiply by the reciprocal −3/2.'),
       mc('How do you divide by −2/3?', ['multiply by 2/3', 'multiply by −3/2', 'divide by 3', 'multiply by −2'], 1, 'Multiply by the reciprocal.'),
     ],

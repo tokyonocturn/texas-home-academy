@@ -104,7 +104,9 @@ function AssessmentRunner({
   returnTo: string;
 }) {
   const { state, recordGrade } = useApp();
-  const [recorded, setRecorded] = useState<{ score: number; max: number } | null>(null);
+  const [recorded, setRecorded] = useState<{ score: number; max: number; attempt: number } | null>(
+    null,
+  );
 
   const attempts = attemptsFor(state.grades, assessmentId);
   const retake = canRetake(state.grades, assessmentId, category);
@@ -115,7 +117,7 @@ function AssessmentRunner({
       <PageHead
         eyebrow={courseTitle}
         title={title}
-        lede={`${assessment.questions.length} questions · ${max} points · attempt ${recorded ? Math.max(1, attempts) : attempts + 1}`}
+        lede={`${assessment.questions.length} questions · ${max} points · attempt ${recorded?.attempt ?? attempts + 1}`}
         actions={
           <Link to={returnTo} className="btn ghost">
             Back to course
@@ -138,9 +140,7 @@ function AssessmentRunner({
         </div>
         {attempts > 0 ? (
           <div className="callout" style={{ marginBottom: 0 }}>
-            {retake.allowed
-              ? retake.reason
-              : retake.reason}{' '}
+            {retake.reason}{' '}
             A retake score replaces the earlier attempt but is capped at 80. Document the
             remediation in the box on the gradebook page.
           </div>
@@ -166,7 +166,7 @@ function AssessmentRunner({
               max: outcome.max,
               gradedBy: outcome.gradedBy,
             });
-            setRecorded({ score: outcome.score, max: outcome.max });
+            setRecorded({ score: outcome.score, max: outcome.max, attempt: attempts + 1 });
           }}
         />
       )}
@@ -197,7 +197,7 @@ function ProjectPage({
   const { state, recordGrade } = useApp();
   const [picks, setPicks] = useState<Record<number, number>>({});
   const [feedback, setFeedback] = useState('');
-  const [saved, setSaved] = useState<number | null>(null);
+  const [saved, setSaved] = useState<{ total: number; attempt: number } | null>(null);
 
   const total = project.rubric.reduce((sum, row, index) => sum + (picks[index] ?? 0), 0);
   const complete = project.rubric.every((_, index) => picks[index] !== undefined);
@@ -274,7 +274,7 @@ function ProjectPage({
                   gradedBy: 'parent',
                   feedback: feedback || undefined,
                 });
-                setSaved(total);
+                setSaved({ total, attempt: attempts + 1 });
               }}
             >
               Record project score
@@ -282,7 +282,7 @@ function ProjectPage({
           </div>
           {saved !== null ? (
             <div className="callout" style={{ marginBottom: 0 }}>
-              Recorded {saved} of 100 for {project.title}. Attempt {Math.max(1, attempts)}.{' '}
+              Recorded {saved.total} of 100 for {project.title}. Attempt {saved.attempt}.{' '}
               <Link to="/gradebook">Gradebook</Link>
             </div>
           ) : null}

@@ -326,7 +326,7 @@ export const DEPTH_G1: Record<string, LessonDepth> = {
       ['half hour', 'thirty minutes, when the minute hand points to 6'],
     ],
     practice: [
-      num('How many minutes are in half an hour?', 30, 'Half of 60 minutes is 30.'),
+      num('How many minutes are in a quarter of an hour?', 15, 'A quarter of 60 minutes is 15.'),
       mc('When the minute hand points to 12, the time is', ['half past', 'exactly on the hour', 'a quarter past', 'noon only'], 1, 'It is exactly on the hour.'),
       mc('Why start measuring at zero?', ['it looks neat', 'so the length is counted correctly', 'to make it longer', 'to avoid inches'], 1, 'Starting at zero counts the whole length.'),
     ],

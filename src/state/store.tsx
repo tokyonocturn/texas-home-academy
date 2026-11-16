@@ -143,3 +143,18 @@ export function useApp(): StoreValue {
   if (!value) throw new Error('useApp must be used inside AppProvider');
   return value;
 }
+
+/**
+ * Development-only guard.
+ *
+ * When a module this file imports changes, Fast Refresh re-evaluates this
+ * module and creates a new context object while the mounted tree still holds
+ * the old one, which makes every useApp call throw until the page reloads. A
+ * full reload is instant here and cannot lose data, because state is written to
+ * localStorage on every change.
+ */
+if (import.meta.hot) {
+  import.meta.hot.accept(() => {
+    window.location.reload();
+  });
+}

@@ -111,12 +111,14 @@ export function GradebookPage() {
                       </td>
                     </tr>
                   ))}
-                  <tr>
-                    <td>Semester 1 midterm</td>
-                    <td className="num">
-                      {displayGrade(courseResult(selected, state.grades).semesters[0]?.examGrade ?? null)}
-                    </td>
-                  </tr>
+                  {selected.semesters === 2 ? (
+                    <tr>
+                      <td>Semester 1 midterm</td>
+                      <td className="num">
+                        {displayGrade(courseResult(selected, state.grades).semesters[0]?.examGrade ?? null)}
+                      </td>
+                    </tr>
+                  ) : null}
                   <tr>
                     <td>Coursework average (graded periods)</td>
                     <td className="num">{displayGrade(courseResult(selected, state.grades).courseworkAverage)}</td>
@@ -197,7 +199,15 @@ export function GradebookPage() {
                     <td>
                       <button
                         className="btn danger small no-print"
-                        onClick={() => dispatch({ type: 'grade/delete', id: record.id })}
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              `Delete this score? ${record.title} (${record.score}/${record.max}) will be removed and the course average recalculated.`,
+                            )
+                          ) {
+                            dispatch({ type: 'grade/delete', id: record.id });
+                          }
+                        }}
                       >
                         Delete
                       </button>
@@ -318,7 +328,9 @@ export function ReportCardPage() {
                     ))}
                     <td className="num">{displayGrade(s1?.grade ?? null)}</td>
                     <td className="num">{displayGrade(s2?.grade ?? null)}</td>
-                    <td className="num">{displayGrade(s1?.examGrade ?? null)}</td>
+                    <td className="num">
+                      {displayGrade(course.semesters === 2 ? (s1?.examGrade ?? null) : null)}
+                    </td>
                     <td className="num">{displayGrade(result.examGrade)}</td>
                     <td className="num">
                       <strong>{displayGrade(result.finalGrade)}</strong>
@@ -443,7 +455,9 @@ export function TranscriptPage() {
                   <td className="num">{course.credits}</td>
                   <td className="num">{displayGrade(result.semesters[0]?.grade ?? null)}</td>
                   <td className="num">{displayGrade(result.semesters[1]?.grade ?? null)}</td>
-                  <td className="num">{displayGrade(result.semesters[0]?.examGrade ?? null)}</td>
+                  <td className="num">
+                    {displayGrade(course.semesters === 2 ? (result.semesters[0]?.examGrade ?? null) : null)}
+                  </td>
                   <td className="num">{displayGrade(result.examGrade)}</td>
                   <td className="num">
                     <strong>{displayGrade(result.finalGrade)}</strong>
