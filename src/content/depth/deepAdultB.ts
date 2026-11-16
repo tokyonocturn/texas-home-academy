@@ -239,10 +239,12 @@ export const DEPTH_ADULT_B: Record<string, LessonDepth> = {
         prompt: 'A school bond of $90 million is on the ballot for a district with $3 billion of taxable property value. What does that imply about the tax rate, roughly?',
         steps: [
           'Debt service is paid from property taxes over the bond term.',
-          'A rough annual cost is the annual debt service divided by taxable value: 90 million at 4% over 25 years is roughly 5.75 million a year.',
-          '5.75 million ÷ 3 billion ≈ $0.0019 per $100 of value, before interest and issuance assumptions.',
+          'Annual debt service: $90 million at 4% over 25 years is about $5.76 million a year.',
+          'Rate per $1 of taxable value = 5.76 million ÷ 3 billion = 0.00192.',
+          'Convert to the per-$100 convention tax bills use: 0.00192 × 100 = $0.192 per $100.',
+          'On a $300,000 home, the annual cost would be 300,000 ÷ 100 × 0.192 = $576.',
         ],
-        answer: 'Roughly two cents per $100 of taxable value, depending on rates and term; the ballot should state the estimate.',
+        answer: 'About $0.192 per $100 of taxable value — 19.2 cents — or roughly $576 a year on a $300,000 home, depending on rates and term; the ballot should state the estimate.',
       },
     ],
     terms: [
@@ -486,7 +488,7 @@ export const DEPTH_ADULT_B: Record<string, LessonDepth> = {
       {
         heading: 'Fees and diversification',
         paragraphs: [
-          'Fees compound against you. A 1% annual expense ratio on a $50,000 balance growing at 6% for thirty years leaves roughly $216,000, while a 0.05% ratio leaves roughly $287,000, a difference of about $71,000. The fund with the lower ratio is not automatically better, but the cost difference is certain while the performance difference is not.',
+          'Fees compound against you. A 1% annual expense ratio on a $50,000 balance growing at 6% for thirty years leaves roughly $216,000, while a 0.05% ratio leaves roughly $283,000, a difference of about $67,000. The fund with the lower ratio is not automatically better, but the cost difference is certain while the performance difference is not.',
           'Diversification spreads money across many companies and sectors, reducing the risk that one failure destroys the account. It does not remove market-wide risk, and it does not guarantee a gain. Bank deposits at insured institutions are protected up to the published limit, while investment funds are not insured and can lose value. Anyone promising a guaranteed high return is describing fraud, not investing.',
         ],
       },
@@ -507,10 +509,10 @@ export const DEPTH_ADULT_B: Record<string, LessonDepth> = {
         steps: [
           'Net returns: 5% and 5.95%.',
           '50,000 × 1.05^30 ≈ 216,097.',
-          '50,000 × 1.0595^30 ≈ 287,000.',
-          'Difference ≈ 71,000.',
+          '50,000 × 1.0595^30 ≈ 283,000.',
+          'Difference ≈ 67,000.',
         ],
-        answer: 'The low-cost fund ends about $71,000 higher on the same starting balance.',
+        answer: 'The low-cost fund ends about $67,000 higher on the same starting balance.',
       },
     ],
     terms: [
