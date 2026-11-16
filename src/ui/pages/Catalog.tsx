@@ -509,6 +509,20 @@ export function LessonPage({ courseId, lessonId }: { courseId: string; lessonId:
           </div>
         ) : null}
 
+        {(lesson.examples ?? []).map((example) => (
+          <div className="callout" key={example.prompt}>
+            <strong>Worked example.</strong> {example.prompt}
+            <ol>
+              {example.steps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+            <div>
+              <strong>Answer:</strong> {example.answer}
+            </div>
+          </div>
+        ))}
+
         {lesson.extraExample ? (
           <div className="callout">
             <strong>Second worked example.</strong> {lesson.extraExample.prompt}

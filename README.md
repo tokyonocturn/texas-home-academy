@@ -26,12 +26,19 @@ with the Texas Education Agency. See
   Geography, World History, U.S. History, U.S. Government, Economics, Spanish I
   and II, Physical Education, Art I, Health, Speech, Computer Science I, two CTE
   courses, Personal Financial Literacy, and Adult Life Education.
-- **Lessons, not worksheets only.** Every K–12 lesson has objectives, two or
-  more explanatory sections, two worked examples with step-by-step reasoning,
-  defined key terms, a real-world application, a practice set, off-screen
-  assignments, and review questions with model answers. A curriculum-depth test
-  enforces those minimums across the whole catalog, and the Sources page reports
-  the count.
+- **Lessons that teach on their own.** The curriculum-depth standard (v2) asks
+  every K–12 lesson for four objectives, three explanatory sections, grade-scaled
+  taught prose (350 words in K–2, 400 in 3–5, 500 in 6–8, 600 in 9–12), three
+  worked examples with reasoning and stated answers, eight defined terms, five
+  practice items, four off-screen exercises, four reviewed questions with model
+  answers, three discussed topics, and a named real-world application, with
+  anti-boilerplate checks. `src/content/depth.test.ts` enforces it and fails by
+  naming the lesson and the missed criterion. **Status: Kindergarten and Grade 1
+  meet v2 (24 lessons); the remaining 177 are honestly listed in the shortfall
+  ledger with their measured word counts, shown on the Sources page.** Lessons
+  outside those two grades still carry objectives, two sections, two worked
+  examples, terms, application, practice, exercises, and reviewed questions from
+  the v1 standard.
 - **Real assessments.** Unit quizzes, projects scored against published analytic
   rubrics, a semester 1 midterm for every full-year course, and a cumulative
   final examination. Multiple-choice and numeric items are auto-graded; written

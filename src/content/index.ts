@@ -1,5 +1,6 @@
 import type { CategoryId, Course, GradeLevel, Lesson, SubjectId } from '../types';
-import { DEPTH } from './depth';
+import { DEPTH, DEEP } from './depth';
+import type { LessonDepth } from './depth/types';
 import { english1, english2 } from './courses/hsEnglishA';
 import { english3, english4 } from './courses/hsEnglishB';
 import { algebra1, geometry } from './courses/hsMath';
@@ -151,22 +152,36 @@ const RAW_COURSES: Course[] = [
  * `curriculumDepthReport` instead of being silently padded.
  */
 function expandLesson(lesson: Lesson): Lesson {
-  const depth = DEPTH[lesson.id];
+  return applyDepth(applyDepth(lesson, DEPTH[lesson.id]), DEEP[lesson.id]);
+}
+
+function applyDepth(lesson: Lesson, depth: LessonDepth | undefined): Lesson {
   if (!depth) return lesson;
   return {
     ...lesson,
+    objectives: [...lesson.objectives, ...(depth.objectives ?? [])],
     topics: [...(lesson.topics ?? []), ...depth.topics],
     sections: [
       ...lesson.sections,
-      { heading: depth.applicationTitle, paragraphs: [depth.application] },
+      ...(depth.application
+        ? [
+            {
+              heading: `Real-world application: ${depth.applicationTitle ?? 'why it matters'}`,
+              paragraphs: [depth.application],
+            },
+          ]
+        : []),
+      ...(depth.sections ?? []),
     ],
     extraExample: lesson.extraExample ?? depth.example,
+    examples: [...(lesson.examples ?? []), ...(depth.examples ?? [])],
     keyTerms: [
       ...(lesson.keyTerms ?? []),
-      ...depth.terms.map(([term, definition]) => ({ term, definition })),
+      ...(depth.terms ?? []).map(([term, definition]) => ({ term, definition })),
     ],
-    review: [...(lesson.review ?? []), ...depth.review],
-    assignments: [...(lesson.assignments ?? []), ...depth.exercises],
+    practice: [...lesson.practice, ...(depth.practice ?? [])],
+    review: [...(lesson.review ?? []), ...(depth.review ?? [])],
+    assignments: [...(lesson.assignments ?? []), ...(depth.exercises ?? [])],
   };
 }
 

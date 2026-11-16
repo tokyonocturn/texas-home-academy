@@ -1046,7 +1046,7 @@ export const DEPTH_HS_C: Record<string, LessonDepth> = {
     topics: ['greetings', 'ar verb conjugation'],
     applicationTitle: 'First conversations',
     application:
-      'Greetings and introductions follow predictable patterns: a greeting, a name, a question about origin or well-being. Regular -ar verbs follow a fixed set of endings, so learning one verb teaches the pattern for hundreds. Asking a question is often just intonation or word order, which makes early conversation possible quickly. Practicing the pattern aloud matters more than memorizing a long vocabulary list. Beginners can hold a short exchange after one lesson if they practice greeting, naming, and asking a question aloud, then repeat it with a partner and change only the name or place, or both at once.',
+      'A first conversation in Spanish is a small, rehearsed routine: greet, give your name, ask the other person’s, and react to the answer. Because the routine repeats in nearly every first meeting, a learner can prepare it once and use it many times. Regular -ar verbs follow a fixed set of endings, so one verb teaches the pattern for hundreds. Intonation often does the work of a question mark, which is why beginners can ask a real question before they know much grammar. Rehearse the routine aloud with a partner, changing one detail at a time, and it becomes usable rather than memorized.',
     example: {
       prompt: 'Greet someone, give your name, and ask where they are from.',
       steps: ['“Hola, me llamo Ana.”', '“¿De dónde eres?”'],

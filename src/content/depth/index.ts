@@ -6,6 +6,8 @@ import { DEPTH_G68 } from './g68';
 import { DEPTH_HS_A } from './hsA';
 import { DEPTH_HS_B } from './hsB';
 import { DEPTH_HS_C } from './hsC';
+import { DEPTH_KINDER } from './deepK';
+import { DEPTH_G1 } from './deepG1';
 
 /**
  * Lesson depth registry, keyed by lesson id. Entries are merged into the catalog
@@ -21,6 +23,15 @@ export const DEPTH: Record<string, LessonDepth> = {
   ...DEPTH_HS_A,
   ...DEPTH_HS_B,
   ...DEPTH_HS_C,
+};
+
+/**
+ * Depth pass 2: lessons raised to the self-teaching standard. Kept separate so
+ * the original authored blocks are not rewritten, and merged over them.
+ */
+export const DEEP: Record<string, LessonDepth> = {
+  ...DEPTH_KINDER,
+  ...DEPTH_G1,
 };
 
 export type { LessonDepth };

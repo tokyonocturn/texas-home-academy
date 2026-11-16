@@ -148,11 +148,17 @@ gradebook and graduation audit both enforce the 70 floor. No lesson completion, 
 
 ## 6. Gap register
 
-1. **Lesson depth — closed.** Every K–12 lesson now meets the curriculum-depth standard enforced
-   by `src/content/depth.test.ts`: at least two objectives, two sections, 190 words of taught
-   prose, two worked examples with steps and answers, two defined terms, two practice items, two
-   off-screen exercises, and two review questions with model answers. The Sources page shows the
-   same count in the app. Remaining work is depth *within* the standard, not lessons below it.
+1. **Lesson depth — partially met, measured honestly.** The self-teaching standard (v2) asks for
+   four objectives, three sections, grade-scaled taught prose (350 words K–2, 400 in 3–5, 500 in
+   6–8, 600 in 9–12), three worked examples with reasoning and answers, eight defined terms, five
+   practice items, four off-screen exercises, four reviewed questions with model answers, three
+   discussed topics, and a real-world application section, and it rejects shared boilerplate.
+   Twenty-four lessons (Kindergarten and Grade 1) meet v2. The other 177 meet v1 (two objectives,
+   two sections, 190 taught words, two examples, two terms, two practice items, two exercises, two
+   reviewed questions) and are listed with their measured prose counts in
+   `src/content/depth/shortfalls.ts` and on the Sources page. `src/content/depth.test.ts` enforces
+   v2 and fails with the lesson name and the missed criterion, so the ledger cannot silently drift.
+   Nothing has been padded to close the gap; the remaining work is authoring real instruction.
 2. **Written-response scoring.** Written items are scored by a parent against a rubric. The app
    does not evaluate prose and does not claim to.
 3. **Practical/performance assessments.** PE activity logs, studio art production, and lab work

@@ -118,10 +118,12 @@ export function SourcesPage() {
           </Badge>
         </div>
         <p className="small muted">
-          A lesson meets the standard when it has at least two objectives, 190 words of taught prose,
-          two worked examples with steps and answers, two defined terms, two practice items, two
-          off-screen exercises, and two review questions with model answers. The automated depth test
-          enforces the same numbers and fails if a lesson drops below them.
+          A lesson meets the standard when it has four objectives, three explanatory sections, three
+          worked examples with multi-step reasoning and stated answers, eight defined terms, five
+          practice items, four off-screen exercises, four review questions with model answers, and
+          three discussed topics. Taught prose must reach 350 words in grades K–2, 400 in 3–5, 500
+          in 6–8, and 600 in high school. The automated depth test enforces the same numbers and
+          reports the lesson and the criterion that failed.
         </p>
         {depth.shortfalls.length > 0 ? (
           <details>
@@ -132,7 +134,8 @@ export function SourcesPage() {
               {depth.shortfalls.slice(0, 200).map((shortfall) => (
                 <li key={shortfall.lessonId}>
                   <strong>{shortfall.courseId}</strong> · {shortfall.lessonId}: {shortfall.title} —{' '}
-                  {shortfall.failures[0]}
+                  {shortfall.prose}/{shortfall.requiredProse} prose words;{' '}
+                  {shortfall.failures.filter((f) => !f.includes('prose words')).slice(0, 2).join('; ')}
                 </li>
               ))}
             </ul>
