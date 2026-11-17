@@ -4,7 +4,7 @@
  * serve same-origin GETs cache-first with a navigation fallback to index.html.
  * Bump CACHE_VERSION on release.
  */
-const CACHE_VERSION = 'tha-v8';
+const CACHE_VERSION = 'tha-v10';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
 /**

@@ -52,8 +52,11 @@ export function computeGpa(courses: Course[], records: GradeRecord[]): GpaSummar
   // Weighted uses the advanced bonus in each line's points; unweighted must
   // recompute base points, or an advanced course would inflate both GPAs.
   const weightedSum = lines.reduce((sum, l) => sum + l.points * l.credits, 0);
+  // Both GPAs must use the same reported one-decimal grade. Using the hidden
+  // full-precision final here let an 89.96 course report 90.0 (A, 4.0) in the
+  // weighted GPA while the unweighted GPA used B points.
   const baseSum = lines.reduce(
-    (sum, l) => sum + baseQualityPoints(l.grade) * l.credits,
+    (sum, l) => sum + baseQualityPoints(reportedGrade(l.grade) ?? 0) * l.credits,
     0,
   );
 

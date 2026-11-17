@@ -220,14 +220,17 @@ export function courseResult(
     (r) => r.assessmentId === `${course.id}:final`,
   );
   const examGrade = finalExamRecord ? percent(finalExamRecord.score, finalExamRecord.max) : null;
-  const semesterGrades = semesters
-    .map((s) => s.grade)
-    .filter((g): g is number => g !== null);
-  // The final grade is the average of the semester grades, and it does not
-  // exist until the cumulative final examination has been recorded.
+  const allSemestersGraded =
+    semesters.length === course.semesters &&
+    semesters.every((semester) => semester.grade !== null);
+  // The final grade is the average of every semester grade, and it does not
+  // exist until the cumulative final examination and all coursework semesters
+  // have a grade. Filtering null semesters let a full-year course issue credit
+  // from semester 2 alone when semester 1 was never started.
   const finalGrade =
-    finalExamRecord && semesterGrades.length > 0
-      ? semesterGrades.reduce((a, b) => a + b, 0) / semesterGrades.length
+    finalExamRecord && allSemestersGraded
+      ? semesters.reduce((sum, semester) => sum + (semester.grade ?? 0), 0) /
+        semesters.length
       : null;
 
   // Decisions follow the grade the family actually sees (one decimal), so a

@@ -23,11 +23,16 @@ export interface GradRequirement {
   courseIds: string[];
   citation: string;
   note?: string;
+  /** Each group is a required course or sequence; at least one course in
+   * every group must be completed in addition to the credit total. */
+  requiredCourseGroups?: { label: string; courseIds: string[] }[];
 }
 
 export interface RequirementResult extends GradRequirement {
   earned: number;
   completedCourses: { courseId: string; title: string; grade: number; credits: number }[];
+  sequenceMet: boolean;
+  missingSequence: string[];
   satisfied: boolean;
 }
 
@@ -45,6 +50,14 @@ export const FHSP_REQUIREMENTS: GradRequirement[] = [
     credits: 3,
     courseIds: ['hs-alg1', 'hs-geom', 'hs-alg2', 'hs-precalc', 'hs-stats'],
     citation: '19 TAC §74.12(b)(2)',
+    requiredCourseGroups: [
+      { label: 'Algebra I', courseIds: ['hs-alg1'] },
+      { label: 'Geometry', courseIds: ['hs-geom'] },
+      {
+        label: 'an advanced math course',
+        courseIds: ['hs-alg2', 'hs-precalc', 'hs-stats'],
+      },
+    ],
   },
   {
     id: 'science',
@@ -52,6 +65,14 @@ export const FHSP_REQUIREMENTS: GradRequirement[] = [
     credits: 3,
     courseIds: ['hs-bio', 'hs-ipc', 'hs-chem', 'hs-physics', 'hs-env'],
     citation: '19 TAC §74.12(b)(3)',
+    requiredCourseGroups: [
+      { label: 'Biology', courseIds: ['hs-bio'] },
+      {
+        label: 'IPC, Chemistry, or Physics',
+        courseIds: ['hs-ipc', 'hs-chem', 'hs-physics'],
+      },
+      { label: 'an advanced science', courseIds: ['hs-chem', 'hs-physics', 'hs-env'] },
+    ],
   },
   {
     id: 'social',
@@ -59,6 +80,15 @@ export const FHSP_REQUIREMENTS: GradRequirement[] = [
     credits: 3,
     courseIds: ['hs-world-geo', 'hs-world-hist', 'hs-us-hist', 'hs-gov', 'hs-econ'],
     citation: '19 TAC §74.12(b)(4)',
+    requiredCourseGroups: [
+      {
+        label: 'World Geography or World History',
+        courseIds: ['hs-world-geo', 'hs-world-hist'],
+      },
+      { label: 'U.S. History', courseIds: ['hs-us-hist'] },
+      { label: 'U.S. Government', courseIds: ['hs-gov'] },
+      { label: 'Economics', courseIds: ['hs-econ'] },
+    ],
   },
   {
     id: 'lote',
@@ -255,11 +285,18 @@ export function auditGraduation(courses: Course[], records: GradeRecord[]): Grad
   const requirements: RequirementResult[] = FHSP_REQUIREMENTS.map((req) => {
     const matching = completed.filter((c) => req.courseIds.includes(c.courseId));
     const earned = req.id === 'electives' ? electiveCredits : (coreEarned.get(req.id) ?? 0);
+    const missingSequence = (req.requiredCourseGroups ?? [])
+      .filter(
+        (group) => !completed.some((course) => group.courseIds.includes(course.courseId)),
+      )
+      .map((group) => group.label);
     return {
       ...req,
       earned,
       completedCourses: matching,
-      satisfied: earned >= req.credits,
+      sequenceMet: missingSequence.length === 0,
+      missingSequence,
+      satisfied: earned >= req.credits && missingSequence.length === 0,
     };
   });
   const fhspMet = requirements.every((r) => r.satisfied);

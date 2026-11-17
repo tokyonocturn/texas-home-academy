@@ -358,6 +358,18 @@ describe('backup validation', () => {
     expect(() => parseBackupText(serializeBackup(attendance))).toThrow(/more than one entry/);
   });
 
+  it('rejects a score above its maximum and duplicate course enrollments', () => {
+    const score = createStudentBackup(householdState(), 'first-student');
+    score.student.grades[0].score = score.student.grades[0].max + 1;
+    expect(() => parseBackupText(serializeBackup(score))).toThrow(/cannot exceed max/);
+
+    const enrollment = createStudentBackup(householdState(), 'first-student');
+    enrollment.student.enrollments.push({ ...enrollment.student.enrollments[0] });
+    expect(() => parseBackupText(serializeBackup(enrollment))).toThrow(
+      /more than one enrollment/,
+    );
+  });
+
   it('rejects a household active ID that is not in the file', () => {
     const backup = createHouseholdBackup(householdState());
     backup.activeStudentId = 'missing';

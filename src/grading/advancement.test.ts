@@ -3,7 +3,7 @@ import type { AppState, AttendanceEntry, GradeRecord } from '../types';
 import { COURSES } from '../content';
 import { defaultState } from '../state/persistence';
 import { addDays } from '../state/schoolYear';
-import { checkAdvancement, coreCoursesForGrade } from './progression';
+import { attendanceSummary, checkAdvancement, coreCoursesForGrade } from './progression';
 
 /**
  * K-8 promotion check.
@@ -116,6 +116,26 @@ describe('promotion check', () => {
     const check = checkAdvancement(stateFor(3, { days: 10 }), COURSES, 180);
     expect(check.eligible).toBe(false);
     expect(check.blockers.join(' ')).toMatch(/Attendance is below 90%/);
+  });
+
+  it('counts each full date once and ignores prior-year or partial days', () => {
+    const state = stateFor(3, { days: 0 });
+    state.attendance = [
+      { date: '2026-09-01', minutes: 240 },
+      { date: '2026-09-01', minutes: 400 },
+      { date: '2026-09-02', minutes: 239 },
+      { date: '2025-09-01', minutes: 400 },
+    ];
+    const summary = attendanceSummary(state, 180);
+    expect(summary.daysAttended).toBe(1);
+    expect(summary.rate).toBeCloseTo(1 / 180, 8);
+  });
+
+  it('never reports more than 100% attendance', () => {
+    const state = stateFor(3, { days: 200 });
+    const summary = attendanceSummary(state, 180);
+    expect(summary.daysAttended).toBe(180);
+    expect(summary.rate).toBe(1);
   });
 
   it('does not apply to grade 12, which uses the graduation audit', () => {

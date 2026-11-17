@@ -251,6 +251,23 @@ describe('GPA variants', () => {
     expect(summary.creditsEarned).toBe(0.5);
     expect(summary.unweighted).toBe(4);
   });
+
+  it('uses the reported one-decimal grade in both GPAs at a rounding boundary', () => {
+    // 0.8(89.9375) + 0.2(90) = 89.95, reported as 90.0 and awarded A points.
+    const { course, records } = oneSemester(89.9375, 90, 'boundary');
+    const summary = computeGpa([course], records);
+    expect(summary.courses[0].grade).toBeCloseTo(89.95, 5);
+    expect(summary.courses[0].letter).toBe('A');
+    expect(summary.unweighted).toBe(4);
+    expect(summary.weighted).toBe(4);
+
+    // 69.96 reports as 70.0, so both GPAs must use C points rather than D.
+    const passing = oneSemester(69.9375, 70, 'passing');
+    const passingSummary = computeGpa([passing.course], passing.records);
+    expect(passingSummary.courses[0].letter).toBe('C');
+    expect(passingSummary.unweighted).toBe(2);
+    expect(passingSummary.weighted).toBe(2);
+  });
 });
 
 describe('edge cases', () => {
@@ -272,6 +289,23 @@ describe('edge cases', () => {
     expect(result.currentGrade).toBeCloseTo(75, 5);
     expect(result.finalGrade).toBeNull();
     expect(result.creditsEarned).toBe(0);
+  });
+
+  it('withholds a full-year final when one semester has no grade', () => {
+    const course = makeCourse();
+    const records = [
+      rec({ assessmentId: 'q4', category: 'quiz', period: 'Q4', score: 95 }),
+      rec({ assessmentId: 'q5', category: 'quiz', period: 'Q5', score: 95 }),
+      rec({ assessmentId: 'q6', category: 'quiz', period: 'Q6', score: 95 }),
+      rec({ assessmentId: 'alg:final', category: 'exam', period: 'Q6', score: 95 }),
+    ];
+    const result = courseResult(course, records);
+    expect(result.semesters[0].grade).toBeNull();
+    expect(result.semesters[1].grade).not.toBeNull();
+    expect(result.finalGrade).toBeNull();
+    expect(result.creditsEarned).toBe(0);
+    expect(computeGpa([course], records).courses).toEqual([]);
+    expect(auditGraduation([course], records).totalCredits).toBe(0);
   });
 
   it('uses only the latest failed attempt for a repeated final exam', () => {
@@ -330,6 +364,21 @@ describe('edge cases', () => {
     // Three math credits apply to the requirement; the fourth is an elective.
     expect(audit.requirements.find((r) => r.id === 'electives')?.earned).toBe(1);
     expect(audit.totalCredits).toBe(4);
+  });
+
+  it('keeps GPA, the graduation audit, and the course result on the same credit', () => {
+    const course = makeCourse({ title: 'Algebra I' });
+    const records = twoSemesterRecords();
+    const result = courseResult(course, records);
+    const gpa = computeGpa([course], records);
+    const audit = auditGraduation([course], records);
+    expect(result.finalGrade).not.toBeNull();
+    expect(result.creditsEarned).toBe(course.credits);
+    expect(gpa.courses.map((line) => line.courseId)).toEqual([course.id]);
+    expect(gpa.creditsEarned).toBe(course.credits);
+    expect(audit.completed.map((entry) => entry.courseId)).toEqual([course.id]);
+    expect(audit.totalCredits).toBe(course.credits);
+    expect(audit.completed[0].grade).toBe(reportedGrade(result.finalGrade));
   });
 
   it('credits FHSP requirements only for passing completed courses', () => {

@@ -343,9 +343,7 @@ export function CoursePage({ courseId }: { courseId: string }) {
           </>
         ) : null}
         <p className="note">
-          No grade is awarded for opening a lesson. Practice is formative and recorded as the best
-          attempt; quizzes, projects, the midterm, and the final are summative. A final grade is
-          issued only after the cumulative final examination is recorded.
+          No grade is awarded for opening a lesson. Practice is formative and recorded as the best attempt; quizzes, projects, the midterm, and the final are summative. A final grade is issued only after the cumulative final examination is recorded and every semester has a grade.
         </p>
       </div>
 

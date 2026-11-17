@@ -94,7 +94,7 @@ export const GRADE_POLICY = {
   semesterFormula:
     'Six-week period grade = weighted average of the graded categories in that period, excluding semester exams. Semester average = 80% of the average of its three period grades + 20% of that semester’s exam (the midterm in semester 1, the cumulative final in semester 2). If one side has no graded work, the other side stands alone. A category with no graded work is excluded and its weight is renormalized within the period.',
   finalFormula:
-    'Final grade = the average of the semester grades. A final grade is not issued until the cumulative final examination is recorded, so an in-progress course cannot earn credit or enter the GPA.',
+    'Final grade = the average of every semester grade. A final grade is not issued until the cumulative final examination is recorded and every semester has a grade, so an in-progress or half-completed course cannot earn credit or enter the GPA.',
   reportingRule:
     'Averages are computed at full precision, then reported to one decimal. Letter grades, quality points, passing, and credit are decided from that reported one-decimal grade, so a reported 90.0 is always an A and a reported 70.0 always passes.',
   missingWork:
@@ -106,5 +106,5 @@ export const GRADE_POLICY = {
   creditRule:
     'A high-school course earns credit only when its final grade is 70 or higher. Attendance is checked separately at promotion and at the graduation audit.',
   attendanceRule:
-    'Texas public schools require at least 90% attendance to earn class credit (Tex. Educ. Code §25.092). This program adopts the same 90% standard as its own promotion and credit policy.',
+    'Texas public schools require at least 90% attendance to earn class credit (Tex. Educ. Code §25.092). This program adopts the same 90% standard as its own promotion and credit policy. Only distinct full-day dates inside the current school year count, so duplicate or prior-year entries cannot raise the rate.',
 } as const;

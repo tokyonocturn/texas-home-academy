@@ -42,7 +42,8 @@ record.
 - A one-semester course earns 0.5 credit.
 - Credit is awarded only when the final grade is 70 or higher.
 - A final grade is issued only after the cumulative final examination is
-  recorded.
+  recorded and every semester of the course has a grade. A half-completed
+  full-year course remains in progress and earns no credit.
 
 These are this program's documented conventions. They follow the way Texas
 schools record credit and the minimum passing standard in 19 TAC §74.26(c). They
@@ -55,6 +56,9 @@ are not a claim that any other institution must accept the credit.
 - GPA is credit-weighted and includes only credit-bearing high-school courses
   with an issued final grade. K–8 coursework never enters the GPA.
 - The unweighted GPA is reported on a 4.0 scale without the advanced bonus.
+- Both GPAs use the same one-decimal grade shown on the report card and
+  transcript. A final average of 89.96 is reported as 90.0 and earns A quality
+  points in both GPAs; a 69.96 is reported as 70.0 and earns C quality points.
 
 ## Graduation audit
 
@@ -62,6 +66,13 @@ The audit compares recorded credits against the published Foundation High School
 Program: 22 credits for the foundation plan and 26 for the endorsement plan,
 with the five endorsement areas and the Distinguished Level of Achievement
 (19 TAC §§74.11–74.13; TEA Graduation Toolkit 2025).
+
+Meeting a credit total is not by itself enough. The audit also checks the
+required sequences: Algebra I, Geometry, and an advanced math course; Biology,
+an IPC/Chemistry/Physics course, and an advanced science; and the social-studies
+sequence of world history or world geography, U.S. history, U.S. government, and
+economics. A missing sequence leaves that requirement open even when the credit
+count is high enough.
 
 Passing the audit means the student's recorded credits match the published
 pattern. It does **not**:

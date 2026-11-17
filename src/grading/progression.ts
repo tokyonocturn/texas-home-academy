@@ -1,4 +1,5 @@
 import type { AppState, Course, GradeRecord } from '../types';
+import { buildSchoolYear } from '../state/schoolYear';
 import { courseResult } from './gradebook';
 import { PASSING_GRADE, reportedGrade } from './scale';
 
@@ -35,8 +36,17 @@ export function attendanceSummary(state: AppState, totalDays: number): {
   rate: number;
   requiredDays: number;
 } {
-  const days = state.attendance.filter((a) => a.minutes >= state.settings.fullDayMinutes).length;
-  const rate = totalDays > 0 ? days / totalDays : 0;
+  const year = buildSchoolYear(state.profile.startYear);
+  const fullDays = new Set<string>();
+  for (const entry of state.attendance) {
+    // Attendance has no year field, so entries from another school year must
+    // not be counted against this one. A date can count once even if a legacy
+    // or imported file contains a duplicate entry.
+    if (entry.date < year.start || entry.date > year.end) continue;
+    if (entry.minutes >= state.settings.fullDayMinutes) fullDays.add(entry.date);
+  }
+  const days = Math.min(fullDays.size, Math.max(0, totalDays));
+  const rate = totalDays > 0 ? Math.min(1, days / totalDays) : 0;
   return { daysAttended: days, rate, requiredDays: Math.ceil(totalDays * 0.9) };
 }
 

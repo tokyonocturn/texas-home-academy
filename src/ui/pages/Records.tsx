@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { CATEGORY_LABELS, type CategoryId } from '../../types';
 import { COURSES, courseGradeLabel, getCourse, gradeLabel } from '../../content';
 import { auditGraduation } from '../../grading/graduation';
@@ -253,7 +253,10 @@ export function GradebookPage() {
 
 export function ReportCardPage() {
   const { state, year, periodId } = useApp();
+  // A report card covers one school year. Older enrollments belong on the
+  // cumulative transcript, not on this year's card.
   const enrolled = state.enrollments
+    .filter((enrollment) => enrollment.yearId === year.id)
     .map((e) => getCourse(e.courseId))
     .filter((c): c is NonNullable<typeof c> => Boolean(c));
 
@@ -363,8 +366,8 @@ export function ReportCardPage() {
           Six-week period grade = weighted average of the graded categories in that period, with
           empty categories excluded and their weight renormalized. Semester average = 80% of that
           semester’s graded-period average plus 20% of its exam (the midterm in semester 1, the
-          cumulative final in semester 2). Final grade = the average of the semester grades, issued
-          only after the cumulative final examination is recorded. Averages are computed at full
+          cumulative final in semester 2). Final grade = the average of every semester grade, issued only
+          after the cumulative final examination is recorded and every semester has a grade. Averages are computed at full
           precision and reported to one decimal; letter grades and credit follow the reported grade,
           so a reported 90.0 is an A and a reported 70.0 passes. Passing is 70 on a 100-point scale
           (19 TAC §74.26(c)). Absences and make-up work are recorded in the attendance log. This is a
@@ -389,14 +392,37 @@ export function TranscriptPage() {
         ? a.course.title.localeCompare(b.course.title)
         : a.course.grade - b.course.grade,
     );
+  // Place each completed course under the school year recorded on its
+  // enrollment. Labeling every historical course with the current year made a
+  // cumulative transcript say a prior year's work was completed this year.
+  const enrollmentYears = new Map(
+    state.enrollments.map((enrollment) => [enrollment.courseId, enrollment.yearId]),
+  );
+  const groups = new Map<string, typeof courses>();
+  for (const entry of courses) {
+    const yearId = enrollmentYears.get(entry.course.id) ?? year.id;
+    groups.set(yearId, [...(groups.get(yearId) ?? []), entry]);
+  }
+  const transcriptGroups = [...groups.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([yearId, entries]) => ({
+      yearId,
+      entries: entries.slice().sort((a, b) =>
+        a.course.grade === b.course.grade
+          ? a.course.title.localeCompare(b.course.title)
+          : a.course.grade - b.course.grade,
+      ),
+    }));
   // Enrolled credit courses that do not yet have a final exam are shown as in
   // progress rather than silently omitted or counted as earned credit.
-  const inProgress = state.enrollments.flatMap((enrollment) => {
-    const course = getCourse(enrollment.courseId);
-    if (!course || course.credits <= 0) return [];
-    const result = courseResult(course, state.grades);
-    return result.finalGrade === null ? [{ course, result }] : [];
-  });
+  const inProgress = state.enrollments
+    .filter((enrollment) => enrollment.yearId === year.id)
+    .flatMap((enrollment) => {
+      const course = getCourse(enrollment.courseId);
+      if (!course || course.credits <= 0) return [];
+      const result = courseResult(course, state.grades);
+      return result.finalGrade === null ? [{ course, result }] : [];
+    });
   const inProgressCredits = inProgress.reduce((sum, entry) => sum + entry.course.credits, 0);
 
   return (
@@ -468,34 +494,40 @@ export function TranscriptPage() {
               </tr>
             </thead>
             <tbody>
-              <tr className="year-row">
-                <td colSpan={9}>
-                  {year.label} · Grade {profile.gradeLevel} · {profile.schoolName || 'Texas Home Academy'}
-                </td>
-              </tr>
-              {courses.map(({ course, result }) => (
-                <tr key={course.id}>
-                  <td>
-                    <strong>{course.title}</strong>
-                    {course.advanced ? <span className="note"> · advanced</span> : null}
-                    <div className="note">
-                      {course.semesters === 2 ? 'Two semesters' : 'One semester'} ·{' '}
-                      {course.credits} credit
-                    </div>
-                  </td>
-                  <td className="num">{course.credits}</td>
-                  <td className="num">{displayGrade(result.semesters[0]?.grade ?? null)}</td>
-                  <td className="num">{displayGrade(result.semesters[1]?.grade ?? null)}</td>
-                  <td className="num">
-                    {displayGrade(course.semesters === 2 ? (result.semesters[0]?.examGrade ?? null) : null)}
-                  </td>
-                  <td className="num">{displayGrade(result.examGrade)}</td>
-                  <td className="num">
-                    <strong>{displayGrade(result.finalGrade)}</strong>
-                  </td>
-                  <td>{result.letter}</td>
-                  <td className="num">{result.passing ? result.points.toFixed(1) : '0.0'}</td>
-                </tr>
+              {transcriptGroups.map((group) => (
+                <Fragment key={group.yearId}>
+                  <tr className="year-row">
+                    <td colSpan={9}>
+                      {group.yearId === year.id
+                        ? `${year.label} · Grade ${profile.gradeLevel} · ${profile.schoolName || 'Texas Home Academy'}`
+                        : `${group.yearId.replace('-', '–')} · ${profile.schoolName || 'Texas Home Academy'}`}
+                    </td>
+                  </tr>
+                  {group.entries.map(({ course, result }) => (
+                    <tr key={course.id}>
+                      <td>
+                        <strong>{course.title}</strong>
+                        {course.advanced ? <span className="note"> · advanced</span> : null}
+                        <div className="note">
+                          {course.semesters === 2 ? 'Two semesters' : 'One semester'} ·{' '}
+                          {course.credits} credit
+                        </div>
+                      </td>
+                      <td className="num">{course.credits}</td>
+                      <td className="num">{displayGrade(result.semesters[0]?.grade ?? null)}</td>
+                      <td className="num">{displayGrade(result.semesters[1]?.grade ?? null)}</td>
+                      <td className="num">
+                        {displayGrade(course.semesters === 2 ? (result.semesters[0]?.examGrade ?? null) : null)}
+                      </td>
+                      <td className="num">{displayGrade(result.examGrade)}</td>
+                      <td className="num">
+                        <strong>{displayGrade(result.finalGrade)}</strong>
+                      </td>
+                      <td>{result.letter}</td>
+                      <td className="num">{result.passing ? result.points.toFixed(1) : '0.0'}</td>
+                    </tr>
+                  ))}
+                </Fragment>
               ))}
             </tbody>
           </table>
@@ -754,6 +786,9 @@ export function AttendancePage() {
         </table>
         <div className="note" style={{ marginTop: 8 }}>
           Breaks: {year.breaks.map((b) => `${b.label} (${formatShortDate(b.start)})`).join(' · ')}
+          <br />
+          Only distinct dates inside this school year count as full days; partial days and entries from
+          another year do not affect the rate.
         </div>
       </div>
     </>
@@ -820,6 +855,9 @@ export function GraduationPage() {
                 <td className="num">{req.earned}</td>
                 <td>
                   {req.satisfied ? <Badge tone="pass">Met</Badge> : <Badge tone="muted">Open</Badge>}
+                  {!req.sequenceMet ? (
+                    <div className="note">Needs {req.missingSequence.join(', ')}.</div>
+                  ) : null}
                 </td>
                 <td className="tiny">{req.citation}</td>
               </tr>

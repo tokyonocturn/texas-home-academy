@@ -14,6 +14,7 @@ export function DashboardPage() {
   const grade = profile.gradeLevel;
 
   const enrolled = state.enrollments
+    .filter((enrollment) => enrollment.yearId === year.id)
     .map((e) => getCourse(e.courseId))
     .filter((c): c is NonNullable<typeof c> => Boolean(c));
 

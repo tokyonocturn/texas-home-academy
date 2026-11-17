@@ -76,6 +76,28 @@ describe('graduation audit', () => {
     expect(english?.satisfied).toBe(false);
   });
 
+  it('requires the math sequence, not just three math credits', () => {
+    const records = ['hs-alg1', 'hs-alg2', 'hs-precalc'].flatMap((id) => finalExam(id));
+    const audit = auditGraduation(COURSES, records);
+    const math = audit.requirements.find((requirement) => requirement.id === 'math');
+    expect(math?.earned).toBe(3);
+    expect(math?.sequenceMet).toBe(false);
+    expect(math?.missingSequence).toContain('Geometry');
+    expect(math?.satisfied).toBe(false);
+  });
+
+  it('requires the government and economics social-studies sequence', () => {
+    const records = ['hs-world-geo', 'hs-world-hist', 'hs-us-hist'].flatMap((id) =>
+      finalExam(id),
+    );
+    const audit = auditGraduation(COURSES, records);
+    const social = audit.requirements.find((requirement) => requirement.id === 'social');
+    expect(social?.earned).toBe(3);
+    expect(social?.sequenceMet).toBe(false);
+    expect(social?.missingSequence).toEqual(['U.S. Government', 'Economics']);
+    expect(social?.satisfied).toBe(false);
+  });
+
   it('requires Algebra II, four math, four science, and 26 credits for the DLA', () => {
     const records = [...coreIds, ...electiveIds].flatMap((id) => finalExam(id));
     const audit = auditGraduation(COURSES, records);

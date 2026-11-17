@@ -159,10 +159,16 @@ function validateProfile(value: unknown, path: string): Profile {
 }
 
 function validateEnrollments(value: unknown, path: string): StudentRecord['enrollments'] {
+  const seen = new Set<string>();
   return array(value, path).map((entry, index) => {
     const item = obj(entry, `${path}[${index}]`);
+    const courseId = text(item.courseId, `${path}[${index}].courseId`, false);
+    if (seen.has(courseId)) {
+      fail(`${path} contains more than one enrollment for course ${courseId}.`);
+    }
+    seen.add(courseId);
     return {
-      courseId: text(item.courseId, `${path}[${index}].courseId`, false),
+      courseId,
       yearId: text(item.yearId, `${path}[${index}].yearId`, false),
       startedAt: dateText(item.startedAt, `${path}[${index}].startedAt`),
       completedAt:
@@ -184,14 +190,17 @@ function validateGrades(value: unknown, path: string): GradeRecord[] {
     if (!CATEGORIES.has(category)) fail(`${path}[${index}].category is not recognized.`);
     const gradedBy = text(item.gradedBy, `${path}[${index}].gradedBy`, false);
     if (!GRADED_BY.has(gradedBy)) fail(`${path}[${index}].gradedBy is not recognized.`);
+    const score = numberValue(item.score, `${path}[${index}].score`, { min: 0 });
+    const max = numberValue(item.max, `${path}[${index}].max`, { min: 0.000001 });
+    if (score > max) fail(`${path}[${index}].score cannot exceed max.`);
     return {
       id,
       courseId: text(item.courseId, `${path}[${index}].courseId`, false),
       assessmentId: text(item.assessmentId, `${path}[${index}].assessmentId`, false),
       title: text(item.title, `${path}[${index}].title`, false),
       category,
-      score: numberValue(item.score, `${path}[${index}].score`, { min: 0 }),
-      max: numberValue(item.max, `${path}[${index}].max`, { min: 0.000001 }),
+      score,
+      max,
       attempt: numberValue(item.attempt, `${path}[${index}].attempt`, {
         integer: true,
         min: 1,
