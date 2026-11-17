@@ -6,6 +6,7 @@ import {
   useMemo,
   useReducer,
   useRef,
+  useState,
   type ReactNode,
 } from 'react';
 import type { AppState, AttendanceEntry, CategoryId, Profile, SchoolYear } from '../types';
@@ -14,12 +15,24 @@ import { type Action } from './reducer';
 import {
   loadState,
   normalizeAppState,
-  parseImportedState,
   serializeState,
   STORAGE_KEY,
 } from './persistence';
-import { actionDecision, rootReducer, snapshotDecision } from './sync';
+import { actionDecision, newestSnapshot, rootReducer, snapshotDecision } from './sync';
 import { downloadText } from './export';
+import {
+  createHouseholdBackup,
+  createStudentBackup,
+  householdBackupFilename,
+  importHouseholdBackup as applyHouseholdBackup,
+  importStudentBackup as applyStudentBackup,
+  serializeBackup,
+  studentBackupFilename,
+  type DuplicateStrategy,
+  type HouseholdBackup,
+  type HouseholdImportMode,
+  type StudentBackup,
+} from './backup';
 
 interface StoreValue {
   state: AppState;
@@ -47,7 +60,17 @@ interface StoreValue {
   ) => void;
   updateProfile: (patch: Partial<Profile>) => void;
   exportBackup: () => void;
-  importBackup: (file: File) => Promise<void>;
+  exportStudentBackup: (studentId: string) => void;
+  importStudentBackup: (
+    backup: StudentBackup,
+    duplicate: DuplicateStrategy,
+  ) => string;
+  importHouseholdBackup: (
+    backup: HouseholdBackup,
+    mode: HouseholdImportMode,
+  ) => string;
+  backupNotice: { tone: 'success' | 'error'; message: string } | null;
+  clearBackupNotice: () => void;
 }
 
 const StoreContext = createContext<StoreValue | null>(null);
@@ -65,8 +88,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [state, rawDispatch] = useReducer(rootReducer, undefined, loadState);
   const stateRef = useRef(state);
   stateRef.current = state;
+  const [backupNotice, setBackupNotice] = useState<StoreValue['backupNotice']>(null);
   const year = useMemo(() => buildSchoolYear(state.profile.startYear), [state.profile.startYear]);
   const periodId = useMemo(() => periodForDate(year, todayISO()), [year]);
+
+  /** The newest snapshot available, including a newer write from another tab. */
+  const latestState = useCallback(() => {
+    return newestSnapshot(stateRef.current, readStoredState());
+  }, []);
 
   /**
    * Every UI mutation first checks localStorage for a newer snapshot from
@@ -179,18 +208,50 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const exportBackup = useCallback(() => {
+    const backup = createHouseholdBackup(latestState());
     downloadText(
-      `texas-home-academy-backup-${todayISO()}.json`,
-      serializeState(state),
+      householdBackupFilename(),
+      serializeBackup(backup),
       'application/json',
     );
-  }, [state]);
+  }, [latestState]);
 
-  const importBackup = useCallback(async (file: File) => {
-    const text = await file.text();
-    const next = parseImportedState(text);
-    dispatch({ type: 'state/replace', state: next });
-  }, []);
+  const exportStudentBackup = useCallback(
+    (studentId: string) => {
+      const backup = createStudentBackup(latestState(), studentId);
+      downloadText(
+        studentBackupFilename(backup.student),
+        serializeBackup(backup),
+        'application/json',
+      );
+    },
+    [latestState],
+  );
+
+  // Imports are computed from the newest snapshot, then replace it atomically.
+  // A stale tab therefore merges into the latest records instead of writing its
+  // old copy back over them.
+  const importStudentBackup = useCallback(
+    (backup: StudentBackup, duplicate: DuplicateStrategy) => {
+      const result = applyStudentBackup(latestState(), backup, duplicate);
+      rawDispatch({ type: 'state/replace', state: result.state });
+      setBackupNotice({ tone: 'success', message: result.message });
+      return result.message;
+    },
+    [latestState],
+  );
+
+  const importHouseholdBackup = useCallback(
+    (backup: HouseholdBackup, mode: HouseholdImportMode) => {
+      const result = applyHouseholdBackup(latestState(), backup, mode);
+      rawDispatch({ type: 'state/replace', state: result.state });
+      setBackupNotice({ tone: 'success', message: result.message });
+      return result.message;
+    },
+    [latestState],
+  );
+
+  const clearBackupNotice = useCallback(() => setBackupNotice(null), []);
 
   const value = useMemo<StoreValue>(
     () => ({
@@ -203,7 +264,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
       completeLesson,
       updateProfile,
       exportBackup,
-      importBackup,
+      exportStudentBackup,
+      importStudentBackup,
+      importHouseholdBackup,
+      backupNotice,
+      clearBackupNotice,
     }),
     [
       state,
@@ -215,7 +280,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
       completeLesson,
       updateProfile,
       exportBackup,
-      importBackup,
+      exportStudentBackup,
+      importStudentBackup,
+      importHouseholdBackup,
+      backupNotice,
+      clearBackupNotice,
     ],
   );
 

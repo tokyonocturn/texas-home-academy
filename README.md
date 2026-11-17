@@ -64,6 +64,12 @@ with the Texas Education Agency. See
   single-student data is migrated automatically on first load. Open tabs share
   one persisted snapshot, so student switches, renames, and deletions appear in
   every tab without a reload.
+- **Portable per-student backups.** Export one student or the whole household
+  as validated JSON, then import it on another browser or device. A student
+  import leaves everyone else alone; duplicate IDs must be replaced or kept as
+  a separate copy rather than being overwritten silently. Household backups can
+  be merged or used for a full restore, and older full-state backups still
+  import through the same review step.
 - **Records.** Gradebook, report card, cumulative transcript, attendance log,
   GPA (4.0 unweighted / 4.5 weighted), credit tracking, a K–8 promotion check,
   and a Foundation High School Program graduation audit with endorsement and

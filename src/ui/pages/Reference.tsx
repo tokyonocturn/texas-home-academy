@@ -6,6 +6,13 @@ import { curriculumDepthReport } from '../../content/depth/standard';
 import { GRADE_POLICY } from '../../grading/scale';
 import { useApp } from '../../state/store';
 import { studentName } from '../../state/students';
+import {
+  backupCounts,
+  parseBackupText,
+  type DuplicateStrategy,
+  type HouseholdImportMode,
+  type ParsedBackup,
+} from '../../state/backup';
 import { Badge, Empty, Link, PageHead } from '../parts';
 
 /** Computed once from the assembled catalog; the depth test asserts the same numbers. */
@@ -329,14 +336,73 @@ export function PoliciesPage() {
 }
 
 export function SettingsPage() {
-  const { state, dispatch, exportBackup, importBackup } = useApp();
+  const {
+    state,
+    dispatch,
+    exportBackup,
+    exportStudentBackup,
+    importStudentBackup,
+    importHouseholdBackup,
+    backupNotice,
+    clearBackupNotice,
+  } = useApp();
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [newFirst, setNewFirst] = useState('');
   const [newLast, setNewLast] = useState('');
   const [newGrade, setNewGrade] = useState(state.profile.gradeLevel);
+  const [pending, setPending] = useState<ParsedBackup | null>(null);
+  const [duplicate, setDuplicate] = useState<DuplicateStrategy>('keep-both');
+  const [householdMode, setHouseholdMode] =
+    useState<HouseholdImportMode>('merge-replace');
   const profile = state.profile;
   const canAdd = Boolean(newFirst.trim() || newLast.trim());
+  const conflictingStudent =
+    pending?.kind === 'student'
+      ? state.students.find((student) => student.id === pending.student.id)
+      : undefined;
+  const householdTotals = state.students.reduce(
+    (totals, student) => ({
+      grades: totals.grades + student.grades.length,
+      attendance: totals.attendance + student.attendance.length,
+      enrollments: totals.enrollments + student.enrollments.length,
+    }),
+    { grades: 0, attendance: 0, enrollments: 0 },
+  );
+
+  function confirmPendingImport() {
+    if (!pending) return;
+    if (
+      pending.kind === 'household' &&
+      householdMode === 'replace' &&
+      !window.confirm(
+        'Replace every student and record currently in this browser with this household backup? This cannot be undone.',
+      )
+    ) {
+      return;
+    }
+    if (
+      pending.kind === 'student' &&
+      conflictingStudent &&
+      duplicate === 'replace' &&
+      !window.confirm(
+        `Replace ${studentName(conflictingStudent.profile)} with this backup? Other students will not be changed.`,
+      )
+    ) {
+      return;
+    }
+    try {
+      if (pending.kind === 'student') {
+        importStudentBackup(pending, duplicate);
+      } else {
+        importHouseholdBackup(pending, householdMode);
+      }
+      setError('');
+      setPending(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Import failed. No records were changed.');
+    }
+  }
 
   return (
     <>
@@ -371,6 +437,21 @@ export function SettingsPage() {
                 </div>
               </div>
               <div className="btn-row">
+                <button
+                  className="btn ghost small"
+                  onClick={() => {
+                    try {
+                      clearBackupNotice();
+                      exportStudentBackup(student.id);
+                      setMessage(`${studentName(student.profile)} backup downloaded.`);
+                      setError('');
+                    } catch (err) {
+                      setError(err instanceof Error ? err.message : 'Export failed.');
+                    }
+                  }}
+                >
+                  Export
+                </button>
                 {!active ? (
                   <button
                     className="btn ghost small"
@@ -559,12 +640,25 @@ export function SettingsPage() {
       <div className="card">
         <h2 style={{ marginTop: 0 }}>Data</h2>
         <p className="small">
-          Records are stored in this browser only. Export a JSON backup before clearing browser data
-          or moving to another computer.
+          Records are stored in this browser only. Backups are portable JSON files. Export one
+          student from the list above, or export every student as a household backup before clearing
+          browser data or moving to another computer.
         </p>
         <div className="btn-row">
-          <button className="btn" onClick={exportBackup}>
-            Export backup
+          <button
+            className="btn"
+            onClick={() => {
+              try {
+                clearBackupNotice();
+                exportBackup();
+                setMessage('Household backup downloaded.');
+                setError('');
+              } catch (err) {
+                setError(err instanceof Error ? err.message : 'Export failed.');
+              }
+            }}
+          >
+            Export household backup
           </button>
           <label className="btn ghost" style={{ cursor: 'pointer' }}>
             Import backup
@@ -575,28 +669,23 @@ export function SettingsPage() {
               onChange={async (event) => {
                 const file = event.target.files?.[0];
                 if (!file) return;
+                clearBackupNotice();
                 setError('');
                 setMessage('');
-                const hasRecords = state.students.some(
-                  (student) =>
-                    student.grades.length > 0 ||
-                    student.enrollments.length > 0 ||
-                    student.attendance.length > 0,
-                );
-                if (
-                  hasRecords &&
-                  !window.confirm(
-                    'Replace all current records with this backup? Export the current data first if you need to keep it.',
-                  )
-                ) {
-                  event.target.value = '';
-                  return;
-                }
                 try {
-                  await importBackup(file);
-                  setMessage('Backup restored.');
+                  const parsed = parseBackupText(await file.text());
+                  setPending(parsed);
+                  // Keep-both is the safe default even when no conflict is
+                  // visible: another tab may add a matching ID before confirm.
+                  setDuplicate('keep-both');
+                  setHouseholdMode('merge-replace');
                 } catch (err) {
-                  setError(err instanceof Error ? err.message : 'Import failed.');
+                  setPending(null);
+                  setError(
+                    err instanceof Error
+                      ? err.message
+                      : 'Import failed. No records were changed.',
+                  );
                 }
                 event.target.value = '';
               }}
@@ -612,18 +701,152 @@ export function SettingsPage() {
               ) {
                 dispatch({ type: 'state/reset' });
                 setMessage('All records erased.');
+                setPending(null);
+                clearBackupNotice();
               }
             }}
           >
             Erase all records
           </button>
         </div>
+
+        {pending ? (
+          <div
+            style={{
+              borderTop: '1px solid var(--line)',
+              marginTop: 16,
+              paddingTop: 14,
+            }}
+          >
+            <strong>
+              Review {pending.kind === 'student' ? 'student' : 'household'} backup
+            </strong>
+            {pending.kind === 'student' ? (
+              <>
+                <div className="note" style={{ marginTop: 6 }}>
+                  {studentName(pending.student.profile)} · grade{' '}
+                  {pending.student.profile.gradeLevel === 0
+                    ? 'K'
+                    : pending.student.profile.gradeLevel}{' '}
+                  · {backupCounts(pending.student).grades} grade records ·{' '}
+                  {backupCounts(pending.student).attendance} attendance entries ·{' '}
+                  {backupCounts(pending.student).enrollments} enrollments ·{' '}
+                  {backupCounts(pending.student).lessons} completed lessons
+                </div>
+                {conflictingStudent ? (
+                  <div className="callout" style={{ marginTop: 10 }}>
+                    A student with the same ID already exists:{' '}
+                    <strong>{studentName(conflictingStudent.profile)}</strong>. Choose whether to
+                    replace that profile or keep both.
+                  </div>
+                ) : null}
+                {conflictingStudent ? (
+                  <div style={{ marginTop: 10, display: 'grid', gap: 6 }}>
+                    <label className="small">
+                      <input
+                        type="radio"
+                        name="student-duplicate"
+                        checked={duplicate === 'keep-both'}
+                        onChange={() => setDuplicate('keep-both')}
+                      />{' '}
+                      Keep both — import as a separate student with a new ID
+                    </label>
+                    <label className="small">
+                      <input
+                        type="radio"
+                        name="student-duplicate"
+                        checked={duplicate === 'replace'}
+                        onChange={() => setDuplicate('replace')}
+                      />{' '}
+                      Replace the existing profile with the same ID
+                    </label>
+                  </div>
+                ) : null}
+              </>
+            ) : (
+              <>
+                <div className="note" style={{ marginTop: 6 }}>
+                  {pending.students.length} student
+                  {pending.students.length === 1 ? '' : 's'} ·{' '}
+                  {pending.students.reduce(
+                    (count, student) => count + student.grades.length,
+                    0,
+                  )}{' '}
+                  grade records ·{' '}
+                  {pending.students.reduce(
+                    (count, student) => count + student.attendance.length,
+                    0,
+                  )}{' '}
+                  attendance entries
+                  {pending.legacy ? ' · older full-state backup' : ''}
+                </div>
+                <div style={{ marginTop: 10, display: 'grid', gap: 6 }}>
+                  <label className="small">
+                    <input
+                      type="radio"
+                      name="household-mode"
+                      checked={householdMode === 'merge-replace'}
+                      onChange={() => setHouseholdMode('merge-replace')}
+                    />{' '}
+                    Merge — keep other students and replace students with matching IDs
+                  </label>
+                  <label className="small">
+                    <input
+                      type="radio"
+                      name="household-mode"
+                      checked={householdMode === 'merge-keep-both'}
+                      onChange={() => setHouseholdMode('merge-keep-both')}
+                    />{' '}
+                    Merge — keep both copies wherever an ID already exists
+                  </label>
+                  <label className="small">
+                    <input
+                      type="radio"
+                      name="household-mode"
+                      checked={householdMode === 'replace'}
+                      onChange={() => setHouseholdMode('replace')}
+                    />{' '}
+                    Replace everything — remove current students and restore this backup exactly
+                  </label>
+                </div>
+              </>
+            )}
+            <div className="btn-row" style={{ marginTop: 12 }}>
+              <button className="btn" onClick={confirmPendingImport}>
+                {pending.kind === 'household'
+                  ? householdMode === 'replace'
+                    ? 'Replace all records'
+                    : 'Merge household'
+                  : conflictingStudent && duplicate === 'replace'
+                    ? 'Replace matching student'
+                    : conflictingStudent
+                      ? 'Import as a second student'
+                      : 'Import student'}
+              </button>
+              <button
+                className="btn ghost"
+                onClick={() => {
+                  setPending(null);
+                  clearBackupNotice();
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        ) : null}
+
+        {backupNotice ? (
+          <div className={backupNotice.tone === 'error' ? 'callout' : 'note'}>
+            {backupNotice.message}
+          </div>
+        ) : null}
         {error ? <div className="callout">{error}</div> : null}
         {message ? <div className="note">{message}</div> : null}
         <div className="note">
-          {state.students.length} student{state.students.length === 1 ? '' : 's'} · active:{' '}
-          {state.grades.length} grade records · {state.attendance.length} attendance entries ·{' '}
-          {state.enrollments.length} enrollments
+          {state.students.length} student{state.students.length === 1 ? '' : 's'} ·{' '}
+          {householdTotals.grades} grade records · {householdTotals.attendance} attendance entries ·{' '}
+          {householdTotals.enrollments} enrollments
         </div>
       </div>
 

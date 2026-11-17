@@ -6,7 +6,7 @@ import { round2 } from '../grading/scale';
 /**
  * Machine-readable exports.
  *
- * The JSON backup is the round-trip format (it restores the whole AppState).
+ * JSON backups use the portable student/household formats in state/backup.ts.
  * The CSV is for families, advisers, and record-keeping outside the app: it
  * lists every stored grade exactly once, with no aggregation or truncation.
  */

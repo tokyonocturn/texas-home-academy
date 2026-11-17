@@ -60,3 +60,8 @@ export function snapshotDecision(
   if (!stored) return 'write';
   return stored.revision >= local.revision ? 'adopt' : 'write';
 }
+
+/** The state an import or export should be based on: never an older tab copy. */
+export function newestSnapshot(local: AppState, stored: AppState | null): AppState {
+  return stored && stored.revision >= local.revision ? stored : local;
+}

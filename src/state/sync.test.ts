@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { AppState } from '../types';
 import { defaultState, normalizeAppState, serializeState } from './persistence';
-import { rootReducer, actionDecision, snapshotDecision } from './sync';
+import { rootReducer, actionDecision, newestSnapshot, snapshotDecision } from './sync';
 import type { Action } from './reducer';
 
 function state(revision = 0): AppState {
@@ -81,6 +81,14 @@ describe('cross-tab revisions', () => {
     expect(snapshotDecision(state(5), state(4))).toBe('write');
     expect(snapshotDecision(state(5), state(5))).toBe('adopt');
     expect(snapshotDecision(state(5), state(6))).toBe('adopt');
+  });
+
+  it('bases imports and exports on the newest snapshot, never a stale tab', () => {
+    const local = state(5);
+    const stored = state(6);
+    expect(newestSnapshot(local, stored)).toBe(stored);
+    expect(newestSnapshot(local, state(4))).toBe(local);
+    expect(newestSnapshot(local, null)).toBe(local);
   });
 
   it('keeps a record from a stale tab off the student selected in the newer tab', () => {
