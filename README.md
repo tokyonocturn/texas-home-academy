@@ -61,7 +61,9 @@ with the Texas Education Agency. See
 - **Multiple students in one browser.** Each profile has its own enrollments,
   lesson progress, grades, attendance, report card, transcript, and graduation
   audit. Switch the active student from the sidebar or Settings; existing
-  single-student data is migrated automatically on first load.
+  single-student data is migrated automatically on first load. Open tabs share
+  one persisted snapshot, so student switches, renames, and deletions appear in
+  every tab without a reload.
 - **Records.** Gradebook, report card, cumulative transcript, attendance log,
   GPA (4.0 unweighted / 4.5 weighted), credit tracking, a K–8 promotion check,
   and a Foundation High School Program graduation audit with endorsement and

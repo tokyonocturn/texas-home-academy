@@ -80,7 +80,13 @@ export function reducer(state: AppState, action: Action): AppState {
       if (action.id === state.activeStudentId) return state;
       const target = state.students.find((student) => student.id === action.id);
       if (!target) return state;
-      return hydrateAppState(state.schemaVersion, state.settings, syncedStudents(state), target.id);
+      return hydrateAppState(
+        state.schemaVersion,
+        state.settings,
+        syncedStudents(state),
+        target.id,
+        state.revision,
+      );
     }
     case 'student/create': {
       const student = emptyStudent(newId('student'), {
@@ -94,6 +100,7 @@ export function reducer(state: AppState, action: Action): AppState {
         state.settings,
         [...syncedStudents(state), student],
         student.id,
+        state.revision,
       );
     }
     case 'student/delete': {
@@ -102,7 +109,13 @@ export function reducer(state: AppState, action: Action): AppState {
       const remaining = syncedStudents(state).filter((student) => student.id !== action.id);
       const activeStudentId =
         state.activeStudentId === action.id ? remaining[0].id : state.activeStudentId;
-      return hydrateAppState(state.schemaVersion, state.settings, remaining, activeStudentId);
+      return hydrateAppState(
+        state.schemaVersion,
+        state.settings,
+        remaining,
+        activeStudentId,
+        state.revision,
+      );
     }
     case 'enroll':
       return enroll(state, action.courseId);

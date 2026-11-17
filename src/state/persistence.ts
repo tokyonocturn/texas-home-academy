@@ -85,7 +85,11 @@ export function normalizeAppState(value: unknown): AppState | null {
       students.some((student) => student.id === value.activeStudentId)
         ? value.activeStudentId
         : students[0].id;
-    return hydrateAppState(SCHEMA_VERSION, settings, students, activeStudentId);
+    const revision =
+      typeof value.revision === 'number' && Number.isFinite(value.revision)
+        ? Math.max(0, Math.floor(value.revision))
+        : 0;
+    return hydrateAppState(SCHEMA_VERSION, settings, students, activeStudentId, revision);
   }
 
   // Schema 1: one student's data lived at the top level of the object.
@@ -106,7 +110,7 @@ export function normalizeAppState(value: unknown): AppState | null {
     },
     PRIMARY_STUDENT_ID,
   );
-  return hydrateAppState(SCHEMA_VERSION, settings, [student], student.id);
+  return hydrateAppState(SCHEMA_VERSION, settings, [student], student.id, 0);
 }
 
 export const defaultState: AppState = hydrateAppState(

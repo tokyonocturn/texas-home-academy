@@ -48,10 +48,12 @@ export function hydrateAppState(
   settings: AppState['settings'],
   students: StudentRecord[],
   activeStudentId: string,
+  revision = 0,
 ): AppState {
   const active = students.find((student) => student.id === activeStudentId) ?? students[0];
   return {
     schemaVersion,
+    revision,
     activeStudentId: active.id,
     students,
     settings,

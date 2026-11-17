@@ -256,6 +256,8 @@ export interface StudentRecord {
 
 export interface AppState {
   schemaVersion: number;
+  /** Monotonic revision used to reject stale cross-tab snapshots. */
+  revision: number;
   /** The student whose records are mirrored in the fields below. */
   activeStudentId: string;
   /** Every student in this browser. Never empty. */
